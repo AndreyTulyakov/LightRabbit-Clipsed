@@ -9,6 +9,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     application = 0;
+
+    glWidget = new GLWidget(this);
+
+    QGLFormat base_format = glWidget->format();
+
+    // Remove Deprecated Functions.
+    base_format.setProfile(QGLFormat::CoreProfile);
+    glWidget->setFormat(base_format);
+
+    ui->verticalLayout->addWidget(glWidget);
+
+    glWidget->forgotToBindShader(false);
 }
 
 MainWindow::~MainWindow()
