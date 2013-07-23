@@ -20,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->verticalLayout->addWidget(glWidget);
 
-    glWidget->forgotToBindShader(false);
 }
 
 MainWindow::~MainWindow()

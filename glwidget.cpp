@@ -44,62 +44,59 @@
 #include <math.h>
 
 #include "glwidget.h"
-//#include "qtlogo.h"
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
 #endif
 
-//! [0]
+
+GLWidget* GLWidget::instance = 0;
+
 GLWidget::GLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
     xRot = 0;
     yRot = 0;
-    qtGreen = QColor::fromCmykF(0.40, 0.0, 1.0, 0.0);
-    qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
-    mforgotToBindShader = false;
+    qtGreen = QColor::fromRgbF(1,0,0,1);
+    qtPurple = QColor(255,255,255);
 }
-//! [0]
 
-//! [1]
+GLWidget* GLWidget::getInstance()
+{
+    if(instance != 0)
+    {
+        return instance;
+    }
+    else
+        throw QString("GLWidget not exist");
+}
+
+
 GLWidget::~GLWidget()
 {
 }
-//! [1]
 
-//! [2]
+
 QSize GLWidget::minimumSizeHint() const
 {
     return QSize(50, 50);
 }
-//! [2]
 
-//! [3]
+
 QSize GLWidget::sizeHint() const
-//! [3] //! [4]
 {
     return QSize(400, 400);
 }
-//! [4]
 
-void GLWidget::forgotToBindShader(bool value)
-{
- 	if(value != mforgotToBindShader)
- 	{
-		mforgotToBindShader = value;
-		emit forgotToBindShaderChanged(mforgotToBindShader);
-		updateGL();
-    }
-}
-//! [6]
+
+
+
 void GLWidget::initializeGL()
 {
     qglClearColor(qtPurple.dark());
-	mforgotToBindShader = false;
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -107,45 +104,18 @@ void GLWidget::initializeGL()
     static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     
-    QGLShader *vshader1 = new QGLShader(QGLShader::Vertex, this);
-	const char *vsrc1 = 
-#ifdef QT_OPENGL_ES_2
-    	"#version 100\n"  // OpenGL ES 2.0
-#else
-    	"#version 120\n"  // OpenGL 2.1
-#endif
-    	"attribute vec2 coord2d;                  \n"
-    	"uniform mat4 m_transform;                \n"
-	    "void main(void) {                        \n"
-    	"  gl_Position = m_transform * vec4(coord2d, 0.0, 1.0); \n"
-	    "}\n";
-    vshader1->compileSourceCode(vsrc1);
 
-    QGLShader *fshader1 = new QGLShader(QGLShader::Fragment, this);
-    const char *fsrc1 =
-#ifdef QT_OPENGL_ES_2
-    	"#version 100\n"  // OpenGL ES 2.0
-#else
-    	"#version 120\n"  // OpenGL 2.1
-#endif
-		"void main(void) {        \n"
-		"  gl_FragColor[0] = 0.0; \n"
-		"  gl_FragColor[1] = 0.0; \n"
-		"  gl_FragColor[2] = 1.0; \n"
-		"}\n";
-    fshader1->compileSourceCode(fsrc1);
+    simpleShader = new Shader();
 
-    program1.addShader(vshader1);
-    program1.addShader(fshader1);
-    program1.link();
-    vertexAttr1 = program1.attributeLocation("coord2d");
-	matrixUniform1 = program1.uniformLocation( "m_transform");
+    vertexAttr1 = simpleShader->getProgram()->attributeLocation("coord2d");
+    matrixUniform1 = simpleShader->getProgram()->uniformLocation( "m_transform");
+
     // Create the vertex buffer.
     vertices.clear();
-    vertices << QVector2D(0.25f,0.75f);
-    vertices << QVector2D(-0.25f,0.75f);
-    vertices << QVector2D(0.25f,0.25f);
-    vertices << QVector2D(-0.25f,0.25f);
+    vertices << QVector2D(100.25f,100.75f);
+    vertices << QVector2D(-100.25f,100.75f);
+    vertices << QVector2D(100.25f,100.25f);
+    vertices << QVector2D(-100.25f,100.25f);
     RotationMatrix.setToIdentity();
     
     GLushort Static_index[] = {
@@ -168,7 +138,7 @@ static void qNormalizeAngle(int &angle)
         angle -= 360 * 16;
 }
 
-//! [5]
+
 void GLWidget::setXRotation(int angle)
 {
     qNormalizeAngle(angle);
@@ -179,7 +149,6 @@ void GLWidget::setXRotation(int angle)
         updateGL();
     }
 }
-//! [5]
 
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
@@ -204,41 +173,40 @@ void GLWidget::setYRotation(int angle)
     }
 }
 
-//! [6]
+
 void GLWidget::resetRotationMatrix()
 {
     RotationMatrix.setToIdentity();
 }
 
-//! [7]
+
 void GLWidget::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
-    // Do not forget to Bind Shader. If you forget, You will not see anything.
-	if(mforgotToBindShader == false)
-	{
-	    program1.bind();
-    }
-    program1.enableAttributeArray(vertexAttr1);
-    program1.setAttributeArray(vertexAttr1, vertices.constData());
-    program1.setUniformValue(matrixUniform1,RotationMatrix);
-    //glDrawArrays(GL_TRIANGLES_STRIP, 0, vertices.size());
-    glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_SHORT, indices.constData());
-    program1.disableAttributeArray(vertexAttr1);
-	if(mforgotToBindShader == false)
-	{
-	    program1.release();
-    }
-}
-//! [7]
 
-//! [8]
+    QMatrix4x4 finalMatrix = projection;
+
+    simpleShader->bind();
+
+    simpleShader->getProgram()->enableAttributeArray(vertexAttr1);
+    simpleShader->getProgram()->setAttributeArray(vertexAttr1, vertices.constData());
+    simpleShader->getProgram()->setUniformValue(matrixUniform1, finalMatrix.transposed());
+
+    glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_SHORT, indices.constData());
+
+    simpleShader->getProgram()->disableAttributeArray(vertexAttr1);
+    simpleShader->getProgram()->release();
+}
+
+
 void GLWidget::resizeGL(int width, int height)
 {
-    int side = qMin(width, height);
-    glViewport((width - side) / 2, (height - side) / 2, side, side);
+    glViewport(0, 0, width, height);
+
+    projection.ortho(0, width, height, 0, -1000.0f, 1000.0f);
+
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
 }
-//! [8]
+

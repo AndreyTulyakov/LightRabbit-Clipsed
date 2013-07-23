@@ -44,52 +44,51 @@
 #include <QGLWidget>
 #include <QGLBuffer>
 #include <QtOpenGL/qglshaderprogram.h>
+#include <shader.h>
 
 class QtLogo;
 
-//! [0]
+
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
 
 public:
     GLWidget(QWidget *parent = 0);
+
+    static GLWidget* getInstance();
     ~GLWidget();
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
-//! [0]
+
 	void resetRotationMatrix();
-//! [1]
+
 public slots:
     void setXRotation(int angle);
     void setYRotation(int angle);
-    void forgotToBindShader(bool);
+
 signals:
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
-    void forgotToBindShaderChanged(bool);
-//! [1]
 
-//! [2]
 protected:
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
     void mouseMoveEvent(QMouseEvent *event);
-//! [2]
 
-//! [3]
 private:
-	bool mforgotToBindShader;
-	bool oldForgotToBindShader;
+    static GLWidget* instance;
     QColor qtGreen;
     QColor qtPurple;
     QPoint lastPos;
     QVector<QVector2D> vertices;
     QVector<GLushort> indices;
+
     QMatrix4x4 RotationMatrix;
-	QGLShaderProgram program1;
+    QMatrix4x4 projection;
+
     int vertexAttr1;
     int matrixUniform1;
     int xRot;
@@ -98,8 +97,8 @@ private:
     QGLBuffer *qtIndexBuffer;
     QGLBuffer *qtVertexBuffer;
     
+    Shader *simpleShader;
 };
-//! [3]
 
 #endif
 

@@ -16,11 +16,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     formabout.cpp \
-    glwidget.cpp
+    glwidget.cpp \
+    shader.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
-    glwidget.h
+    glwidget.h \
+    shader.h
 
 FORMS    += mainwindow.ui \
     formabout.ui
