@@ -45,59 +45,47 @@
 #include <QGLBuffer>
 #include <QtOpenGL/qglshaderprogram.h>
 #include <shader.h>
+#include <geometryengine.h>
 
-class QtLogo;
+#include <QGLFunctions>
+#include <QBasicTimer>
 
 
-class GLWidget : public QGLWidget
+class GLWidget : public QGLWidget, protected QGLFunctions
 {
     Q_OBJECT
 
-public:
-    GLWidget(QWidget *parent = 0);
 
-    static GLWidget* getInstance();
+public:
+    explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
 
-    QSize minimumSizeHint() const;
-    QSize sizeHint() const;
-
-	void resetRotationMatrix();
-
-public slots:
-    void setXRotation(int angle);
-    void setYRotation(int angle);
-
-signals:
-    void xRotationChanged(int angle);
-    void yRotationChanged(int angle);
-
 protected:
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void timerEvent(QTimerEvent *e);
+
     void initializeGL();
+    void resizeGL(int w, int h);
     void paintGL();
-    void resizeGL(int width, int height);
-    void mouseMoveEvent(QMouseEvent *event);
+
+    void initShaders();
+    void initTextures();
 
 private:
-    static GLWidget* instance;
-    QColor qtGreen;
-    QColor qtPurple;
-    QPoint lastPos;
-    QVector<QVector2D> vertices;
-    QVector<GLushort> indices;
+    QBasicTimer timer;
+    QGLShaderProgram program;
+    GeometryEngine geometries;
 
-    QMatrix4x4 RotationMatrix;
+    GLuint texture;
+
     QMatrix4x4 projection;
 
-    int vertexAttr1;
-    int matrixUniform1;
-    int xRot;
-    int yRot;
-    
-    QGLBuffer *qtIndexBuffer;
-    QGLBuffer *qtVertexBuffer;
-    
-    Shader *simpleShader;
+    QVector2D mousePressPosition;
+    QVector3D rotationAxis;
+    qreal angularSpeed;
+    QQuaternion rotation;
+
 };
 
 #endif

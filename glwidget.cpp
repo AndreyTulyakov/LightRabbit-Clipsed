@@ -45,168 +45,163 @@
 
 #include "glwidget.h"
 
-#ifndef GL_MULTISAMPLE
-#define GL_MULTISAMPLE  0x809D
-#endif
 
 
-GLWidget* GLWidget::instance = 0;
+#include <QMouseEvent>
 
-GLWidget::GLWidget(QWidget *parent)
-    : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+#include <math.h>
+#include <locale.h>
+
+GLWidget::GLWidget(QWidget *parent) :
+    QGLWidget(parent),
+    angularSpeed(0)
 {
-    xRot = 0;
-    yRot = 0;
-    qtGreen = QColor::fromRgbF(1,0,0,1);
-    qtPurple = QColor(255,255,255);
 }
-
-GLWidget* GLWidget::getInstance()
-{
-    if(instance != 0)
-    {
-        return instance;
-    }
-    else
-        throw QString("GLWidget not exist");
-}
-
 
 GLWidget::~GLWidget()
 {
+    deleteTexture(texture);
 }
 
-
-QSize GLWidget::minimumSizeHint() const
+void GLWidget::mousePressEvent(QMouseEvent *e)
 {
-    return QSize(50, 50);
+    // Save mouse press position
+    mousePressPosition = QVector2D(e->localPos());
 }
 
-
-QSize GLWidget::sizeHint() const
+void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    return QSize(400, 400);
+    // Mouse release position - mouse press position
+    QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
+
+    // Rotation axis is perpendicular to the mouse position difference
+    // vector
+    QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
+
+    // Accelerate angular speed relative to the length of the mouse sweep
+    qreal acc = diff.length() / 100.0;
+
+    // Calculate new rotation axis as weighted sum
+    rotationAxis = (rotationAxis * angularSpeed + n * acc).normalized();
+
+    // Increase angular speed
+    angularSpeed += acc;
 }
 
+void GLWidget::timerEvent(QTimerEvent *)
+{
+    // Decrease angular speed (friction)
+    angularSpeed *= 0.99;
 
+    // Stop rotation when speed goes below threshold
+    if (angularSpeed < 0.01) {
+        angularSpeed = 0.0;
+    } else {
+        // Update rotation
+        rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
 
+        // Update scene
+        updateGL();
+    }
+}
 
 void GLWidget::initializeGL()
 {
-    qglClearColor(qtPurple.dark());
+    initializeGLFunctions();
+    qglClearColor(Qt::black);
+    initShaders();
+    initTextures();
 
+    // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_MULTISAMPLE);
-    static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    
 
-    simpleShader = new Shader();
+    // Enable back face culling
+    glEnable(GL_CULL_FACE);
 
-    vertexAttr1 = simpleShader->getProgram()->attributeLocation("coord2d");
-    matrixUniform1 = simpleShader->getProgram()->uniformLocation( "m_transform");
+    geometries.init();
 
-    // Create the vertex buffer.
-    vertices.clear();
-    vertices << QVector2D(100.25f,100.75f);
-    vertices << QVector2D(-100.25f,100.75f);
-    vertices << QVector2D(100.25f,100.25f);
-    vertices << QVector2D(-100.25f,100.25f);
-    RotationMatrix.setToIdentity();
-    
-    GLushort Static_index[] = {
-         0,  1,  2,  3,      // Face 0 - triangle strip ( v0,  v1,  v2,  v3)
-	    };
-	indices.clear();
-	for(size_t i = 0;i < sizeof(Static_index);i++)
-	{
-		indices.insert ( i, Static_index[i]);
-	}
+    // Use QBasicTimer because its faster than QTimer
+    timer.start(15, this);
 }
 
-
-
-static void qNormalizeAngle(int &angle)
+void GLWidget::initShaders()
 {
-    while (angle < 0)
-        angle += 360 * 16;
-    while (angle > 360 * 16)
-        angle -= 360 * 16;
+    // Override system locale until shaders are compiled
+    setlocale(LC_NUMERIC, "C");
+
+    // Compile vertex shader
+    if (!program.addShaderFromSourceFile(QGLShader::Vertex, "res/shaders/vshader.glsl"))
+        close();
+
+    // Compile fragment shader
+    if (!program.addShaderFromSourceFile(QGLShader::Fragment, "res/shaders/fshader.glsl"))
+        close();
+
+    // Link shader pipeline
+    if (!program.link())
+        close();
+
+    // Bind shader pipeline for use
+    if (!program.bind())
+        close();
+
+    // Restore system locale
+    setlocale(LC_ALL, "");
 }
 
-
-void GLWidget::setXRotation(int angle)
+void GLWidget::initTextures()
 {
-    qNormalizeAngle(angle);
-    if (angle != xRot) {
-        xRot = angle;
-        RotationMatrix.rotate ( angle, 0.0f, 0.0f, 0.5f );
-        emit xRotationChanged(angle);
-        updateGL();
-    }
+    // Load cube.png image
+    glEnable(GL_TEXTURE_2D);
+    texture = bindTexture(QImage("res/textures/image.png"));
+
+    // Set nearest filtering mode for texture minification
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    // Set bilinear filtering mode for texture magnification
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Wrap texture coordinates by repeating
+    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
-
-void GLWidget::mouseMoveEvent(QMouseEvent *event)
+void GLWidget::resizeGL(int w, int h)
 {
-    int dx = event->x() - lastPos.x();
-    int dy = event->y() - lastPos.y();
+    // Set OpenGL viewport to cover whole widget
+    glViewport(0, 0, w, h);
 
-    if (event->buttons() & Qt::LeftButton) {
-        setXRotation(xRot + 0.2 * dy);
-    }
-    lastPos = event->pos();
+    // Calculate aspect ratio
+    qreal aspect = qreal(w) / qreal(h ? h : 1);
+
+    // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
+    const qreal zNear = 3.0, zFar = 7.0, fov = 45.0;
+
+    // Reset projection
+    projection.setToIdentity();
+
+    // Set perspective projection
+    projection.perspective(fov, aspect, zNear, zFar);
 }
-
-
-void GLWidget::setYRotation(int angle)
-{
-    qNormalizeAngle(angle);
-    if (angle != yRot) {
-        yRot = angle;
-        emit yRotationChanged(angle);
-        updateGL();
-    }
-}
-
-
-void GLWidget::resetRotationMatrix()
-{
-    RotationMatrix.setToIdentity();
-}
-
 
 void GLWidget::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
+    // Clear color and depth buffer
+    glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    QMatrix4x4 finalMatrix = projection;
+    // Calculate model view transformation
+    QMatrix4x4 matrix;
+    matrix.translate(0.0, 0.0, -5.0);
+    matrix.rotate(rotation);
 
-    simpleShader->bind();
+    // Set modelview-projection matrix
+    program.setUniformValue("mvp_matrix", projection * matrix);
 
-    simpleShader->getProgram()->enableAttributeArray(vertexAttr1);
-    simpleShader->getProgram()->setAttributeArray(vertexAttr1, vertices.constData());
-    simpleShader->getProgram()->setUniformValue(matrixUniform1, finalMatrix.transposed());
+    // Use texture unit 0 which contains cube.png
+    program.setUniformValue("texture", 0);
 
-    glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_SHORT, indices.constData());
-
-    simpleShader->getProgram()->disableAttributeArray(vertexAttr1);
-    simpleShader->getProgram()->release();
+    // Draw cube geometry
+    geometries.drawCubeGeometry(&program);
 }
-
-
-void GLWidget::resizeGL(int width, int height)
-{
-    glViewport(0, 0, width, height);
-
-    projection.ortho(0, width, height, 0, -1000.0f, 1000.0f);
-
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-}
-
