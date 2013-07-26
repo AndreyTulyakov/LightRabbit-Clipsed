@@ -5,25 +5,25 @@
 
 class EntityObject
 {
-    protected:
-        QVector3D position;
-        QVector3D rotation;
-        QVector3D scale;
+protected:
+    QVector3D position;
+    QVector3D rotation;
+    QVector3D scale;
 
-    public:
-        EntityObject();
+public:
+    EntityObject();
 
-        void setPosition(float x, float y, float z);
-        void setRotation(float x, float y, float z);
-        void setScale(float x, float y, float z);
+    void setPosition(float x, float y, float z);
+    void setRotation(float x, float y, float z);
+    void setScale(float x, float y, float z);
 
-        void setPosition(QVector3D arg);
-        void setRotation(QVector3D arg);
-        void setScale(QVector3D arg);
+    void setPosition(QVector3D arg);
+    void setRotation(QVector3D arg);
+    void setScale(QVector3D arg);
 
-        QVector3D getPosition();
-        QVector3D getRotation();
-        QVector3D getScale();
+    QVector3D getPosition();
+    QVector3D getRotation();
+    QVector3D getScale();
 
 
 };

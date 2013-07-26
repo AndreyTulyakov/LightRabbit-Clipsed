@@ -11,24 +11,24 @@ class MainWindow;
 
 class MainWindow : public QMainWindow
 {
-        Q_OBJECT
+    Q_OBJECT
 
-    public:
-        explicit MainWindow(QWidget *parent = 0);
-        ~MainWindow();
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
 
-        void setApplication(QApplication *app);
+    void setApplication(QApplication *app);
 
-    private slots:
-        void on_actionAbout_triggered();
+private slots:
+    void on_actionAbout_triggered();
 
-        void on_actionExit_triggered();
+    void on_actionExit_triggered();
 
-    private:
-        Ui::MainWindow *ui;
-        QApplication *application;
+private:
+    Ui::MainWindow *ui;
+    QApplication *application;
 
-        GLWidget *glWidget;
+    GLWidget *glWidget;
 };
 
 #endif // MAINWINDOW_H

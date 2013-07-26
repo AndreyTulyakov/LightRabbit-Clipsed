@@ -1,15 +1,18 @@
-#include "entityline.h"
+#include "Line.h"
 
 #include "defaultshaders.h"
 #include "VertexTypes.h"
 
-EntityLine::EntityLine(float x1, float y1, float x2, float y2)
+namespace Entity
+{
+
+Line::Line(float x1, float y1, float x2, float y2)
 {
     shaderProgram = DefaultShaders::getInstance()->getShader("PrimitiveColor");
 
     //p1.setX(x1);
-    p1 = QPoint(x1,y1);
-    p2 = QPoint(x2,y2);
+    p1 = QPoint(x1, y1);
+    p2 = QPoint(x2, y2);
 
     initializeGLFunctions();
 
@@ -18,17 +21,17 @@ EntityLine::EntityLine(float x1, float y1, float x2, float y2)
     initGeometry();
 }
 
-EntityLine::~EntityLine()
+Line::~Line()
 {
     glDeleteBuffers(2, vboIds);
 }
 
-void EntityLine::update()
+void Line::update()
 {
 
 }
 
-void EntityLine::draw()
+void Line::draw()
 {
     transform.setToIdentity();
 
@@ -56,7 +59,7 @@ void EntityLine::draw()
 }
 
 
-void EntityLine::initGeometry()
+void Line::initGeometry()
 {
 
     VertexSimple vertices[] = {
@@ -77,3 +80,4 @@ void EntityLine::initGeometry()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * sizeof(GLushort), indices, GL_STATIC_DRAW);
 }
 
+}

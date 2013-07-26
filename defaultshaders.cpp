@@ -8,17 +8,17 @@ DefaultShaders* DefaultShaders::instance = 0;
 
 DefaultShaders::DefaultShaders()
 {
-    shaders.insert("SimpleTextured", loadShaders("vshader.glsl","fshader.glsl"));
-    shaders.insert("PrimitiveColor", loadShaders("vs_primitive_color.glsl","fs_primitive_color.glsl"));
+    shaders.insert("SimpleTextured", loadShaders("vshader.glsl", "fshader.glsl"));
+    shaders.insert("PrimitiveColor", loadShaders("vs_primitive_color.glsl", "fs_primitive_color.glsl"));
 }
 
 DefaultShaders::~DefaultShaders()
 {
     QMapIterator<QString, QGLShaderProgram*> i(shaders);
-     while (i.hasNext()) {
+    while (i.hasNext()) {
         i.next();
         delete i.value();
-     }
+    }
 
     shaders.clear();
 }
@@ -42,7 +42,7 @@ QGLShaderProgram* DefaultShaders::loadShaders(QString vsFilename, QString fsFile
         qDebug() << "link shaders program: fail" << endl;
 
     if (!program->bind())
-       qDebug() << "bind shaders program: fail" << endl;
+        qDebug() << "bind shaders program: fail" << endl;
 
     qDebug() << "Shader program log:" << program->log() << endl;
 
@@ -57,12 +57,9 @@ QGLShaderProgram* DefaultShaders::getShader(QString shaderName)
 {
     QGLShaderProgram* value = 0;
 
-    if(shaders.contains(shaderName))
-    {
+    if (shaders.contains(shaderName)) {
         value = shaders.value(shaderName);
-    }
-    else
-    {
+    } else {
         qDebug() << "DefaultShaders::getShader: can't find shader:" << shaderName << endl;
     }
 
@@ -77,13 +74,14 @@ QGLShaderProgram* DefaultShaders::getShader(QString shaderName)
 
 DefaultShaders* DefaultShaders::getInstance()
 {
-        if (instance == 0)
-            instance = new DefaultShaders();
-        return instance;
+    if (instance == 0)
+        instance = new DefaultShaders();
+    return instance;
 }
 
-void DefaultShaders::deleteInstance(){
-    if(instance != 0)
+void DefaultShaders::deleteInstance()
+{
+    if (instance != 0)
         delete instance;
     instance = 0;
 }

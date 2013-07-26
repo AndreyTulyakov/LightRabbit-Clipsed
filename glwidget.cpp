@@ -7,7 +7,7 @@
 #include "glwidget.h"
 
 #include "defaultshaders.h"
-#include "entityline.h"
+#include "Line.h"
 
 #include <QMouseEvent>
 
@@ -63,7 +63,7 @@ void GLWidget::initializeGL()
 
     rootScene.setCamera(&camera);
 
-    EntityLine* eLine = new EntityLine( 0, 0, width(), height());
+    Entity::Line* eLine = new Entity::Line(0, 0, width(), height());
     rootScene.attachChild(eLine);
 
     initTextures();
