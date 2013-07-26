@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     shader.cpp \
     geometryengine.cpp \
     entity.cpp \
-    camera2d.cpp
+    camera2d.cpp \
+    defaultshaders.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
@@ -28,7 +29,8 @@ HEADERS  += mainwindow.h \
     shader.h \
     geometryengine.h \
     entity.h \
-    camera2d.h
+    camera2d.h \
+    defaultshaders.h
 
 FORMS    += mainwindow.ui \
     formabout.ui

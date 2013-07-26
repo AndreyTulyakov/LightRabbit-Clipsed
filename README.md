@@ -6,7 +6,7 @@ Clips editor for Light Rabbit game
 
 Guidelines:
 
-- Add Camera2D class
+* Add Camera2D class
 - Add DefaultShaders class
 * Add Entity class
 - Add SceneObject virtual class
