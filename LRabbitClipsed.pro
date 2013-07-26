@@ -19,14 +19,16 @@ SOURCES += main.cpp\
     glwidget.cpp \
     shader.cpp \
     geometryengine.cpp \
-    entity.cpp
+    entity.cpp \
+    camera2d.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
     glwidget.h \
     shader.h \
     geometryengine.h \
-    entity.h
+    entity.h \
+    camera2d.h
 
 FORMS    += mainwindow.ui \
     formabout.ui

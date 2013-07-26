@@ -8,7 +8,7 @@ void Entity::setPosition(float x, float y, float z)
 {
     position.setX(x);
     position.setY(y);
-    position.setS(z);
+    position.setZ(z);
 }
 
 void Entity::setX(float arg)
@@ -28,24 +28,24 @@ void Entity::setZ(float arg)
 
 void Entity::setRotation(float x, float y, float z)
 {
-    rotation.x = x;
-    rotation.y = y;
-    rotation.z = z;
+    rotation.setX(x);
+    rotation.setY(y);
+    rotation.setZ(z);
 }
 
 void Entity::setPitch(float arg)
 {
-    rotation.x = arg;
+    rotation.setX(arg);
 }
 
 void Entity::setYaw(float arg)
 {
-    rotation.y = arg;
+    rotation.setY(arg);
 }
 
 void Entity::setRoll(float arg)
 {
-    rotation.z = arg;
+    rotation.setZ(arg);
 }
 
 
@@ -57,17 +57,17 @@ QVector3D Entity::getPosition()
 
 float Entity::getX()
 {
-    return position.x;
+    return position.x();
 }
 
 float Entity::getY()
 {
-    return position.y;
+    return position.y();
 }
 
 float Entity::getZ()
 {
-    return position.z;
+    return position.z();
 }
 
 QVector3D Entity::getRotation()
@@ -77,15 +77,15 @@ QVector3D Entity::getRotation()
 
 float Entity::getPitch()
 {
-    return rotation.x;
+    return rotation.x();
 }
 
 float Entity::getYaw()
 {
-    return rotation.y;
+    return rotation.y();
 }
 
 float Entity::getRoll()
 {
-    return rotation.z;
+    return rotation.z();
 }
