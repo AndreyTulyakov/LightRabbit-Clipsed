@@ -18,25 +18,26 @@ SOURCES += main.cpp\
     formabout.cpp \
     glwidget.cpp \
     shader.cpp \
-    geometryengine.cpp \
     entity.cpp \
     camera2d.cpp \
     defaultshaders.cpp \
     sceneobject.cpp \
     scene.cpp \
-    DrawableEntity.cpp
+    DrawableEntity.cpp \
+    entityline.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
     glwidget.h \
     shader.h \
-    geometryengine.h \
     entity.h \
     camera2d.h \
     defaultshaders.h \
     sceneobject.h \
     scene.h \
-    DrawableEntity.h
+    DrawableEntity.h \
+    entityline.h \
+    VertexTypes.h
 
 FORMS    += mainwindow.ui \
     formabout.ui

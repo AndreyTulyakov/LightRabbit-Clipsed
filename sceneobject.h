@@ -2,8 +2,9 @@
 #define SCENEOBJECT_H
 
 #include <QList>
+#include "entity.h"
 
-class SceneObject
+class SceneObject : public Entity
 {
 protected:
     QList<SceneObject *> childs;

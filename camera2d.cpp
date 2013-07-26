@@ -2,6 +2,9 @@
 
 Camera2D::Camera2D()
 {
+    translation.setToIdentity();
+    rotation.setToIdentity();
+    projection.setToIdentity();
 }
 
 QMatrix4x4 Camera2D::getCameraMatrix()

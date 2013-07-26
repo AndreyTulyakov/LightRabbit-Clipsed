@@ -9,7 +9,6 @@
 #include <QGLBuffer>
 #include <QtOpenGL/qglshaderprogram.h>
 #include <shader.h>
-#include <geometryengine.h>
 
 #include <QGLFunctions>
 #include <QBasicTimer>
@@ -41,12 +40,8 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         Scene rootScene;
 
         QBasicTimer timer;
-        QGLShaderProgram* program;
-        GeometryEngine geometries;
 
         GLuint texture;
-
-        QMatrix4x4 projection;
 
         QVector2D mousePressPosition;
         QVector3D rotationAxis;

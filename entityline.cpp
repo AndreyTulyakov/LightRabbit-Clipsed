@@ -1,36 +1,79 @@
-#include "geometryengine.h"
+#include "entityline.h"
 
-#include <QVector2D>
-#include <QVector3D>
+#include "defaultshaders.h"
+#include "VertexTypes.h"
 
-struct VertexData
+EntityLine::EntityLine()
 {
-    QVector3D position;
-    QVector2D texCoord;
-};
+    shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
-GeometryEngine::GeometryEngine()
-{
+    initializeGLFunctions();
+
+    glGenBuffers(2, vboIds);
+
+    initCubeGeometry();
 }
 
-GeometryEngine::~GeometryEngine()
+EntityLine::~EntityLine()
 {
     glDeleteBuffers(2, vboIds);
 }
 
-void GeometryEngine::init()
+void EntityLine::update()
 {
-    initializeGLFunctions();
 
-    // Generate 2 VBOs
-    glGenBuffers(2, vboIds);
-
-
-    // Initializes cube geometry and transfers it to VBOs
-    initCubeGeometry();
 }
 
-void GeometryEngine::initCubeGeometry()
+static float rotator = 0;
+
+void EntityLine::draw()
+{
+    shaderProgram->setUniformValue("texture", 0);
+
+
+
+    rotator += 0.2f;
+    if(rotator > 90) rotator = 0;
+
+
+    // Calculate model view transformation
+
+    QMatrix4x4 matrix;
+
+    matrix.scale(100,100,1);
+    matrix.translate(1.0, 1.0, 0.0);
+    matrix.rotate(rotator, 0, 0, 1.0f);
+
+    // Set modelview-projection matrix
+    shaderProgram->setUniformValue("mvp_matrix", camera->getCameraMatrix() * matrix);
+
+
+    // Tell OpenGL which VBOs to use
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
+
+    // Offset for position
+    quintptr offset = 0;
+
+    // Tell OpenGL programmable pipeline how to locate vertex position data
+    int vertexLocation = shaderProgram->attributeLocation("a_position");
+    shaderProgram->enableAttributeArray(vertexLocation);
+    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+
+    // Offset for texture coordinate
+    offset += sizeof(QVector3D);
+
+    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
+    int texcoordLocation = shaderProgram->attributeLocation("a_texcoord");
+    shaderProgram->enableAttributeArray(texcoordLocation);
+    glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+
+    // Draw cube geometry using indices from VBO 1
+    glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
+}
+
+
+void EntityLine::initCubeGeometry()
 {
     // For cube we would need only 8 vertices but we have to
     // duplicate vertex for each face because texture coordinate
@@ -100,28 +143,3 @@ void GeometryEngine::initCubeGeometry()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 34 * sizeof(GLushort), indices, GL_STATIC_DRAW);
 }
 
-void GeometryEngine::drawCubeGeometry(QGLShaderProgram *program)
-{
-    // Tell OpenGL which VBOs to use
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
-
-    // Offset for position
-    quintptr offset = 0;
-
-    // Tell OpenGL programmable pipeline how to locate vertex position data
-    int vertexLocation = program->attributeLocation("a_position");
-    program->enableAttributeArray(vertexLocation);
-    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
-
-    // Offset for texture coordinate
-    offset += sizeof(QVector3D);
-
-    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
-    int texcoordLocation = program->attributeLocation("a_texcoord");
-    program->enableAttributeArray(texcoordLocation);
-    glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
-
-    // Draw cube geometry using indices from VBO 1
-    glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
-}

@@ -7,6 +7,7 @@
 #include "glwidget.h"
 
 #include "defaultshaders.h"
+#include "entityline.h"
 
 #include <QMouseEvent>
 
@@ -52,22 +53,8 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 
 void GLWidget::timerEvent(QTimerEvent *)
 {
-    // Decrease angular speed (friction)
-    angularSpeed *= 0.99;
 
-    // Stop rotation when speed goes below threshold
-    if (angularSpeed < 0.01)
-    {
-        angularSpeed = 0.0;
-    }
-    else
-    {
-        // Update rotation
-        rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-
-        // Update scene
-        updateGL();
-    }
+    updateGL();
 }
 
 void GLWidget::initializeGL()
@@ -77,22 +64,14 @@ void GLWidget::initializeGL()
     camera.setOrtho(width(),height(), -1 , 100);
     rootScene.setCamera(&camera);
 
-    rootScene.attachChild(new Scene());
-    rootScene.attachChild(new Scene());
-
-    program = DefaultShaders::getInstance()->getShader("SimpleTextured");
+    EntityLine* eLine = new EntityLine();
+    rootScene.attachChild(eLine);
 
     initTextures();
 
-    // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
-
-    // Enable back face culling
-    glEnable(GL_CULL_FACE);
-
+    //glEnable(GL_CULL_FACE);
     glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
-
-    geometries.init();
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(15, this);
@@ -120,40 +99,14 @@ void GLWidget::resizeGL(int w, int h)
 {
     // Set OpenGL viewport to cover whole widget
     glViewport(0, 0, w, h);
-
-    // Calculate aspect ratio
-    qreal aspect = qreal(w) / qreal(h ? h : 1);
-
-    // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 3.0, zFar = 7.0, fov = 45.0;
-
-    // Reset projection
-    projection.setToIdentity();
-
-    // Set perspective projection
-    projection.perspective(fov, aspect, zNear, zFar);
+    camera.setOrtho(w, h, -1, 100);
 }
 
 void GLWidget::paintGL()
 {
-    // Clear color and depth buffer
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Calculate model view transformation
-    QMatrix4x4 matrix;
-    matrix.translate(0.0, 0.0, -5.0);
-    matrix.rotate(rotation);
 
     rootScene.update();
     rootScene.draw();
 
-    // Set modelview-projection matrix
-    program->setUniformValue("mvp_matrix", projection * matrix);
-
-    // Use texture unit 0 which contains cube.png
-    program->setUniformValue("texture", 0);
-
-    // Draw cube geometry
-    geometries.drawCubeGeometry(program);
 }

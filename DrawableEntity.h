@@ -2,11 +2,15 @@
 #define DRAWABLEENTITY_H
 
 #include "camera2d.h"
+#include "sceneobject.h"
 
-class DrawableEntity : public Entity
+#include <QGLShaderProgram>
+
+class DrawableEntity : public SceneObject
 {
-private:
+protected:
     Camera2D* camera;
+    QGLShaderProgram* shaderProgram;
 
 public:
 
