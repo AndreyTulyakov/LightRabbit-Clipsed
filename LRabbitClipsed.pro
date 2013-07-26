@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     geometryengine.cpp \
     entity.cpp \
     camera2d.cpp \
-    defaultshaders.cpp
+    defaultshaders.cpp \
+    sceneobject.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     geometryengine.h \
     entity.h \
     camera2d.h \
-    defaultshaders.h
+    defaultshaders.h \
+    sceneobject.h
 
 FORMS    += mainwindow.ui \
     formabout.ui
