@@ -1,5 +1,7 @@
 #include "scene.h"
 
+#include "DrawableEntity.h"
+
 Scene::Scene()
 {
     camera = 0;
@@ -19,15 +21,13 @@ void Scene::draw()
 
     for (int i = 0; i < childs.length(); i++) {
 
-        // FIXME: need rewrite this code afted adding DrawableEntity class
-        /*
         DrawableEntity* object = dynamic_cast< DrawableEntity* >( childs.at(i) );
 
         if(object)
         {
-            object.draw();
+            object->setCamera(camera);
+            object->draw();
         }
-        */
     }
 }
 
