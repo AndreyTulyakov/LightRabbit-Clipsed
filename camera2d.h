@@ -1,12 +1,12 @@
 #ifndef CAMERA2D_H
 #define CAMERA2D_H
 
-#include "entity.h"
+#include "EntityObject.h"
 
 #include <QMatrix4x4>
 
 
-class Camera2D : public Entity
+class Camera2D : public EntityObject
 {
 private:
     QMatrix4x4 projection;

@@ -61,11 +61,9 @@ void GLWidget::initializeGL()
 {
     initializeGLFunctions();
 
-    camera.setOrtho(width(),height(), -1 , 100);
     rootScene.setCamera(&camera);
 
     EntityLine* eLine = new EntityLine( 0, 0, width(), height());
-
     rootScene.attachChild(eLine);
 
     initTextures();
@@ -74,7 +72,6 @@ void GLWidget::initializeGL()
     //glEnable(GL_CULL_FACE);
     glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
 
-    // Use QBasicTimer because its faster than QTimer
     timer.start(15, this);
 }
 
@@ -98,7 +95,6 @@ void GLWidget::initTextures()
 
 void GLWidget::resizeGL(int w, int h)
 {
-    // Set OpenGL viewport to cover whole widget
     glViewport(0, 0, w, h);
     camera.setOrtho(w, h, -1, 100);
 }

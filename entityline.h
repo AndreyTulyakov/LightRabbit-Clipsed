@@ -5,6 +5,10 @@
 
 #include <QGLFunctions>
 
+namespace Entity {
+
+}
+
 class EntityLine : public DrawableEntity , QGLFunctions
 {
 public:

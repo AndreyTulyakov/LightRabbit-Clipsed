@@ -3,7 +3,7 @@
 
 #include <QVector3D>
 
-class Entity
+class EntityObject
 {
     protected:
         QVector3D position;
@@ -11,7 +11,7 @@ class Entity
         QVector3D scale;
 
     public:
-        Entity();
+        EntityObject();
 
         void setPosition(float x, float y, float z);
         void setRotation(float x, float y, float z);
