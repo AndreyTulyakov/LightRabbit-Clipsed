@@ -5,7 +5,7 @@
 
 class SceneObject
 {
-private:
+protected:
     QList<SceneObject *> childs;
 
 public:

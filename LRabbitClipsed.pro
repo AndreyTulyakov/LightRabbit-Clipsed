@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     entity.cpp \
     camera2d.cpp \
     defaultshaders.cpp \
-    sceneobject.cpp
+    sceneobject.cpp \
+    scene.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     entity.h \
     camera2d.h \
     defaultshaders.h \
-    sceneobject.h
+    sceneobject.h \
+    scene.h
 
 FORMS    += mainwindow.ui \
     formabout.ui
