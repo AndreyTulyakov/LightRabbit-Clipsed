@@ -18,13 +18,15 @@ SOURCES += main.cpp\
     formabout.cpp \
     glwidget.cpp \
     shader.cpp \
-    geometryengine.cpp
+    geometryengine.cpp \
+    entity.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
     glwidget.h \
     shader.h \
-    geometryengine.h
+    geometryengine.h \
+    entity.h
 
 FORMS    += mainwindow.ui \
     formabout.ui

@@ -3,23 +3,24 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class FormAbout;
 }
 
 class FormAbout : public QDialog
 {
-    Q_OBJECT
-    
-public:
-    explicit FormAbout(QWidget *parent = 0);
-    ~FormAbout();
-    
-private slots:
-    void on_ButtonClose_clicked();
+        Q_OBJECT
 
-private:
-    Ui::FormAbout *ui;
+    public:
+        explicit FormAbout(QWidget *parent = 0);
+        ~FormAbout();
+
+    private slots:
+        void on_ButtonClose_clicked();
+
+    private:
+        Ui::FormAbout *ui;
 };
 
 #endif // FORMABOUT_H

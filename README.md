@@ -8,7 +8,7 @@ Guidelines:
 
 - Add Camera2D class
 - Add DefaultShaders class
-- Add Entity class
++ Add Entity class
 - Add SceneObject virtual class
 - Add Scene class
 - Add VertexBuffer Manager;

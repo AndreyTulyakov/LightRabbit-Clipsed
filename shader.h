@@ -5,14 +5,14 @@
 
 class Shader
 {
-public:
-    Shader();
-    QGLShaderProgram *getProgram();
-    void bind();
+    public:
+        Shader();
+        QGLShaderProgram *getProgram();
+        void bind();
 
-private:
-    QString loadFromFile(QString filename);
-    QGLShaderProgram program;
+    private:
+        QString loadFromFile(QString filename);
+        QGLShaderProgram program;
 
 
 };

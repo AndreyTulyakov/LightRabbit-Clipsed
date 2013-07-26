@@ -4,30 +4,31 @@
 #include <QMainWindow>
 #include "glwidget.h"
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
-    
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+        Q_OBJECT
 
-    void setApplication(QApplication *app);
-    
-private slots:
-    void on_actionAbout_triggered();
+    public:
+        explicit MainWindow(QWidget *parent = 0);
+        ~MainWindow();
 
-    void on_actionExit_triggered();
+        void setApplication(QApplication *app);
 
-private:
-    Ui::MainWindow *ui;
-    QApplication *application;
+    private slots:
+        void on_actionAbout_triggered();
 
-    GLWidget *glWidget;
+        void on_actionExit_triggered();
+
+    private:
+        Ui::MainWindow *ui;
+        QApplication *application;
+
+        GLWidget *glWidget;
 };
 
 #endif // MAINWINDOW_H

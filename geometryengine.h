@@ -6,17 +6,17 @@
 
 class GeometryEngine : protected QGLFunctions
 {
-public:
-    GeometryEngine();
-    virtual ~GeometryEngine();
+    public:
+        GeometryEngine();
+        virtual ~GeometryEngine();
 
-    void init();
-    void drawCubeGeometry(QGLShaderProgram *program);
+        void init();
+        void drawCubeGeometry(QGLShaderProgram *program);
 
-private:
-    void initCubeGeometry();
+    private:
+        void initCubeGeometry();
 
-    GLuint vboIds[2];
+        GLuint vboIds[2];
 };
 
 #endif // GEOMETRYENGINE_H

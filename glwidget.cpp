@@ -94,9 +94,12 @@ void GLWidget::timerEvent(QTimerEvent *)
     angularSpeed *= 0.99;
 
     // Stop rotation when speed goes below threshold
-    if (angularSpeed < 0.01) {
+    if (angularSpeed < 0.01)
+    {
         angularSpeed = 0.0;
-    } else {
+    }
+    else
+    {
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
 
