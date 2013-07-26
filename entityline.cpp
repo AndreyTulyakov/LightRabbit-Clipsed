@@ -3,15 +3,19 @@
 #include "defaultshaders.h"
 #include "VertexTypes.h"
 
-EntityLine::EntityLine()
+EntityLine::EntityLine(float x1, float y1, float x2, float y2)
 {
-    shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
+    shaderProgram = DefaultShaders::getInstance()->getShader("PrimitiveColor");
+
+    //p1.setX(x1);
+    p1 = QPoint(x1,y1);
+    p2 = QPoint(x2,y2);
 
     initializeGLFunctions();
 
     glGenBuffers(2, vboIds);
 
-    initCubeGeometry();
+    initGeometry();
 }
 
 EntityLine::~EntityLine()
@@ -24,22 +28,18 @@ void EntityLine::update()
 
 }
 
-static float rotator = 0;
-
 void EntityLine::draw()
 {
-    shaderProgram->setUniformValue("texture", 0);
-
-    rotator += 1.0f;
-    if (rotator > 360) rotator = 0;
-
     transform.setToIdentity();
-    transform.translate(100.0, 100.0, 0.0);
-    transform.scale(100, 100, 1);
-    transform.rotate(rotator, 0, 0, 1.0f);
+
+    transform.translate(position);
+    transform.scale(scale);
+    transform.rotate(1.0f, rotation);
+
 
     // Set modelview-projection matrix
     shaderProgram->setUniformValue("mvp_matrix", camera->getCameraMatrix() * transform);
+    shaderProgram->setUniformValue("color", color);
 
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
@@ -49,41 +49,31 @@ void EntityLine::draw()
     // Locate vertex position data
     int vertexLocation = shaderProgram->attributeLocation("a_position");
     shaderProgram->enableAttributeArray(vertexLocation);
-    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
-
-    // Offset for texture coordinate
-    offset += sizeof(QVector3D);
-
-    // Locate vertex texture coordinate data
-    int texcoordLocation = shaderProgram->attributeLocation("a_texcoord");
-    shaderProgram->enableAttributeArray(texcoordLocation);
-    glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (const void *)offset);
 
     // Draw from VBO 1
-    glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_LINES, 2, GL_UNSIGNED_SHORT, 0);
 }
 
 
-void EntityLine::initCubeGeometry()
+void EntityLine::initGeometry()
 {
 
-    VertexData vertices[] = {
-        {QVector3D(-1.0, -1.0,  0.0), QVector2D(0.0, 0.0)},  // v0
-        {QVector3D(1.0, -1.0,  0.0),  QVector2D(1.0, 0.0)},  // v1
-        {QVector3D(-1.0,  1.0,  0.0), QVector2D(0.0, 1.0)},  // v2
-        {QVector3D(1.0,  1.0,  0.0),  QVector2D(1.0, 1.0)},  // v3
+    VertexSimple vertices[] = {
+        {QVector3D(p1.x(), p1.y(),  0.0)},  // v0
+        {QVector3D(p2.x(), p2.y(),  0.0)},  // v1
     };
 
     GLushort indices[] = {
-        0,  1,  2,  3,  3
+        0,  1
     };
 
     // Transfer vertex data to VBO 0
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(VertexSimple), vertices, GL_STATIC_DRAW);
 
     // Transfer index data to VBO 1
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 5 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * sizeof(GLushort), indices, GL_STATIC_DRAW);
 }
 

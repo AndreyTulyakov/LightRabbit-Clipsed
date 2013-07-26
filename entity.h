@@ -5,33 +5,26 @@
 
 class Entity
 {
-    private:
+    protected:
         QVector3D position;
         QVector3D rotation;
-
+        QVector3D scale;
 
     public:
         Entity();
 
         void setPosition(float x, float y, float z);
-        void setX(float arg);
-        void setY(float arg);
-        void setZ(float arg);
-
         void setRotation(float x, float y, float z);
-        void setPitch(float arg);
-        void setYaw(float arg);
-        void setRoll(float arg);
+        void setScale(float x, float y, float z);
+
+        void setPosition(QVector3D arg);
+        void setRotation(QVector3D arg);
+        void setScale(QVector3D arg);
 
         QVector3D getPosition();
-        float getX();
-        float getY();
-        float getZ();
-
         QVector3D getRotation();
-        float getPitch();
-        float getYaw();
-        float getRoll();
+        QVector3D getScale();
+
 
 };
 

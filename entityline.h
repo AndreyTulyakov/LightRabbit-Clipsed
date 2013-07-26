@@ -8,17 +8,21 @@
 class EntityLine : public DrawableEntity , QGLFunctions
 {
 public:
-    EntityLine();
+    EntityLine(float x1, float y1, float x2, float y2);
     virtual ~EntityLine();
 
     void init();
     void drawCubeGeometry(QGLShaderProgram *program);
 
 private:
-    void initCubeGeometry();
-    GLuint vboIds[2];
 
+
+    void initGeometry();
+    GLuint vboIds[2];
+    QPoint p1, p2;
 public:
+
+
     void update();
     void draw();
 };

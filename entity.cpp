@@ -2,6 +2,9 @@
 
 Entity::Entity()
 {
+    position = QVector3D(0,0,0);
+    rotation = QVector3D(0,0,0);
+    scale = QVector3D(1,1,1);
 }
 
 void Entity::setPosition(float x, float y, float z)
@@ -11,19 +14,9 @@ void Entity::setPosition(float x, float y, float z)
     position.setZ(z);
 }
 
-void Entity::setX(float arg)
+void Entity::setRotation(QVector3D arg)
 {
-    position.setX(arg);
-}
-
-void Entity::setY(float arg)
-{
-    position.setY(arg);
-}
-
-void Entity::setZ(float arg)
-{
-    position.setZ(arg);
+    rotation = arg;
 }
 
 void Entity::setRotation(float x, float y, float z)
@@ -33,41 +26,9 @@ void Entity::setRotation(float x, float y, float z)
     rotation.setZ(z);
 }
 
-void Entity::setPitch(float arg)
-{
-    rotation.setX(arg);
-}
-
-void Entity::setYaw(float arg)
-{
-    rotation.setY(arg);
-}
-
-void Entity::setRoll(float arg)
-{
-    rotation.setZ(arg);
-}
-
-
-
 QVector3D Entity::getPosition()
 {
     return position;
-}
-
-float Entity::getX()
-{
-    return position.x();
-}
-
-float Entity::getY()
-{
-    return position.y();
-}
-
-float Entity::getZ()
-{
-    return position.z();
 }
 
 QVector3D Entity::getRotation()
@@ -75,17 +36,22 @@ QVector3D Entity::getRotation()
     return rotation;
 }
 
-float Entity::getPitch()
+QVector3D Entity::getScale()
 {
-    return rotation.x();
+    return scale;
 }
 
-float Entity::getYaw()
+void Entity::setScale(float x, float y, float z)
 {
-    return rotation.y();
+    scale = QVector3D(x,y,z);
 }
 
-float Entity::getRoll()
+void Entity::setPosition(QVector3D arg)
 {
-    return rotation.z();
+    position = arg;
+}
+
+void Entity::setScale(QVector3D arg)
+{
+    scale = arg;
 }

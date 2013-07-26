@@ -64,7 +64,8 @@ void GLWidget::initializeGL()
     camera.setOrtho(width(),height(), -1 , 100);
     rootScene.setCamera(&camera);
 
-    EntityLine* eLine = new EntityLine();
+    EntityLine* eLine = new EntityLine( 0, 0, width(), height());
+
     rootScene.attachChild(eLine);
 
     initTextures();

@@ -11,6 +11,7 @@ class DrawableEntity : public SceneObject
 protected:
     Camera2D* camera;
     QGLShaderProgram* shaderProgram;
+    QVector4D color;
 
     QMatrix4x4 transform;
     bool isTransformed;
