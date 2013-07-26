@@ -12,6 +12,9 @@ protected:
     Camera2D* camera;
     QGLShaderProgram* shaderProgram;
 
+    QMatrix4x4 transform;
+    bool isTransformed;
+
 public:
 
     DrawableEntity();
