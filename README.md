@@ -10,10 +10,10 @@ Guidelines:
 ++ Add DefaultShaders class
 ++ Add Entity class
 ++ Add SceneObject virtual class
--- Add DrawableEntity super class
+++ Add DrawableEntity super class
 ++ Add Scene class
-- Add VertexBuffer Manager;
 - Add Drawable entity: Line, Rect, Circle
+- Add VertexBuffer Manager;
 - Add Sprite entity
 - Add SpriteBatch entity
 - Find license and add to every file.

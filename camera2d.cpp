@@ -22,7 +22,7 @@ void Camera2D::setRotationRoll(float arg)
     rotation.rotate(arg,0,0,1);
 }
 
-void Camera2D::setOrtho(float width = 400, float height = 300, float near = -1.0f, float far = 1000.0f)
+void Camera2D::setOrtho(float width, float height, float near, float far)
 {
     projection.setToIdentity();
     projection.ortho(0,width,height,0,near,far);

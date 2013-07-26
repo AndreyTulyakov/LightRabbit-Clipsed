@@ -2,6 +2,9 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
+#include "camera2d.h"
+#include "scene.h"
+
 #include <QGLWidget>
 #include <QGLBuffer>
 #include <QtOpenGL/qglshaderprogram.h>
@@ -34,6 +37,9 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         void initTextures();
 
     private:
+        Camera2D camera;
+        Scene rootScene;
+
         QBasicTimer timer;
         QGLShaderProgram* program;
         GeometryEngine geometries;

@@ -73,7 +73,12 @@ void GLWidget::timerEvent(QTimerEvent *)
 void GLWidget::initializeGL()
 {
     initializeGLFunctions();
-    qglClearColor(Qt::black);
+
+    camera.setOrtho(width(),height(), -1 , 100);
+    rootScene.setCamera(&camera);
+
+    rootScene.attachChild(new Scene());
+    rootScene.attachChild(new Scene());
 
     program = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
@@ -84,6 +89,8 @@ void GLWidget::initializeGL()
 
     // Enable back face culling
     glEnable(GL_CULL_FACE);
+
+    glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
 
     geometries.init();
 
@@ -130,13 +137,16 @@ void GLWidget::resizeGL(int w, int h)
 void GLWidget::paintGL()
 {
     // Clear color and depth buffer
-    glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Calculate model view transformation
     QMatrix4x4 matrix;
     matrix.translate(0.0, 0.0, -5.0);
     matrix.rotate(rotation);
+
+    rootScene.update();
+    rootScene.draw();
 
     // Set modelview-projection matrix
     program->setUniformValue("mvp_matrix", projection * matrix);
