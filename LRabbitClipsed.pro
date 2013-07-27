@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     scene.cpp \
     DrawableEntity.cpp \
     EntityObject.cpp \
-    Line.cpp
+    Line.cpp \
+    rect.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     DrawableEntity.h \
     VertexTypes.h \
     EntityObject.h \
-    Line.h
+    Line.h \
+    rect.h
 
 FORMS    += mainwindow.ui \
     formabout.ui

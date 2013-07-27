@@ -42,12 +42,6 @@ private:
     QBasicTimer timer;
 
     GLuint texture;
-
-    QVector2D mousePressPosition;
-    QVector3D rotationAxis;
-    qreal angularSpeed;
-    QQuaternion rotation;
-
 };
 
 #endif

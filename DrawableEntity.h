@@ -21,6 +21,10 @@ public:
     DrawableEntity();
     void setCamera(Camera2D* arg);
 
+    void setColor(QVector4D arg);
+    void setColor(float r, float g, float b, float a);
+    QVector4D getColor();
+
     virtual void draw() = 0;
 };
 

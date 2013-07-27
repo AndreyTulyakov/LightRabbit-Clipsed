@@ -17,19 +17,14 @@ public:
     virtual ~Line();
 
     void init();
-    void drawCubeGeometry(QGLShaderProgram *program);
+    void update();
+    void draw();
 
 private:
-
 
     void initGeometry();
     GLuint vboIds[2];
     QPoint p1, p2;
-public:
-
-
-    void update();
-    void draw();
 };
 
 }

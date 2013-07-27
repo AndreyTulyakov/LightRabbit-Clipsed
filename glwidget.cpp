@@ -8,6 +8,7 @@
 
 #include "defaultshaders.h"
 #include "Line.h"
+#include "rect.h"
 
 #include <QMouseEvent>
 
@@ -15,9 +16,9 @@
 #include <locale.h>
 
 GLWidget::GLWidget(QWidget *parent) :
-    QGLWidget(parent),
-    angularSpeed(0)
+    QGLWidget(parent)
 {
+
 }
 
 GLWidget::~GLWidget()
@@ -28,27 +29,12 @@ GLWidget::~GLWidget()
 
 void GLWidget::mousePressEvent(QMouseEvent *e)
 {
-    // Save mouse press position
-    mousePressPosition = QVector2D(e->localPos());
+
 }
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    // Mouse release position - mouse press position
-    QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
 
-    // Rotation axis is perpendicular to the mouse position difference
-    // vector
-    QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
-
-    // Accelerate angular speed relative to the length of the mouse sweep
-    qreal acc = diff.length() / 100.0;
-
-    // Calculate new rotation axis as weighted sum
-    rotationAxis = (rotationAxis * angularSpeed + n * acc).normalized();
-
-    // Increase angular speed
-    angularSpeed += acc;
 }
 
 void GLWidget::timerEvent(QTimerEvent *)
@@ -63,11 +49,21 @@ void GLWidget::initializeGL()
 
     rootScene.setCamera(&camera);
 
-    Entity::Line* eLine = new Entity::Line(0, 0, width(), height());
+    Entity::Line* eLine = new Entity::Line(100, 50, 100, 300);
     rootScene.attachChild(eLine);
+    eLine->setColor(1,1,1,0.5f);
+
+    Entity::Rect* eRect = new Entity::Rect(50,100,300,100);
+    eRect->setColor(1,1,1,0.5f);
+    rootScene.attachChild(eRect);
 
     initTextures();
 
+    //GL.Enable(EnableCap.Blend);
+    //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     //glEnable(GL_CULL_FACE);
     glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
