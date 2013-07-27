@@ -9,6 +9,7 @@
 #include "defaultshaders.h"
 #include "Line.h"
 #include "rect.h"
+#include "Sprite.h"
 
 #include <QMouseEvent>
 
@@ -23,19 +24,12 @@ GLWidget::GLWidget(QWidget *parent) :
 
 GLWidget::~GLWidget()
 {
+    VertexBufferManager::deleteInstance();
     DefaultShaders::deleteInstance();
     deleteTexture(texture);
 }
 
-void GLWidget::mousePressEvent(QMouseEvent *e)
-{
 
-}
-
-void GLWidget::mouseReleaseEvent(QMouseEvent *e)
-{
-
-}
 
 void GLWidget::timerEvent(QTimerEvent *)
 {
@@ -47,26 +41,38 @@ void GLWidget::initializeGL()
 {
     initializeGLFunctions();
 
-    rootScene.setCamera(&camera);
-
-    Entity::Line* eLine = new Entity::Line(100, 50, 100, 300);
-    rootScene.attachChild(eLine);
-    eLine->setColor(1,1,1,0.5f);
-
-    Entity::Rect* eRect = new Entity::Rect(50,100,100,100);
-    eRect->setColor(1,1,1,0.5f);
-    rootScene.attachChild(eRect);
-
-    initTextures();
-
-    //GL.Enable(EnableCap.Blend);
-    //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     //glEnable(GL_CULL_FACE);
+
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_MULTISAMPLE);
+
     glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
+
+    initTextures();
+
+    //VBManager = VertexBufferManager::getInstance();
+
+    rootScene.setCamera(&camera);
+
+
+
+    Entity::Line* eLine = new Entity::Line(0, -100, 0, 100);
+    rootScene.attachChild(eLine);
+
+    rootScene.attachChild(new Entity::Line(-100, 0, 100, 0));
+
+    Entity::Rect* eRect = new Entity::Rect(-50, -50, 100, 100);
+    eRect->setColor(1, 1, 1, 0.5f);
+    rootScene.attachChild(eRect);
+
+    Entity::Sprite* eSprite = new Entity::Sprite(512,512);
+    rootScene.attachChild(eSprite);
+
+
 
     timer.start(15, this);
 }
@@ -92,7 +98,8 @@ void GLWidget::initTextures()
 void GLWidget::resizeGL(int w, int h)
 {
     glViewport(0, 0, w, h);
-    camera.setOrtho(w, h, -1, 100);
+    camera.setOrtho(w, h, -10, 100, false);
+    camera.setPosition(-width()/2, - height()/2, 1);
 }
 
 void GLWidget::paintGL()

@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     EntityObject.cpp \
     Line.cpp \
     rect.cpp \
-    VertexBufferManager.cpp
+    VertexBufferManager.cpp \
+    Sprite.cpp
 
 HEADERS  += mainwindow.h \
     formabout.h \
@@ -41,7 +42,8 @@ HEADERS  += mainwindow.h \
     EntityObject.h \
     Line.h \
     rect.h \
-    VertexBufferManager.h
+    VertexBufferManager.h \
+    Sprite.h
 
 FORMS    += mainwindow.ui \
     formabout.ui

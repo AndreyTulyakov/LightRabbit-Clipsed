@@ -13,6 +13,8 @@
 #include <QGLFunctions>
 #include <QBasicTimer>
 
+#include "VertexBufferManager.h"
+
 
 class GLWidget : public QGLWidget, protected QGLFunctions
 {
@@ -24,8 +26,6 @@ public:
     ~GLWidget();
 
 protected:
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
     void timerEvent(QTimerEvent *e);
 
     void initializeGL();
@@ -42,6 +42,8 @@ private:
     QBasicTimer timer;
 
     GLuint texture;
+
+    VertexBufferManager *VBManager;
 };
 
 #endif

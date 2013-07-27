@@ -33,6 +33,8 @@ void Rect::update()
 
 void Rect::draw()
 {
+    shaderProgram->bind();
+
     transform.setToIdentity();
 
     transform.translate(position);

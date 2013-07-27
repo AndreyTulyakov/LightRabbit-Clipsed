@@ -33,6 +33,8 @@ void Line::update()
 
 void Line::draw()
 {
+    shaderProgram->bind();
+
     transform.setToIdentity();
 
     transform.translate(position);
@@ -73,7 +75,7 @@ void Line::initGeometry()
 
     // Transfer vertex data to VBO 0
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(VertexSimple), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(VertexSimple), vertices, GL_DYNAMIC_DRAW);
 
     // Transfer index data to VBO 1
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
