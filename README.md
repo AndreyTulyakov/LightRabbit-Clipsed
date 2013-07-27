@@ -12,7 +12,7 @@ Guidelines:
 + Add SceneObject virtual class
 + Add DrawableEntity super class
 + Add Scene class
-- Add Drawable entity: Line, Rect, Circle
++ Add Drawable entity: Line, Rect.
 - Add VertexBuffer Manager;
 - Add Sprite entity
 - Add SpriteBatch entity
