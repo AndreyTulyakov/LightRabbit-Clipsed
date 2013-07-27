@@ -11,7 +11,7 @@ Camera2D::Camera2D()
 QMatrix4x4 Camera2D::getCameraMatrix()
 {
 
-    return projection * view * rotation * translation;
+    return projection * view  * translation * rotation;
 }
 
 void Camera2D::setPosition(float x = 0, float y = 0, float z = 0)

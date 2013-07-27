@@ -57,7 +57,7 @@ void GLWidget::initializeGL()
     //VBManager = VertexBufferManager::getInstance();
 
     rootScene.setCamera(&camera);
-
+    camera.setRotationRoll(45);
 
 
     Entity::Line* eLine = new Entity::Line(0, -100, 0, 100);
@@ -96,9 +96,18 @@ void GLWidget::resizeGL(int w, int h)
     camera.setPosition(-width() / 2, - height() / 2, 1);
 }
 
+
+float rotator = 300;
+
 void GLWidget::paintGL()
 {
+    rotator += 1.0f;
+    if(rotator >= 360)
+        rotator = 0;
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    camera.setRotationRoll(rotator);
 
     rootScene.update();
     rootScene.draw();
