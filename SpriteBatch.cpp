@@ -7,12 +7,14 @@ namespace Entity
 {
 
 
-SpriteBatch::SpriteBatch(int capacity)
+SpriteBatch::SpriteBatch(TextureAtlas *atlas, int capacity)
 {
     initializeGLFunctions();
 
+    this->atlas = atlas;
     this->capacity = capacity;
     used = 0;
+
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
     initGeometry();

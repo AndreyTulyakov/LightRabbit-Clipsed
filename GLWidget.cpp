@@ -74,8 +74,9 @@ void GLWidget::initializeGL()
     eSprite->setScale(0.3,0.3,1);
     rootScene.attachChild(eSprite);
 
+    TextureAtlas atlas;
 
-    Entity::SpriteBatch* eSb = new Entity::SpriteBatch(100);
+    Entity::SpriteBatch* eSb = new Entity::SpriteBatch(&atlas, 100);
     rootScene.attachChild(eSb);
 
     timer.start(15, this);

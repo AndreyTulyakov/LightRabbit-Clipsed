@@ -4,6 +4,8 @@
 #include <QGLFunctions>
 #include "DrawableEntity.h"
 #include "VertexTypes.h"
+#include "TextureAtlas.h"
+#include "TextureRegion.h"
 
 namespace Entity
 {
@@ -12,7 +14,7 @@ namespace Entity
 class SpriteBatch: public DrawableEntity , QGLFunctions
 {
 public:
-    SpriteBatch(int capacity);
+    SpriteBatch(TextureAtlas* atlas, int capacity);
     virtual ~SpriteBatch();
 
     void init();
@@ -25,6 +27,8 @@ private:
 
     int capacity;
     int used;
+
+    TextureAtlas* atlas;
 };
 
 

@@ -1,5 +1,7 @@
 #include "TextureRegion.h"
 
+#include <QDebug>
+
 TextureRegion::TextureRegion()
 {
     atlas = 0;
@@ -35,10 +37,10 @@ void TextureRegion::setRegion(QRect region)
 
 TextureAtlas *TextureRegion::getAtlas()
 {
-    if (atlas = 0) {
+    if (atlas == 0) {
         qDebug() << "TextureRegion::getAtlas: null atlas";
     }
-    return atlas
+    return atlas;
 }
 
 QRect TextureRegion::getRegion()
