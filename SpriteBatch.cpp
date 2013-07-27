@@ -14,6 +14,14 @@ SpriteBatch::SpriteBatch(TextureAtlas *atlas, int capacity)
     this->atlas = atlas;
     this->capacity = capacity;
     used = 0;
+    nowMapped = false;
+    mapedVertices = 0;
+
+    vertexBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
+    vertexBuffer->create();
+
+    indicesBuffer = new QGLBuffer(QGLBuffer::IndexBuffer);
+    indicesBuffer->create();
 
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
@@ -22,7 +30,11 @@ SpriteBatch::SpriteBatch(TextureAtlas *atlas, int capacity)
 
 SpriteBatch::~SpriteBatch()
 {
-    glDeleteBuffers(2, vboIds);
+    vertexBuffer->destroy();
+    delete vertexBuffer;
+
+    indicesBuffer->destroy();
+    delete indicesBuffer;
 }
 
 void SpriteBatch::update()
@@ -44,8 +56,8 @@ void SpriteBatch::draw()
 
     shaderProgram->setUniformValue("mvp_matrix", transform);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
+    vertexBuffer->bind();
+    indicesBuffer->bind();
 
     quintptr offset = 0;
 
@@ -73,12 +85,54 @@ void SpriteBatch::draw()
 
 }
 
+void SpriteBatch::addStart()
+{
+
+    if(!nowMapped){
+        //mapedVertices = vertexBuffer->map(QGLBuffer::ReadWrite);
+    }
+}
+
+
+
+void SpriteBatch::addEnd()
+{
+    if(nowMapped)
+    {
+        //vertexBuffer->unmap();
+    }
+    else
+    {
+        qDebug() << "SpriteBatch::addEnd: try before call :addStart";
+    }
+
+    mapedVertices = 0;
+    nowMapped = false;
+}
+
+void SpriteBatch::addSprite(TextureRegion *region, QVector2D position, QVector2D scale, float rotation, QVector4D color)
+{
+    if(nowMapped)
+    {
+        if(used >= capacity)
+        {
+            qDebug() << "SpriteBatch::addSprite: max capacity!";
+        }
+        else
+        {
+
+        }
+    }
+    else
+    {
+        qDebug() << "SpriteBatch::addSprite: try before call :addStart";
+    }
+}
+
 
 
 void SpriteBatch::initGeometry()
 {
-    glGenBuffers(2, vboIds);
-
     float hw = 48;
     float hh = 48;
 
@@ -93,13 +147,12 @@ void SpriteBatch::initGeometry()
         0,  1,  2,  2,  1, 3
     };
 
-    // Transfer vertex data to VBO 0
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+    vertexBuffer->bind();
+    vertexBuffer->allocate(vertices,4 * sizeof(VertexData));
 
-    // Transfer index data to VBO 1
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    indicesBuffer->bind();
+    indicesBuffer->allocate(indices,6 * sizeof(GLushort));
+
 }
 
 }
