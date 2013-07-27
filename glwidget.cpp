@@ -53,7 +53,7 @@ void GLWidget::initializeGL()
     rootScene.attachChild(eLine);
     eLine->setColor(1,1,1,0.5f);
 
-    Entity::Rect* eRect = new Entity::Rect(50,100,300,100);
+    Entity::Rect* eRect = new Entity::Rect(50,100,100,100);
     eRect->setColor(1,1,1,0.5f);
     rootScene.attachChild(eRect);
 

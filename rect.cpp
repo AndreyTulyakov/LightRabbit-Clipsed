@@ -55,7 +55,7 @@ void Rect::draw()
     glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (const void *)offset);
 
     // Draw from VBO 1
-    glDrawElements(GL_LINES, 2, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
 }
 
 
@@ -63,21 +63,23 @@ void Rect::initGeometry()
 {
 
     VertexSimple vertices[] = {
-        {QVector3D(p1.x(), p1.y(),  0.0)},  // v0
-        {QVector3D(p2.x(), p2.y(),  0.0)},  // v1
+        {QVector3D(p1.x(), p1.y(),  0.0)},
+        {QVector3D(p1.x()+p2.x(), p1.y(),  0.0)},
+        {QVector3D(p1.x()+p2.x(), p1.y()+p2.y(),  0.0)},
+        {QVector3D(p1.x(), p1.y()+p2.y(),  0.0)},
     };
 
     GLushort indices[] = {
-        0,  1
+        0,  1, 2, 3
     };
 
     // Transfer vertex data to VBO 0
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(VertexSimple), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(VertexSimple), vertices, GL_STATIC_DRAW);
 
     // Transfer index data to VBO 1
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLushort), indices, GL_STATIC_DRAW);
 }
 
 
