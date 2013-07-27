@@ -14,6 +14,6 @@ Guidelines:
 + Add Scene class
 + Add Drawable entity: Line, Rect.
 - Add VertexBuffer Manager;
-- Add Sprite entity
++ Add Sprite entity
 - Add SpriteBatch entity
 - Find license and add to every file.

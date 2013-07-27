@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "glwidget.h"
+#include "GLWidget.h"
 
 namespace Ui
 {

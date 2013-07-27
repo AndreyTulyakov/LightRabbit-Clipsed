@@ -1,9 +1,10 @@
-#include "rect.h"
+#include "Rect.h"
 
-#include "defaultshaders.h"
+#include "DefaultShaders.h"
 #include "VertexTypes.h"
 
-namespace Entity {
+namespace Entity
+{
 
 
 Rect::Rect(float x1, float y1, float x2, float y2)
@@ -66,9 +67,9 @@ void Rect::initGeometry()
 
     VertexSimple vertices[] = {
         {QVector3D(p1.x(), p1.y(),  0.0)},
-        {QVector3D(p1.x()+p2.x(), p1.y(),  0.0)},
-        {QVector3D(p1.x()+p2.x(), p1.y()+p2.y(),  0.0)},
-        {QVector3D(p1.x(), p1.y()+p2.y(),  0.0)},
+        {QVector3D(p1.x() + p2.x(), p1.y(),  0.0)},
+        {QVector3D(p1.x() + p2.x(), p1.y() + p2.y(),  0.0)},
+        {QVector3D(p1.x(), p1.y() + p2.y(),  0.0)},
     };
 
     GLushort indices[] = {

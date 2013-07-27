@@ -1,4 +1,4 @@
-#include "defaultshaders.h"
+#include "DefaultShaders.h"
 
 #include <QDebug>
 #include <QGLShaderProgram>

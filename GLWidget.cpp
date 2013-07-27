@@ -4,11 +4,11 @@
 
 #include <math.h>
 
-#include "glwidget.h"
+#include "GLWidget.h"
 
-#include "defaultshaders.h"
+#include "DefaultShaders.h"
 #include "Line.h"
-#include "rect.h"
+#include "Rect.h"
 #include "Sprite.h"
 
 #include <QMouseEvent>
@@ -69,7 +69,7 @@ void GLWidget::initializeGL()
     eRect->setColor(1, 1, 1, 0.5f);
     rootScene.attachChild(eRect);
 
-    Entity::Sprite* eSprite = new Entity::Sprite(512,512);
+    Entity::Sprite* eSprite = new Entity::Sprite(512, 512);
     rootScene.attachChild(eSprite);
 
 
@@ -79,18 +79,12 @@ void GLWidget::initializeGL()
 
 void GLWidget::initTextures()
 {
-    // Load cube.png image
     glEnable(GL_TEXTURE_2D);
     texture = bindTexture(QImage("res/textures/image.png"));
 
-    // Set nearest filtering mode for texture minification
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-    // Set bilinear filtering mode for texture magnification
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    // Wrap texture coordinates by repeating
-    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
@@ -99,7 +93,7 @@ void GLWidget::resizeGL(int w, int h)
 {
     glViewport(0, 0, w, h);
     camera.setOrtho(w, h, -10, 100, false);
-    camera.setPosition(-width()/2, - height()/2, 1);
+    camera.setPosition(-width() / 2, - height() / 2, 1);
 }
 
 void GLWidget::paintGL()

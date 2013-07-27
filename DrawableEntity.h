@@ -1,8 +1,8 @@
 #ifndef DRAWABLEENTITY_H
 #define DRAWABLEENTITY_H
 
-#include "camera2d.h"
-#include "sceneobject.h"
+#include "Camera2D.h"
+#include "SceneObject.h"
 
 #include <QGLShaderProgram>
 

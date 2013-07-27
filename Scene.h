@@ -1,8 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "sceneobject.h"
-#include "camera2d.h"
+#include "SceneObject.h"
+#include "Camera2D.h"
 
 class Scene : public SceneObject
 {

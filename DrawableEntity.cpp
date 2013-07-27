@@ -21,7 +21,7 @@ void DrawableEntity::setColor(QVector4D arg)
 
 void DrawableEntity::setColor(float r, float g, float b, float a)
 {
-    color = QVector4D(r,g,b,a);
+    color = QVector4D(r, g, b, a);
 }
 
 QVector4D DrawableEntity::getColor()

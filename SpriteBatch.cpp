@@ -1,4 +1,4 @@
-#include "Sprite.h"
+#include "SpriteBatch.h"
 
 #include "DefaultShaders.h"
 #include "VertexTypes.h"
@@ -7,7 +7,7 @@ namespace Entity
 {
 
 
-Sprite::Sprite(float w, float h)
+SpriteBatch::SpriteBatch(float w, float h)
 {
     width = w;
     height = h;
@@ -21,17 +21,19 @@ Sprite::Sprite(float w, float h)
     initGeometry();
 }
 
-Sprite::~Sprite()
+SpriteBatch::~SpriteBatch()
 {
     glDeleteBuffers(2, vboIds);
 }
 
-void Sprite::update()
+void SpriteBatch::update()
 {
 
 }
 
-void Sprite::draw()
+static float rotator = 0;
+
+void SpriteBatch::draw()
 {
     shaderProgram->bind();
 
@@ -76,7 +78,7 @@ void Sprite::draw()
 
 
 
-void Sprite::initGeometry()
+void SpriteBatch::initGeometry()
 {
     float hw = width / 2;
     float hh = height / 2;

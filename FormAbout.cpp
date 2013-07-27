@@ -1,4 +1,4 @@
-#include "formabout.h"
+#include "FormAbout.h"
 #include "ui_formabout.h"
 
 FormAbout::FormAbout(QWidget *parent) :

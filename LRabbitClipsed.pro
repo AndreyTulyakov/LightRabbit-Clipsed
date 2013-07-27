@@ -14,39 +14,41 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    formabout.cpp \
-    glwidget.cpp \
-    shader.cpp \
-    camera2d.cpp \
-    defaultshaders.cpp \
-    sceneobject.cpp \
-    scene.cpp \
     DrawableEntity.cpp \
     EntityObject.cpp \
     Line.cpp \
-    rect.cpp \
     VertexBufferManager.cpp \
-    Sprite.cpp
+    Sprite.cpp \
+    SpriteBatch.cpp \
+    Camera2D.cpp \
+    DefaultShaders.cpp \
+    FormAbout.cpp \
+    GLWidget.cpp \
+    MainWindow.cpp \
+    Rect.cpp \
+    Scene.cpp \
+    SceneObject.cpp
 
-HEADERS  += mainwindow.h \
-    formabout.h \
-    glwidget.h \
-    shader.h \
-    camera2d.h \
-    defaultshaders.h \
-    sceneobject.h \
-    scene.h \
+HEADERS  += \
     DrawableEntity.h \
     VertexTypes.h \
     EntityObject.h \
     Line.h \
-    rect.h \
     VertexBufferManager.h \
-    Sprite.h
+    Sprite.h \
+    SpriteBatch.h \
+    Camera2D.h \
+    DefaultShaders.h \
+    FormAbout.h \
+    GLWidget.h \
+    MainWindow.h \
+    Rect.h \
+    Scene.h \
+    SceneObject.h
 
-FORMS    += mainwindow.ui \
-    formabout.ui
+FORMS    += \
+    FormAbout.ui \
+    MainWindow.ui
 
 OTHER_FILES += \
     README.md

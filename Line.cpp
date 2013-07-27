@@ -1,6 +1,6 @@
 #include "Line.h"
 
-#include "defaultshaders.h"
+#include "DefaultShaders.h"
 #include "VertexTypes.h"
 
 namespace Entity

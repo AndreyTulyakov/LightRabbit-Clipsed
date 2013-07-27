@@ -1,11 +1,11 @@
-#include "camera2d.h"
+#include "Camera2D.h"
 
 Camera2D::Camera2D()
 {
     translation.setToIdentity();
     rotation.setToIdentity();
     projection.setToIdentity();
-    view.lookAt(QVector3D(0,0,1),QVector3D(0,0,0),QVector3D(0,1,0));
+    view.lookAt(QVector3D(0, 0, 1), QVector3D(0, 0, 0), QVector3D(0, 1, 0));
 }
 
 QMatrix4x4 Camera2D::getCameraMatrix()
@@ -30,11 +30,9 @@ void Camera2D::setRotationRoll(float arg)
 void Camera2D::setOrtho(float width, float height, float near, float far, bool LeftTopStart)
 {
     projection.setToIdentity();
-    if(LeftTopStart){
+    if (LeftTopStart) {
         projection.ortho(0, width, height, 0, near, far);
-    }
-    else
-    {
+    } else {
         projection.ortho(0, width, 0, height, near, far);
     }
 

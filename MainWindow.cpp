@@ -1,7 +1,7 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
 
-#include "formabout.h"
+#include "FormAbout.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

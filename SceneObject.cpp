@@ -1,5 +1,4 @@
-#include "sceneobject.h"
-
+#include "SceneObject.h"
 #include <QDebug>
 
 SceneObject::SceneObject()

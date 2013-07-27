@@ -1,9 +1,9 @@
-#include "DrawableEntity.h"
-
 #ifndef ENTITYLINE_H
 #define ENTITYLINE_H
 
 #include <QGLFunctions>
+#include "DrawableEntity.h"
+
 
 namespace Entity
 {

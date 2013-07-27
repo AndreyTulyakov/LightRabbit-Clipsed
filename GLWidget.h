@@ -2,13 +2,12 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
-#include "camera2d.h"
-#include "scene.h"
+#include "Camera2D.h"
+#include "Scene.h"
 
 #include <QGLWidget>
 #include <QGLBuffer>
 #include <QtOpenGL/qglshaderprogram.h>
-#include <shader.h>
 
 #include <QGLFunctions>
 #include <QBasicTimer>

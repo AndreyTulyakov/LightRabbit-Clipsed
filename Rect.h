@@ -4,7 +4,8 @@
 #include "DrawableEntity.h"
 #include <QGLFunctions>
 
-namespace Entity {
+namespace Entity
+{
 
 class Rect : public DrawableEntity , QGLFunctions
 {

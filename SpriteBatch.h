@@ -1,19 +1,19 @@
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef SPRITEBATCH_H
+#define SPRITEBATCH_H
 
 #include <QGLFunctions>
 #include "DrawableEntity.h"
-
+#include "VertexTypes.h"
 
 namespace Entity
 {
 
 
-class Sprite : public DrawableEntity , QGLFunctions
+class SpriteBatch: public DrawableEntity , QGLFunctions
 {
 public:
-    Sprite(float w, float h);
-    virtual ~Sprite();
+    SpriteBatch(float w, float h);
+    virtual ~SpriteBatch();
 
     void init();
 
@@ -30,4 +30,4 @@ public:
 
 }
 
-#endif // ENTITYLINE_H
+#endif // SPRITEBATCH_H
