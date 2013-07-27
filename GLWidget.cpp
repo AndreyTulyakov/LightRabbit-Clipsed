@@ -10,6 +10,7 @@
 #include "Line.h"
 #include "Rect.h"
 #include "Sprite.h"
+#include "SpriteBatch.h"
 
 #include <QMouseEvent>
 
@@ -50,15 +51,13 @@ void GLWidget::initializeGL()
     glEnable(GL_LIGHTING);
     glEnable(GL_MULTISAMPLE);
 
-    glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
+    glClearColor(0.66f, 0.66f, 0.99f, 1.0f);
 
     initTextures();
 
     //VBManager = VertexBufferManager::getInstance();
 
     rootScene.setCamera(&camera);
-    camera.setRotationRoll(45);
-
 
     Entity::Line* eLine = new Entity::Line(0, -100, 0, 100);
     rootScene.attachChild(eLine);
@@ -70,9 +69,14 @@ void GLWidget::initializeGL()
     rootScene.attachChild(eRect);
 
     Entity::Sprite* eSprite = new Entity::Sprite(512, 512);
+    eSprite->setPosition(100,100,0);
+    eSprite->setRotationZ(70);
+    eSprite->setScale(0.3,0.3,1);
     rootScene.attachChild(eSprite);
 
 
+    Entity::SpriteBatch* eSb = new Entity::SpriteBatch(100);
+    rootScene.attachChild(eSb);
 
     timer.start(15, this);
 }
@@ -97,17 +101,9 @@ void GLWidget::resizeGL(int w, int h)
 }
 
 
-float rotator = 300;
-
 void GLWidget::paintGL()
 {
-    rotator += 1.0f;
-    if(rotator >= 360)
-        rotator = 0;
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    camera.setRotationRoll(rotator);
 
     rootScene.update();
     rootScene.draw();

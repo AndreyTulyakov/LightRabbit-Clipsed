@@ -12,19 +12,19 @@ namespace Entity
 class SpriteBatch: public DrawableEntity , QGLFunctions
 {
 public:
-    SpriteBatch(float w, float h);
+    SpriteBatch(int capacity);
     virtual ~SpriteBatch();
 
     void init();
+    void update();
+    void draw();
 
 private:
     void initGeometry();
     GLuint vboIds[2];
-    float width, height;
 
-public:
-    void update();
-    void draw();
+    int capacity;
+    int used;
 };
 
 

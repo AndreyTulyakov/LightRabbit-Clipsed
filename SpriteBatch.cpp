@@ -7,16 +7,13 @@ namespace Entity
 {
 
 
-SpriteBatch::SpriteBatch(float w, float h)
+SpriteBatch::SpriteBatch(int capacity)
 {
-    width = w;
-    height = h;
-
-    shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
-
     initializeGLFunctions();
 
-    glGenBuffers(2, vboIds);
+    this->capacity = capacity;
+    used = 0;
+    shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
     initGeometry();
 }
@@ -31,8 +28,6 @@ void SpriteBatch::update()
 
 }
 
-static float rotator = 0;
-
 void SpriteBatch::draw()
 {
     shaderProgram->bind();
@@ -40,7 +35,7 @@ void SpriteBatch::draw()
     transform.setToIdentity();
 
     transform.translate(position);
-    transform.rotate(1, rotation);
+    transform.rotate(zRotation, 0,0,1);
     transform.scale(scale);
 
     transform = camera->getCameraMatrix() * transform;
@@ -80,8 +75,10 @@ void SpriteBatch::draw()
 
 void SpriteBatch::initGeometry()
 {
-    float hw = width / 2;
-    float hh = height / 2;
+    glGenBuffers(2, vboIds);
+
+    float hw = 48;
+    float hh = 48;
 
     VertexData vertices[4] = {
         {QVector3D(-hw, -hh,  0.0), QVector2D(0.0, 0.0)},  // v0

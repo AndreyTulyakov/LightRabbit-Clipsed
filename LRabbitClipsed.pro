@@ -27,7 +27,9 @@ SOURCES += main.cpp\
     MainWindow.cpp \
     Rect.cpp \
     Scene.cpp \
-    SceneObject.cpp
+    SceneObject.cpp \
+    TextureAtlas.cpp \
+    TextureRegion.cpp
 
 HEADERS  += \
     DrawableEntity.h \
@@ -44,7 +46,9 @@ HEADERS  += \
     MainWindow.h \
     Rect.h \
     Scene.h \
-    SceneObject.h
+    SceneObject.h \
+    TextureAtlas.h \
+    TextureRegion.h
 
 FORMS    += \
     FormAbout.ui \

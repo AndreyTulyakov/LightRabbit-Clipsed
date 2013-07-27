@@ -38,7 +38,7 @@ void Sprite::draw()
     transform.setToIdentity();
 
     transform.translate(position);
-    transform.rotate(1, rotation);
+    transform.rotate(zRotation,0,0,1);
     transform.scale(scale);
 
     transform = camera->getCameraMatrix() * transform;

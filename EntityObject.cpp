@@ -3,7 +3,7 @@
 EntityObject::EntityObject()
 {
     position = QVector3D(0, 0, 0);
-    rotation = QVector3D(0, 0, 0);
+    zRotation = 0;
     scale = QVector3D(1, 1, 1);
 }
 
@@ -14,16 +14,9 @@ void EntityObject::setPosition(float x, float y, float z)
     position.setZ(z);
 }
 
-void EntityObject::setRotation(QVector3D arg)
+void EntityObject::setRotationZ(float z)
 {
-    rotation = arg;
-}
-
-void EntityObject::setRotation(float x, float y, float z)
-{
-    rotation.setX(x);
-    rotation.setY(y);
-    rotation.setZ(z);
+    zRotation = z;
 }
 
 QVector3D EntityObject::getPosition()
@@ -31,9 +24,9 @@ QVector3D EntityObject::getPosition()
     return position;
 }
 
-QVector3D EntityObject::getRotation()
+float EntityObject::getRotationZ()
 {
-    return rotation;
+    return zRotation;
 }
 
 QVector3D EntityObject::getScale()

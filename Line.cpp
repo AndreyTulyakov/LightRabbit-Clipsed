@@ -39,7 +39,7 @@ void Line::draw()
 
     transform.translate(position);
     transform.scale(scale);
-    transform.rotate(1.0f, rotation);
+    transform.rotate(zRotation, 0,0,1);
 
 
     // Set modelview-projection matrix
