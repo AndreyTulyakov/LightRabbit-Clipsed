@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->verticalLayout->addWidget(glWidget);
 
+    this->statusBar()->showMessage("Started GLWidget", 1000);
 }
 
 MainWindow::~MainWindow()

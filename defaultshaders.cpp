@@ -8,6 +8,9 @@ DefaultShaders* DefaultShaders::instance = 0;
 
 DefaultShaders::DefaultShaders()
 {
+    //shaders.insert("SimpleTextured", loadShaders("vshader.glsl", "fshader.glsl"));
+    //shaders.insert("PrimitiveColor", loadShaders("vs_primitive_color.glsl", "fs_primitive_color.glsl"));
+
     shaders.insert("SimpleTextured", loadShaders("vshader.glsl", "fshader.glsl"));
     shaders.insert("PrimitiveColor", loadShaders("vs_primitive_color.glsl", "fs_primitive_color.glsl"));
 }
@@ -25,8 +28,8 @@ DefaultShaders::~DefaultShaders()
 
 QGLShaderProgram* DefaultShaders::loadShaders(QString vsFilename, QString fsFilename)
 {
-    vsFilename = "res/shaders/" + vsFilename;
-    fsFilename = "res/shaders/" + fsFilename;
+    vsFilename = ":/shaders/" + vsFilename;
+    fsFilename = ":/shaders/" + fsFilename;
 
     QGLShaderProgram *program = new QGLShaderProgram();
 
