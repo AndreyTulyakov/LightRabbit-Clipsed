@@ -26,7 +26,7 @@ public:
 
     void addStart();
     void addEnd();
-    void addSprite(TextureRegion* region, QVector2D position, QVector2D scale, float rotation, QVector4D color);
+    void addSprite(TextureRegion* region, QVector2D position);//, QVector2D scale, float rotation, QVector4D color);
 
 
 private:

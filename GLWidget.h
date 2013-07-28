@@ -12,6 +12,8 @@
 #include <QGLFunctions>
 #include <QBasicTimer>
 
+#include "Rect.h"
+
 #include "VertexBufferManager.h"
 
 
@@ -41,6 +43,8 @@ private:
     QBasicTimer timer;
 
     GLuint texture;
+
+    Entity::Rect* eRect;
 
     VertexBufferManager *VBManager;
 };

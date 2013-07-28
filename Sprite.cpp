@@ -44,6 +44,7 @@ void Sprite::draw()
     transform = camera->getCameraMatrix() * transform;
 
     shaderProgram->setUniformValue("mvp_matrix", transform);
+    shaderProgram->setUniformValue("color", color);
 
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);

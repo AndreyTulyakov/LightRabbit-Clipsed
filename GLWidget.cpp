@@ -44,12 +44,15 @@ void GLWidget::initializeGL()
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
+
+    //glEnable(GL_DEPTH_TEST);
     //glEnable(GL_CULL_FACE);
 
+    glEnable(GL_POLYGON_STIPPLE);
+
     glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_MULTISAMPLE);
+    //glEnable(GL_LIGHTING);
+    //glEnable(GL_MULTISAMPLE);
 
     glClearColor(0.66f, 0.66f, 0.99f, 1.0f);
 
@@ -64,9 +67,7 @@ void GLWidget::initializeGL()
 
     rootScene.attachChild(new Entity::Line(-100, 0, 100, 0));
 
-    Entity::Rect* eRect = new Entity::Rect(-50, -50, 100, 100);
-    eRect->setColor(1, 1, 1, 0.5f);
-    rootScene.attachChild(eRect);
+
 
     Entity::Sprite* eSprite = new Entity::Sprite(512, 512);
     eSprite->setPosition(100,100,0);
@@ -75,11 +76,26 @@ void GLWidget::initializeGL()
     rootScene.attachChild(eSprite);
 
     TextureAtlas atlas;
+    TextureRegion region;
 
-    Entity::SpriteBatch* eSb = new Entity::SpriteBatch(&atlas, 100);
-    rootScene.attachChild(eSb);
+    Entity::SpriteBatch* esb = new Entity::SpriteBatch(&atlas, 100);
+    rootScene.attachChild(esb);
 
-    timer.start(15, this);
+    esb->addStart();
+    for(int i = 0; i<50; i++)
+    {
+        esb->addSprite(&region,QVector2D(i*20,i*10));
+    }
+    esb->addEnd();
+
+    esb->setColor(0,1,1,0.1f);
+
+
+    eRect = new Entity::Rect(-50, -50, 100, 100);
+    eRect->setColor(1, 1, 1, 0.5f);
+    rootScene.attachChild(eRect);
+
+    timer.start(1000/60, this);
 }
 
 void GLWidget::initTextures()
@@ -102,11 +118,26 @@ void GLWidget::resizeGL(int w, int h)
 }
 
 
+static float tick = 0;
+
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     rootScene.update();
     rootScene.draw();
+
+
+    if(tick>6.28f)
+    {
+        tick = 0.0f;
+
+    }
+
+    float f = sin(tick);
+    if(f<0) f*=-1.0f;
+    eRect->setScale(1+f,1+f,1);
+
+    tick+=0.02f;
 
 }

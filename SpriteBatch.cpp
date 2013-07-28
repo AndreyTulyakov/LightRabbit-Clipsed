@@ -55,6 +55,7 @@ void SpriteBatch::draw()
     transform = camera->getCameraMatrix() * transform;
 
     shaderProgram->setUniformValue("mvp_matrix", transform);
+    shaderProgram->setUniformValue("color", color);
 
     vertexBuffer->bind();
     indicesBuffer->bind();
@@ -78,7 +79,7 @@ void SpriteBatch::draw()
     glEnable(GL_TEXTURE_2D);
     shaderProgram->setUniformValue("texture", 0);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_TRIANGLES, used*6, GL_UNSIGNED_SHORT, 0);
 
     shaderProgram->disableAttributeArray(vertexLocation);
     shaderProgram->disableAttributeArray(texcoordLocation);
@@ -87,9 +88,10 @@ void SpriteBatch::draw()
 
 void SpriteBatch::addStart()
 {
-
+   used = 0;
     if(!nowMapped){
-        //mapedVertices = vertexBuffer->map(QGLBuffer::ReadWrite);
+        mapedVertices = (VertexData*)vertexBuffer->map(QGLBuffer::ReadWrite);
+        nowMapped = true;
     }
 }
 
@@ -99,28 +101,44 @@ void SpriteBatch::addEnd()
 {
     if(nowMapped)
     {
-        //vertexBuffer->unmap();
+        vertexBuffer->unmap();
     }
     else
     {
         qDebug() << "SpriteBatch::addEnd: try before call :addStart";
     }
 
+
     mapedVertices = 0;
     nowMapped = false;
 }
 
-void SpriteBatch::addSprite(TextureRegion *region, QVector2D position, QVector2D scale, float rotation, QVector4D color)
+void SpriteBatch::addSprite(TextureRegion *region, QVector2D position)//, QVector2D scale, float rotation, QVector4D color)
 {
     if(nowMapped)
     {
         if(used >= capacity)
         {
-            qDebug() << "SpriteBatch::addSprite: max capacity!";
+            qDebug() << "SpriteBatch::addSprite: max capacity is" << capacity;
         }
         else
         {
+            float hw = 16;
+            float hh = 16;
 
+            float x = position.x();
+            float y = position.y();
+
+            int i = used * 4;
+            mapedVertices[i+0] = {QVector3D(x-hw, y-hh,  0.0), QVector2D(0.0, 0.0)},  // v0
+            mapedVertices[i+1] = {QVector3D(x+hw, y-hh,  0.0), QVector2D(1.0, 0.0)},   // v1
+            mapedVertices[i+2] = {QVector3D(x-hw, y+hh,  0.0), QVector2D(0.0, 1.0)},  // v2
+            mapedVertices[i+3] = {QVector3D(x+hw, y+hh,  0.0), QVector2D(1.0, 1.0)},   // v3
+
+
+
+
+            used++;
         }
     }
     else
@@ -133,9 +151,8 @@ void SpriteBatch::addSprite(TextureRegion *region, QVector2D position, QVector2D
 
 void SpriteBatch::initGeometry()
 {
-    float hw = 48;
-    float hh = 48;
 
+    /*
     VertexData vertices[4] = {
         {QVector3D(-hw, -hh,  0.0), QVector2D(0.0, 0.0)},  // v0
         {QVector3D(hw, -hh,  0.0), QVector2D(1.0, 0.0)},   // v1
@@ -147,11 +164,31 @@ void SpriteBatch::initGeometry()
         0,  1,  2,  2,  1, 3
     };
 
+    */
+
+    GLushort *indices = new GLushort[capacity * 6];
+
+    for(int i = 0; i < capacity; i++){
+
+        int j = i*6;
+        int k = i*4;
+
+        indices[j+0] = k + 0;
+        indices[j+1] = k + 1;
+        indices[j+2] = k + 2;
+
+        indices[j+3] = k + 2;
+        indices[j+4] = k + 1;
+        indices[j+5] = k + 3;
+
+    }
+
+
     vertexBuffer->bind();
-    vertexBuffer->allocate(vertices,4 * sizeof(VertexData));
+    vertexBuffer->allocate(capacity * 4 * sizeof(VertexData));
 
     indicesBuffer->bind();
-    indicesBuffer->allocate(indices,6 * sizeof(GLushort));
+    indicesBuffer->allocate(indices, capacity * 6 * sizeof(GLushort));
 
 }
 
