@@ -10,7 +10,7 @@
 #include "Line.h"
 #include "Rect.h"
 #include "Sprite.h"
-#include "SpriteBatch.h"
+
 
 #include <QMouseEvent>
 
@@ -62,11 +62,13 @@ void GLWidget::initializeGL()
 
     rootScene.setCamera(&camera);
 
-    Entity::Line* eLine = new Entity::Line(0, -100, 0, 100);
-    rootScene.attachChild(eLine);
+
 
     rootScene.attachChild(new Entity::Line(-100, 0, 100, 0));
 
+    eRect = new Entity::Rect(-50, -50, 100, 100);
+    eRect->setColor(1, 1, 1, 0.5f);
+    rootScene.attachChild(eRect);
 
 
     Entity::Sprite* eSprite = new Entity::Sprite(512, 512);
@@ -78,22 +80,13 @@ void GLWidget::initializeGL()
     TextureAtlas atlas;
     TextureRegion region;
 
-    Entity::SpriteBatch* esb = new Entity::SpriteBatch(&atlas, 100);
+    esb = new Entity::SpriteBatch(&atlas, 100);
     rootScene.attachChild(esb);
 
-    esb->addStart();
-    for(int i = 0; i<50; i++)
-    {
-        esb->addSprite(&region,QVector2D(i*20,i*10));
-    }
-    esb->addEnd();
-
-    esb->setColor(0,1,1,0.1f);
+    Entity::Line* eLine = new Entity::Line(0, -100, 0, 100);
+    rootScene.attachChild(eLine);
 
 
-    eRect = new Entity::Rect(-50, -50, 100, 100);
-    eRect->setColor(1, 1, 1, 0.5f);
-    rootScene.attachChild(eRect);
 
     timer.start(1000/60, this);
 }
@@ -115,6 +108,10 @@ void GLWidget::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
     camera.setOrtho(w, h, -10, 100, false);
     camera.setPosition(-width() / 2, - height() / 2, 1);
+
+
+
+
 }
 
 
@@ -122,6 +119,15 @@ static float tick = 0;
 
 void GLWidget::paintGL()
 {
+
+
+    esb->addStart();
+    for(float i = 0; i<=6.28; i+=0.314f)
+    {
+        esb->addSprite(0, cos(i+tick)*2*100, sin(i*2+tick)*100, 1,1,0,1,1,1,1);
+    }
+    esb->addEnd();
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     rootScene.update();

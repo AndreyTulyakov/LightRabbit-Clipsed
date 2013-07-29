@@ -2,8 +2,8 @@
 #define VERTEXTYPES_H
 
 
-struct VertexData {
-    QVector3D position;
+struct Vertex2D {
+    QVector2D position;
     QVector2D texCoord;
 };
 

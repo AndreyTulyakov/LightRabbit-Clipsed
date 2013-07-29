@@ -17,12 +17,6 @@ SpriteBatch::SpriteBatch(TextureAtlas *atlas, int capacity)
     nowMapped = false;
     mapedVertices = 0;
 
-    vertexBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
-    vertexBuffer->create();
-
-    indicesBuffer = new QGLBuffer(QGLBuffer::IndexBuffer);
-    indicesBuffer->create();
-
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
     initGeometry();
@@ -44,7 +38,13 @@ void SpriteBatch::update()
 
 void SpriteBatch::draw()
 {
+    if(used == 0)
+        return;
+
     shaderProgram->bind();
+    vertexBuffer->bind();
+    indicesBuffer->bind();
+
 
     transform.setToIdentity();
 
@@ -57,23 +57,21 @@ void SpriteBatch::draw()
     shaderProgram->setUniformValue("mvp_matrix", transform);
     shaderProgram->setUniformValue("color", color);
 
-    vertexBuffer->bind();
-    indicesBuffer->bind();
 
     quintptr offset = 0;
 
     // Locate vertex position data
     int vertexLocation = shaderProgram->attributeLocation("a_position");
     shaderProgram->enableAttributeArray(vertexLocation);
-    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offset);
 
     // Offset for texture coordinate
-    offset += sizeof(QVector3D);
+    offset += sizeof(QVector2D);
 
     // Locate vertex texture coordinate data
     int texcoordLocation = shaderProgram->attributeLocation("a_texcoord");
     shaderProgram->enableAttributeArray(texcoordLocation);
-    glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+    glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offset);
 
 
     glEnable(GL_TEXTURE_2D);
@@ -90,7 +88,8 @@ void SpriteBatch::addStart()
 {
    used = 0;
     if(!nowMapped){
-        mapedVertices = (VertexData*)vertexBuffer->map(QGLBuffer::ReadWrite);
+        vertexBuffer->bind();
+        mapedVertices = (Vertex2D*)vertexBuffer->map(QGLBuffer::ReadWrite);
         nowMapped = true;
     }
 }
@@ -113,7 +112,7 @@ void SpriteBatch::addEnd()
     nowMapped = false;
 }
 
-void SpriteBatch::addSprite(TextureRegion *region, QVector2D position)//, QVector2D scale, float rotation, QVector4D color)
+void SpriteBatch::addSprite(TextureRegion *region, float x, float y, float scaleX, float scaleY, float rotation, float r, float g, float b, float a)
 {
     if(nowMapped)
     {
@@ -126,17 +125,11 @@ void SpriteBatch::addSprite(TextureRegion *region, QVector2D position)//, QVecto
             float hw = 16;
             float hh = 16;
 
-            float x = position.x();
-            float y = position.y();
-
             int i = used * 4;
-            mapedVertices[i+0] = {QVector3D(x-hw, y-hh,  0.0), QVector2D(0.0, 0.0)},  // v0
-            mapedVertices[i+1] = {QVector3D(x+hw, y-hh,  0.0), QVector2D(1.0, 0.0)},   // v1
-            mapedVertices[i+2] = {QVector3D(x-hw, y+hh,  0.0), QVector2D(0.0, 1.0)},  // v2
-            mapedVertices[i+3] = {QVector3D(x+hw, y+hh,  0.0), QVector2D(1.0, 1.0)},   // v3
-
-
-
+            mapedVertices[i+0] = {QVector2D(x-hw, y-hh), QVector2D(0.0, 0.0)},  // v0
+            mapedVertices[i+1] = {QVector2D(x+hw, y-hh), QVector2D(1.0, 0.0)},   // v1
+            mapedVertices[i+2] = {QVector2D(x-hw, y+hh), QVector2D(0.0, 1.0)},  // v2
+            mapedVertices[i+3] = {QVector2D(x+hw, y+hh), QVector2D(1.0, 1.0)},   // v3
 
             used++;
         }
@@ -151,21 +144,6 @@ void SpriteBatch::addSprite(TextureRegion *region, QVector2D position)//, QVecto
 
 void SpriteBatch::initGeometry()
 {
-
-    /*
-    VertexData vertices[4] = {
-        {QVector3D(-hw, -hh,  0.0), QVector2D(0.0, 0.0)},  // v0
-        {QVector3D(hw, -hh,  0.0), QVector2D(1.0, 0.0)},   // v1
-        {QVector3D(-hw,  hh,  0.0), QVector2D(0.0, 1.0)},  // v2
-        {QVector3D(hw,  hh,  0.0), QVector2D(1.0, 1.0)},   // v3
-    };
-
-    GLushort indices[] = {
-        0,  1,  2,  2,  1, 3
-    };
-
-    */
-
     GLushort *indices = new GLushort[capacity * 6];
 
     for(int i = 0; i < capacity; i++){
@@ -173,23 +151,28 @@ void SpriteBatch::initGeometry()
         int j = i*6;
         int k = i*4;
 
-        indices[j+0] = k + 0;
-        indices[j+1] = k + 1;
-        indices[j+2] = k + 2;
+        GLushort *index = &indices[j];
 
-        indices[j+3] = k + 2;
-        indices[j+4] = k + 1;
-        indices[j+5] = k + 3;
+        index[0] = k + 0;
+        index[1] = k + 1;
+        index[2] = k + 2;
+
+        index[3] = k + 2;
+        index[4] = k + 1;
+        index[5] = k + 3;
 
     }
 
 
+    vertexBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
+    vertexBuffer->create();
     vertexBuffer->bind();
-    vertexBuffer->allocate(capacity * 4 * sizeof(VertexData));
+    vertexBuffer->allocate(capacity * 4 * sizeof(Vertex2D));
 
+    indicesBuffer = new QGLBuffer(QGLBuffer::IndexBuffer);
+    indicesBuffer->create();
     indicesBuffer->bind();
     indicesBuffer->allocate(indices, capacity * 6 * sizeof(GLushort));
-
 }
 
 }

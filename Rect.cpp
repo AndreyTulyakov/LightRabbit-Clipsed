@@ -36,6 +36,10 @@ void Rect::draw()
 {
     shaderProgram->bind();
 
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
+
+
     transform.setToIdentity();
 
     transform.translate(position);
@@ -46,9 +50,6 @@ void Rect::draw()
     // Set modelview-projection matrix
     shaderProgram->setUniformValue("mvp_matrix", camera->getCameraMatrix() * transform);
     shaderProgram->setUniformValue("color", color);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
 
     quintptr offset = 0;
 

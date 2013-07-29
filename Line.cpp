@@ -16,7 +16,6 @@ Line::Line(float x1, float y1, float x2, float y2)
 
     initializeGLFunctions();
 
-    glGenBuffers(2, vboIds);
 
     initGeometry();
 }
@@ -63,6 +62,8 @@ void Line::draw()
 
 void Line::initGeometry()
 {
+
+    glGenBuffers(2, vboIds);
 
     VertexSimple vertices[] = {
         {QVector3D(p1.x(), p1.y(),  0.0)},  // v0

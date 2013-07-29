@@ -26,7 +26,7 @@ public:
 
     void addStart();
     void addEnd();
-    void addSprite(TextureRegion* region, QVector2D position);//, QVector2D scale, float rotation, QVector4D color);
+    void addSprite(TextureRegion* region, float x, float y, float scaleX, float scaleY, float rotation, float r, float g, float b, float a);
 
 
 private:
@@ -39,7 +39,7 @@ private:
     QGLBuffer *indicesBuffer;
 
     bool nowMapped;
-    VertexData* mapedVertices;
+    Vertex2D* mapedVertices;
 
     TextureAtlas* atlas;
 };

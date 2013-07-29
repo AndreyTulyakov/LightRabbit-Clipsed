@@ -13,6 +13,7 @@
 #include <QBasicTimer>
 
 #include "Rect.h"
+#include "SpriteBatch.h"
 
 #include "VertexBufferManager.h"
 
@@ -45,6 +46,7 @@ private:
     GLuint texture;
 
     Entity::Rect* eRect;
+    Entity::SpriteBatch* esb;
 
     VertexBufferManager *VBManager;
 };
