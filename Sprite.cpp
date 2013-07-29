@@ -7,10 +7,11 @@ namespace Entity
 {
 
 
-Sprite::Sprite(float w, float h)
+Sprite::Sprite(TextureAtlas* pAtlas)
 {
-    width = w;
-    height = h;
+    atlas = pAtlas;
+    width = atlas->width;
+    height = atlas->height;
 
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
@@ -43,6 +44,10 @@ void Sprite::draw()
 
     transform = camera->getCameraMatrix() * transform;
 
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,atlas->textureID);
+    shaderProgram->setUniformValue("texture", 0);
+
     shaderProgram->setUniformValue("mvp_matrix", transform);
     shaderProgram->setUniformValue("color", color);
 
@@ -65,8 +70,6 @@ void Sprite::draw()
     glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offset);
 
 
-    glEnable(GL_TEXTURE_2D);
-    shaderProgram->setUniformValue("texture", 0);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 

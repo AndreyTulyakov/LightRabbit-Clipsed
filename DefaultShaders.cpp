@@ -10,6 +10,7 @@ DefaultShaders::DefaultShaders()
 {
     shaders.insert("SimpleTextured", loadShaders("vshader.glsl", "fshader.glsl"));
     shaders.insert("PrimitiveColor", loadShaders("vs_primitive_color.glsl", "fs_primitive_color.glsl"));
+    shaders.insert("SpriteBatch", loadShaders("VS_SpriteBatch.glsl", "FS_SpriteBatch.glsl"));
 }
 
 DefaultShaders::~DefaultShaders()

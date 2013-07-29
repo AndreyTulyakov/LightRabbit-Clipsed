@@ -56,13 +56,16 @@ void GLWidget::initializeGL()
 
     glClearColor(0.66f, 0.66f, 0.99f, 1.0f);
 
-    initTextures();
+    atlas = new TextureAtlas("image.png",this->context());
+
+    new TextureAtlas("image.png",this->context());
 
     //VBManager = VertexBufferManager::getInstance();
 
     rootScene.setCamera(&camera);
 
-
+    Entity::Line* eLine = new Entity::Line(0, -100, 0, 100);
+    rootScene.attachChild(eLine);
 
     rootScene.attachChild(new Entity::Line(-100, 0, 100, 0));
 
@@ -70,48 +73,30 @@ void GLWidget::initializeGL()
     eRect->setColor(1, 1, 1, 0.5f);
     rootScene.attachChild(eRect);
 
+    TextureAtlas* atlas2 = new TextureAtlas("image2.png", this->context());
 
-    Entity::Sprite* eSprite = new Entity::Sprite(512, 512);
+    Entity::Sprite* eSprite = new Entity::Sprite(atlas2);
     eSprite->setPosition(100,100,0);
-    eSprite->setRotationZ(70);
-    eSprite->setScale(0.3,0.3,1);
     rootScene.attachChild(eSprite);
 
-    TextureAtlas atlas;
-    TextureRegion region;
 
-    esb = new Entity::SpriteBatch(&atlas, 100);
+    esb = new Entity::SpriteBatch(atlas, 100);
     rootScene.attachChild(esb);
 
-    Entity::Line* eLine = new Entity::Line(0, -100, 0, 100);
-    rootScene.attachChild(eLine);
+
+
 
 
 
     timer.start(1000/60, this);
 }
 
-void GLWidget::initTextures()
-{
-    glEnable(GL_TEXTURE_2D);
-    texture = bindTexture(QImage("res/textures/image.png"));
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-}
 
 void GLWidget::resizeGL(int w, int h)
 {
     glViewport(0, 0, w, h);
     camera.setOrtho(w, h, -10, 100, false);
     camera.setPosition(-width() / 2, - height() / 2, 1);
-
-
-
-
 }
 
 
@@ -120,13 +105,16 @@ static float tick = 0;
 void GLWidget::paintGL()
 {
 
-
+    float rcut = 256*tick/6.28f;
+    TextureRegion region(atlas, rcut, 0, 512-rcut, 512);
     esb->addStart();
     for(float i = 0; i<=6.28; i+=0.314f)
     {
-        esb->addSprite(0, cos(i+tick)*2*100, sin(i*2+tick)*100, 1,1,0,1,1,1,1);
+        esb->addSprite(&region, cos(i+tick)*2*100, sin(i*2+tick)*100,i/20,i/20, 360*(tick+i),1,1,1,i/6.28f);
     }
     esb->addEnd();
+
+
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

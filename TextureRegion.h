@@ -4,6 +4,7 @@
 #include "TextureAtlas.h"
 
 #include <QRect>
+#include <QRectF>
 
 class TextureRegion
 {
@@ -18,6 +19,7 @@ public:
 
     TextureAtlas* getAtlas();
     QRect getRegion();
+    QRectF getAbsRegion(); // in [0-1] coordinates;
 
 private:
     TextureAtlas* atlas;

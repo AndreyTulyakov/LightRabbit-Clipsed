@@ -14,6 +14,7 @@
 
 #include "Rect.h"
 #include "SpriteBatch.h"
+#include "TextureAtlas.h"
 
 #include "VertexBufferManager.h"
 
@@ -35,9 +36,9 @@ protected:
     void paintGL();
 
     void initShaders();
-    void initTextures();
 
 private:
+
     Camera2D camera;
     Scene rootScene;
 
@@ -48,7 +49,10 @@ private:
     Entity::Rect* eRect;
     Entity::SpriteBatch* esb;
 
+    TextureAtlas *atlas;
+
     VertexBufferManager *VBManager;
+
 };
 
 #endif

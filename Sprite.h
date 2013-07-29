@@ -3,7 +3,7 @@
 
 #include <QGLFunctions>
 #include "DrawableEntity.h"
-
+#include "TextureAtlas.h"
 
 namespace Entity
 {
@@ -12,7 +12,7 @@ namespace Entity
 class Sprite : public DrawableEntity , QGLFunctions
 {
 public:
-    Sprite(float w, float h);
+    Sprite(TextureAtlas* pAtlas);
     virtual ~Sprite();
 
     void init();
@@ -21,6 +21,7 @@ private:
     void initGeometry();
     GLuint vboIds[2];
     float width, height;
+    TextureAtlas* atlas;
 
 public:
     void update();

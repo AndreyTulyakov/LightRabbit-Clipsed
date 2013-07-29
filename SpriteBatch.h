@@ -39,7 +39,7 @@ private:
     QGLBuffer *indicesBuffer;
 
     bool nowMapped;
-    Vertex2D* mapedVertices;
+    Vertex2DTextureColor* mapedVertices;
 
     TextureAtlas* atlas;
 };
