@@ -8,21 +8,19 @@ namespace Entity
 
 Line::Line(float x1, float y1, float x2, float y2)
 {
-    shaderProgram = DefaultShaders::getInstance()->getShader("PrimitiveColor");
-
-    //p1.setX(x1);
-    p1 = QPoint(x1, y1);
-    p2 = QPoint(x2, y2);
-
     initializeGLFunctions();
 
+    shaderProgram = DefaultShaders::getInstance()->getShader("PrimitiveColor");
+
+    p1 = QPoint(x1, y1);
+    p2 = QPoint(x2, y2);
 
     initGeometry();
 }
 
 Line::~Line()
 {
-    glDeleteBuffers(2, vboIds);
+
 }
 
 void Line::update()
@@ -33,6 +31,7 @@ void Line::update()
 void Line::draw()
 {
     shaderProgram->bind();
+    vertexBuffer->bind();
 
     transform.setToIdentity();
 
@@ -45,42 +44,26 @@ void Line::draw()
     shaderProgram->setUniformValue("mvp_matrix", camera->getCameraMatrix() * transform);
     shaderProgram->setUniformValue("color", color);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
-
     quintptr offset = 0;
 
     // Locate vertex position data
     int vertexLocation = shaderProgram->attributeLocation("a_position");
     shaderProgram->enableAttributeArray(vertexLocation);
-    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (const void *)offset);
+    glVertexAttribPointer(vertexLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2DSimple), (const void *)offset);
 
     // Draw from VBO 1
-    glDrawElements(GL_LINES, 2, GL_UNSIGNED_SHORT, 0);
+    glDrawArrays(GL_LINES, 0, 2);
 }
 
 
 void Line::initGeometry()
 {
-
-    glGenBuffers(2, vboIds);
-
-    VertexSimple vertices[] = {
-        {QVector3D(p1.x(), p1.y(),  0.0)},  // v0
-        {QVector3D(p2.x(), p2.y(),  0.0)},  // v1
+    Vertex2DSimple vertices[] = {
+        {QVector2D(p1.x(), p1.y())},  // v0
+        {QVector2D(p2.x(), p2.y())},  // v1
     };
 
-    GLushort indices[] = {
-        0,  1
-    };
-
-    // Transfer vertex data to VBO 0
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(VertexSimple), vertices, GL_DYNAMIC_DRAW);
-
-    // Transfer index data to VBO 1
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    createVertexBuffer(vertices,sizeof(Vertex2DSimple)*2);
 }
 
 }

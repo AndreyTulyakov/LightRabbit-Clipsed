@@ -22,7 +22,6 @@ public:
 private:
 
     void initGeometry();
-    GLuint vboIds[2];
     QPoint p1, p2;
 };
 

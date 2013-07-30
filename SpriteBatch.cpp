@@ -24,9 +24,6 @@ SpriteBatch::SpriteBatch(TextureAtlas *atlas, int capacity)
 
 SpriteBatch::~SpriteBatch()
 {
-    vertexBuffer->destroy();
-    delete vertexBuffer;
-
     indicesBuffer->destroy();
     delete indicesBuffer;
 }
@@ -187,11 +184,7 @@ void SpriteBatch::initGeometry()
 
     }
 
-
-    vertexBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
-    vertexBuffer->create();
-    vertexBuffer->bind();
-    vertexBuffer->allocate(capacity * 4 * sizeof(Vertex2DTextureColor));
+    createVertexBuffer(capacity * 4 * sizeof(Vertex2DTextureColor));
 
     indicesBuffer = new QGLBuffer(QGLBuffer::IndexBuffer);
     indicesBuffer->create();

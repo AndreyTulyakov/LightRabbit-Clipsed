@@ -28,7 +28,6 @@ private:
     void initGeometry();
     float width, height;
     TextureAtlas* atlas;
-    QGLBuffer *vertexBuffer;
 };
 
 

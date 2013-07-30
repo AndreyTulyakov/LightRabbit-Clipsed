@@ -14,8 +14,8 @@ struct Vertex2DTextureColor {
 };
 
 
-struct VertexSimple {
-    QVector3D position;
+struct Vertex2DSimple {
+    QVector2D position;
 };
 
 #endif // VERTEXTYPES_H

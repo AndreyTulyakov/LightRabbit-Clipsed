@@ -4,6 +4,7 @@
 #include "Camera2D.h"
 #include "SceneObject.h"
 
+#include <QGLBuffer>
 #include <QGLShaderProgram>
 
 class DrawableEntity : public SceneObject
@@ -11,14 +12,19 @@ class DrawableEntity : public SceneObject
 protected:
     Camera2D* camera;
     QGLShaderProgram* shaderProgram;
+    QGLBuffer *vertexBuffer;
     QVector4D color;
 
     QMatrix4x4 transform;
     bool isTransformed;
 
+    void createVertexBuffer(const void* data,int count);
+    void createVertexBuffer(int count);
+
 public:
 
     DrawableEntity();
+    virtual ~DrawableEntity();
     void setCamera(Camera2D* arg);
 
     void setColor(QVector4D arg);

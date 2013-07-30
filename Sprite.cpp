@@ -35,8 +35,7 @@ Sprite::Sprite(TextureRegion *pRegion)
 
 Sprite::~Sprite()
 {
-    vertexBuffer->destroy();
-    delete vertexBuffer;
+
 }
 
 void Sprite::update()

@@ -35,7 +35,6 @@ private:
     int capacity;
     int used;
 
-    QGLBuffer *vertexBuffer;
     QGLBuffer *indicesBuffer;
 
     bool nowMapped;
