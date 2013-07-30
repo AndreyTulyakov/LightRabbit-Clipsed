@@ -42,6 +42,8 @@ private slots:
 
     void on_actionAdd_Sound_triggered();
 
+    void on_actionTextures_triggered();
+
 private:
     Ui::MainWindow *ui;
     QApplication *application;

@@ -70,6 +70,7 @@
     <addaction name="actionAdd_Sprite"/>
     <addaction name="actionAdd_Text"/>
     <addaction name="actionAdd_Sound"/>
+    <addaction name="actionTextures"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuObject"/>
@@ -193,6 +194,11 @@
   <action name="actionAdd_Sound">
    <property name="text">
     <string>Add Sound</string>
+   </property>
+  </action>
+  <action name="actionTextures">
+   <property name="text">
+    <string>Textures</string>
    </property>
   </action>
  </widget>

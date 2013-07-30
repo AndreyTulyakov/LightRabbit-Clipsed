@@ -31,7 +31,9 @@ SOURCES += main.cpp\
     Scene.cpp \
     SceneObject.cpp \
     TextureAtlas.cpp \
-    TextureRegion.cpp
+    TextureRegion.cpp \
+    FormAddSprite.cpp \
+    FormTextureList.cpp
 
 HEADERS  += \
     DrawableEntity.h \
@@ -50,11 +52,15 @@ HEADERS  += \
     Scene.h \
     SceneObject.h \
     TextureAtlas.h \
-    TextureRegion.h
+    TextureRegion.h \
+    FormAddSprite.h \
+    FormTextureList.h
 
 FORMS    += \
     FormAbout.ui \
-    MainWindow.ui
+    MainWindow.ui \
+    FormAddSprite.ui \
+    FormTextureList.ui
 
 OTHER_FILES += \
     README.md

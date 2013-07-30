@@ -2,6 +2,8 @@
 #include "ui_MainWindow.h"
 
 #include "FormAbout.h"
+#include "FormAddSprite.h"
+#include "FormTextureList.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -49,7 +51,14 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionAdd_Sprite_triggered()
 {
+    FormAddSprite *form = new FormAddSprite(this);
 
+    if(form->exec() == QDialog::Accepted)
+    {
+        ui->statusBar->showMessage("New Sprite Add",1000);
+    }
+
+    delete form;
 }
 
 void MainWindow::on_actionAdd_Text_triggered()
@@ -60,4 +69,11 @@ void MainWindow::on_actionAdd_Text_triggered()
 void MainWindow::on_actionAdd_Sound_triggered()
 {
 
+}
+
+void MainWindow::on_actionTextures_triggered()
+{
+    FormTextureList *form = new FormTextureList(this);
+    form->exec();
+    delete form;
 }
