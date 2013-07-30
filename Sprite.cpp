@@ -9,22 +9,34 @@ namespace Entity
 
 Sprite::Sprite(TextureAtlas* pAtlas)
 {
+    initializeGLFunctions();
+
     atlas = pAtlas;
     width = atlas->width;
     height = atlas->height;
 
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
+    initGeometry();
+}
+
+Sprite::Sprite(TextureRegion *pRegion)
+{
     initializeGLFunctions();
 
-    glGenBuffers(2, vboIds);
+    atlas =  pRegion->getAtlas();
+    width = pRegion->getRegion().width();
+    height =  pRegion->getRegion().height();
+
+    shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
     initGeometry();
 }
 
 Sprite::~Sprite()
 {
-    glDeleteBuffers(2, vboIds);
+    vertexBuffer->destroy();
+    delete vertexBuffer;
 }
 
 void Sprite::update()
@@ -35,6 +47,7 @@ void Sprite::update()
 void Sprite::draw()
 {
     shaderProgram->bind();
+    vertexBuffer->bind();
 
     transform.setToIdentity();
 
@@ -50,9 +63,6 @@ void Sprite::draw()
 
     shaderProgram->setUniformValue("mvp_matrix", transform);
     shaderProgram->setUniformValue("color", color);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
 
     quintptr offset = 0;
 
@@ -71,7 +81,7 @@ void Sprite::draw()
 
 
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     shaderProgram->disableAttributeArray(vertexLocation);
     shaderProgram->disableAttributeArray(texcoordLocation);
@@ -92,17 +102,10 @@ void Sprite::initGeometry()
         {QVector2D( hw,  hh), QVector2D(1.0, 1.0)},   // v3
     };
 
-    GLushort indices[] = {
-        0,  1,  2,  2,  1, 3
-    };
-
-    // Transfer vertex data to VBO 0
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex2D), vertices, GL_STATIC_DRAW);
-
-    // Transfer index data to VBO 1
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    vertexBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
+    vertexBuffer->create();
+    vertexBuffer->bind();
+    vertexBuffer->allocate(vertices,sizeof(Vertex2D)*4);
 }
 
 }

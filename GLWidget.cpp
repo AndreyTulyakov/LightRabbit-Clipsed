@@ -56,6 +56,9 @@ void GLWidget::initializeGL()
 
     glClearColor(0.66f, 0.66f, 0.99f, 1.0f);
 
+
+    // FUNCTIONAL TESTING ===============================================
+
     atlas = new TextureAtlas("image.png",this->context());
 
     new TextureAtlas("image.png",this->context());
@@ -79,14 +82,8 @@ void GLWidget::initializeGL()
     eSprite->setPosition(100,100,0);
     rootScene.attachChild(eSprite);
 
-
     esb = new Entity::SpriteBatch(atlas, 100);
     rootScene.attachChild(esb);
-
-
-
-
-
 
     timer.start(1000/60, this);
 }
