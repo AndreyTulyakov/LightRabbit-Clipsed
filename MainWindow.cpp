@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "ui_mainwindow.h"
+#include "ui_MainWindow.h"
 
 #include "FormAbout.h"
 
@@ -17,7 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     base_format.setProfile(QGLFormat::CoreProfile);
     glWidget->setFormat(base_format);
 
-    ui->verticalLayout->addWidget(glWidget);
+
+    ui->gridLayout->addWidget(glWidget);
+    ui->gridLayout->removeWidget(ui->widget);
+
 
     this->statusBar()->showMessage("Started GLWidget", 2000);
 }
@@ -42,4 +45,19 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionExit_triggered()
 {
     application->exit(0);
+}
+
+void MainWindow::on_actionAdd_Sprite_triggered()
+{
+
+}
+
+void MainWindow::on_actionAdd_Text_triggered()
+{
+
+}
+
+void MainWindow::on_actionAdd_Sound_triggered()
+{
+
 }

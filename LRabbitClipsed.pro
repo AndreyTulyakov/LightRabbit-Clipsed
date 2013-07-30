@@ -60,6 +60,7 @@ OTHER_FILES += \
     README.md
 
 RESOURCES += \
-    Shaders.qrc
+    Shaders.qrc \
+    Icons.qrc
 
 QMAKE_CXXFLAGS += -std=c++11

@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/1375198777_transform_scale.png</file>
+        <file>Icons/1375198851_transform_rotate.png</file>
+        <file>Icons/1375198871_transform_move.png</file>
+        <file>Icons/1375198887_transform_crop.png</file>
+        <file>Icons/1375198910_transform_flip.png</file>
+        <file>Icons/1375198926_transform_layer.png</file>
+    </qresource>
+</RCC>

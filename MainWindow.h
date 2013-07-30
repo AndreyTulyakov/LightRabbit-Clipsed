@@ -36,6 +36,12 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void on_actionAdd_Sprite_triggered();
+
+    void on_actionAdd_Text_triggered();
+
+    void on_actionAdd_Sound_triggered();
+
 private:
     Ui::MainWindow *ui;
     QApplication *application;

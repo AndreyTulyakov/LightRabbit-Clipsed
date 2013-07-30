@@ -23,6 +23,7 @@ protected:
 
 public:
     SceneObject();
+    virtual ~SceneObject();
 
     void attachChild(SceneObject* arg);
     void detachChild(SceneObject* arg);

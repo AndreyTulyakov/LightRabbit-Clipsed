@@ -6,6 +6,11 @@ SceneObject::SceneObject()
 
 }
 
+SceneObject::~SceneObject()
+{
+
+}
+
 void SceneObject::attachChild(SceneObject *arg)
 {
     childs << arg;
