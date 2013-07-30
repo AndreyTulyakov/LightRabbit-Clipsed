@@ -57,7 +57,7 @@ void SpriteBatch::draw()
     shaderProgram->setUniformValue("mvp_matrix", transform);
 
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D,atlas->textureID);
+    glBindTexture(GL_TEXTURE_2D,atlas->textureID());
     shaderProgram->setUniformValue("texture", 0);
 
     quintptr offset = 0;
