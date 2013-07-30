@@ -38,7 +38,7 @@ void Rect::draw()
 
     transform.translate(position);
     transform.scale(scale);
-    transform.rotate(zRotation, 0,0,1);
+    transform.rotate(zRotation, 0, 0, 1);
 
     shaderProgram->setUniformValue("mvp_matrix", camera->getCameraMatrix() * transform);
     shaderProgram->setUniformValue("color", color);
@@ -63,7 +63,7 @@ void Rect::initGeometry()
         {QVector2D(p1.x(), p1.y() + p2.y())},
     };
 
-   createVertexBuffer(vertices, 4 * sizeof(Vertex2DSimple));
+    createVertexBuffer(vertices, 4 * sizeof(Vertex2DSimple));
 }
 
 

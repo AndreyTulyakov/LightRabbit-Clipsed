@@ -5,7 +5,7 @@ void DrawableEntity::createVertexBuffer(const void* data, int count)
     vertexBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
     vertexBuffer->create();
     vertexBuffer->bind();
-    vertexBuffer->allocate(data,count);
+    vertexBuffer->allocate(data, count);
 }
 
 void DrawableEntity::createVertexBuffer(int count)
@@ -28,10 +28,8 @@ DrawableEntity::DrawableEntity()
 
 DrawableEntity::~DrawableEntity()
 {
-    if(vertexBuffer != 0)
-    {
-        if(vertexBuffer->isCreated())
-        {
+    if (vertexBuffer != 0) {
+        if (vertexBuffer->isCreated()) {
             vertexBuffer->destroy();
         }
         delete vertexBuffer;

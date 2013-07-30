@@ -1,3 +1,4 @@
+
 #include "VertexBufferManager.h"
 
 VertexBufferManager* VertexBufferManager::instance = 0;

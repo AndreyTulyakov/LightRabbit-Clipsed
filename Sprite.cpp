@@ -51,13 +51,13 @@ void Sprite::draw()
     transform.setToIdentity();
 
     transform.translate(position);
-    transform.rotate(zRotation,0,0,1);
+    transform.rotate(zRotation, 0, 0, 1);
     transform.scale(scale);
 
     transform = camera->getCameraMatrix() * transform;
 
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D,atlas->textureID());
+    glBindTexture(GL_TEXTURE_2D, atlas->textureID());
     shaderProgram->setUniformValue("texture", 0);
 
     shaderProgram->setUniformValue("mvp_matrix", transform);
@@ -96,15 +96,15 @@ void Sprite::initGeometry()
 
     Vertex2D vertices[4] = {
         {QVector2D(-hw, -hh), QVector2D(0.0, 0.0)},  // v0
-        {QVector2D( hw, -hh), QVector2D(1.0, 0.0)},   // v1
+        {QVector2D(hw, -hh), QVector2D(1.0, 0.0)},    // v1
         {QVector2D(-hw,  hh), QVector2D(0.0, 1.0)},  // v2
-        {QVector2D( hw,  hh), QVector2D(1.0, 1.0)},   // v3
+        {QVector2D(hw,  hh), QVector2D(1.0, 1.0)},    // v3
     };
 
     vertexBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
     vertexBuffer->create();
     vertexBuffer->bind();
-    vertexBuffer->allocate(vertices,sizeof(Vertex2D)*4);
+    vertexBuffer->allocate(vertices, sizeof(Vertex2D) * 4);
 }
 
 }

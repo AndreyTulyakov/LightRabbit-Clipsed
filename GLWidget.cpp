@@ -1,16 +1,13 @@
+#include "GLWidget.h"
 
 #include <QtWidgets>
 #include <QtOpenGL>
-
 #include <math.h>
-
-#include "GLWidget.h"
 
 #include "DefaultShaders.h"
 #include "Line.h"
 #include "Rect.h"
 #include "Sprite.h"
-
 
 #include <QMouseEvent>
 
@@ -59,9 +56,9 @@ void GLWidget::initializeGL()
 
     // FUNCTIONAL TESTING ===============================================
 
-    atlas = new TextureAtlas("image.png",this->context());
+    atlas = new TextureAtlas("image.png", this->context());
 
-    new TextureAtlas("image.png",this->context());
+    new TextureAtlas("image.png", this->context());
 
     //VBManager = VertexBufferManager::getInstance();
 
@@ -79,13 +76,13 @@ void GLWidget::initializeGL()
     TextureAtlas* atlas2 = new TextureAtlas("image2.png", this->context());
 
     Entity::Sprite* eSprite = new Entity::Sprite(atlas2);
-    eSprite->setPosition(100,100,0);
+    eSprite->setPosition(100, 100, 0);
     rootScene.attachChild(eSprite);
 
     esb = new Entity::SpriteBatch(atlas, 100);
     rootScene.attachChild(esb);
 
-    timer.start(1000/60, this);
+    timer.start(1000 / 60, this);
 }
 
 
@@ -102,12 +99,11 @@ static float tick = 0;
 void GLWidget::paintGL()
 {
 
-    float rcut = 256*tick/6.28f;
-    TextureRegion region(atlas, rcut, 0, 512-rcut, 512);
+    float rcut = 256 * tick / 6.28f;
+    TextureRegion region(atlas, rcut, 0, 512 - rcut, 512);
     esb->addStart();
-    for(float i = 0; i<=6.28; i+=0.314f)
-    {
-        esb->addSprite(&region, cos(i+tick)*2*100, sin(i*2+tick)*100,i/20,i/20, 360*(tick+i),1,1,1,i/6.28f);
+    for (float i = 0; i <= 6.28; i += 0.314f) {
+        esb->addSprite(&region, cos(i + tick) * 2 * 100, sin(i * 2 + tick) * 100, i / 20, i / 20, 360 * (tick + i), 1, 1, 1, i / 6.28f);
     }
     esb->addEnd();
 
@@ -119,16 +115,15 @@ void GLWidget::paintGL()
     rootScene.draw();
 
 
-    if(tick>6.28f)
-    {
+    if (tick > 6.28f) {
         tick = 0.0f;
 
     }
 
     float f = sin(tick);
-    if(f<0) f*=-1.0f;
-    eRect->setScale(1+f,1+f,1);
+    if (f < 0) f *= -1.0f;
+    eRect->setScale(1 + f, 1 + f, 1);
 
-    tick+=0.02f;
+    tick += 0.02f;
 
 }

@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QGLFormat base_format = glWidget->format();
 
-    // Remove Deprecated Functions.
     base_format.setProfile(QGLFormat::CoreProfile);
     glWidget->setFormat(base_format);
 

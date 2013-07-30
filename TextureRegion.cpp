@@ -50,13 +50,10 @@ QRect TextureRegion::getRegion()
 
 QRectF TextureRegion::getAbsRegion()
 {
-    if(atlas == 0)
-    {
+    if (atlas == 0) {
         return region;
-    }
-    else
-    {
-        QRectF reg = QRectF((float)region.x()/atlas->width(), (float)region.y()/atlas->height(), (float)region.width()/atlas->width(), (float)region.height()/ atlas->height());
+    } else {
+        QRectF reg = QRectF((float)region.x() / atlas->width(), (float)region.y() / atlas->height(), (float)region.width() / atlas->width(), (float)region.height() / atlas->height());
         return reg;
     }
 

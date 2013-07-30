@@ -37,7 +37,7 @@ void Line::draw()
 
     transform.translate(position);
     transform.scale(scale);
-    transform.rotate(zRotation, 0,0,1);
+    transform.rotate(zRotation, 0, 0, 1);
 
 
     // Set modelview-projection matrix
@@ -63,7 +63,7 @@ void Line::initGeometry()
         {QVector2D(p2.x(), p2.y())},  // v1
     };
 
-    createVertexBuffer(vertices,sizeof(Vertex2DSimple)*2);
+    createVertexBuffer(vertices, sizeof(Vertex2DSimple) * 2);
 }
 
 }
