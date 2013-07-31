@@ -1,9 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include "FormAbout.h"
-#include "FormAddSprite.h"
-#include "FormTextureList.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     application = 0;
+    formTextureList = new FormTextureList(this);
 
     glWidget = new GLWidget(this);
 
@@ -29,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete formTextureList;
     delete ui;
 }
 
@@ -73,7 +73,5 @@ void MainWindow::on_actionAdd_Sound_triggered()
 
 void MainWindow::on_actionTextures_triggered()
 {
-    FormTextureList *form = new FormTextureList(this);
-    form->exec();
-    delete form;
+    formTextureList->exec();
 }

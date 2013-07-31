@@ -15,6 +15,12 @@
 
 #include <QMainWindow>
 #include "GLWidget.h"
+#include "TextureAtlas.h"
+
+#include "FormAbout.h"
+#include "FormAddSprite.h"
+#include "FormTextureList.h"
+
 
 namespace Ui
 {
@@ -48,7 +54,10 @@ private:
     Ui::MainWindow *ui;
     QApplication *application;
 
+    FormTextureList *formTextureList;
+
     GLWidget *glWidget;
+
 };
 
 #endif // MAINWINDOW_H
