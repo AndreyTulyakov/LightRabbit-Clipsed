@@ -18,14 +18,16 @@ GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
 
-    workArea = QRect(0,0,400,300);
 }
 
 GLWidget::~GLWidget()
 {
-    VertexBufferManager::deleteInstance();
     DefaultShaders::deleteInstance();
-    deleteTexture(texture);
+}
+
+void GLWidget::setClipInfo(ClipInfo pInfo)
+{
+    clipInfo = pInfo;
 }
 
 
@@ -52,36 +54,25 @@ void GLWidget::initializeGL()
     //glEnable(GL_LIGHTING);
     //glEnable(GL_MULTISAMPLE);
 
-    glClearColor(0.66f, 0.66f, 0.99f, 1.0f);
+    QVector4D color = clipInfo.Color;
+    glClearColor(color.x(),color.y(),color.z(),color.w());
 
 
     // FUNCTIONAL TESTING ===============================================
 
-    atlas = new TextureAtlas("image.png", this->context());
-
-    new TextureAtlas("image.png", this->context());
-
-    //VBManager = VertexBufferManager::getInstance();
-
     rootScene.setCamera(&camera);
 
-    Entity::Line* eLine = new Entity::Line(0, -100, 0, 100);
-    rootScene.attachChild(eLine);
+    Entity::Line* eLine1 = new Entity::Line(0, -100, 0, 100);
+    eLine1->setColor(1, 1, 1, 0.5f);
+    rootScene.attachChild(eLine1);
 
-    rootScene.attachChild(new Entity::Line(-100, 0, 100, 0));
+    Entity::Line* eLine2 = new Entity::Line(-100, 0, 100, 0);
+    eLine2->setColor(1, 1, 1, 0.5f);
+    rootScene.attachChild(eLine2);
 
-    eRect = new Entity::Rect(workArea.x(), workArea.y(), workArea.width(), workArea.height());
+    Entity::Rect* eRect = new Entity::Rect(-clipInfo.Width/2, -clipInfo.Height/2, clipInfo.Width, clipInfo.Height);
     eRect->setColor(1, 1, 1, 0.5f);
     rootScene.attachChild(eRect);
-
-    TextureAtlas* atlas2 = new TextureAtlas("image2.png", this->context());
-
-    Entity::Sprite* eSprite = new Entity::Sprite(atlas2);
-    eSprite->setPosition(100, 100, 0);
-    rootScene.attachChild(eSprite);
-
-    esb = new Entity::SpriteBatch(atlas, 100);
-    rootScene.attachChild(esb);
 
     timer.start(1000 / 60, this);
 }
@@ -94,37 +85,10 @@ void GLWidget::resizeGL(int w, int h)
     camera.setPosition(-width() / 2, - height() / 2, 1);
 }
 
-
-static float tick = 0;
-
 void GLWidget::paintGL()
 {
-
-    float rcut = 256 * tick / 6.28f;
-    TextureRegion region(atlas, rcut, 0, 512 - rcut, 512);
-    esb->addStart();
-    for (float i = 0; i <= 6.28; i += 0.314f) {
-        esb->addSprite(&region, cos(i + tick) * 2 * 100, sin(i * 2 + tick) * 100, i / 20, i / 20, 360 * (tick + i), 1, 1, 1, i / 6.28f);
-    }
-    esb->addEnd();
-
-
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     rootScene.update();
     rootScene.draw();
-
-
-    if (tick > 6.28f) {
-        tick = 0.0f;
-
-    }
-
-    float f = sin(tick);
-    if (f < 0) f *= -1.0f;
-    eRect->setScale(1 + f, 1 + f, 1);
-
-    tick += 0.02f;
-
 }

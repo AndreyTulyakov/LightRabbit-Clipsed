@@ -30,6 +30,8 @@
 
 #include "VertexBufferManager.h"
 
+#include "FormNewClip.h"
+
 
 class GLWidget : public QGLWidget, protected QGLFunctions
 {
@@ -39,6 +41,8 @@ class GLWidget : public QGLWidget, protected QGLFunctions
 public:
     explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
+
+    void setClipInfo(ClipInfo pInfo);
 
 protected:
     void timerEvent(QTimerEvent *e);
@@ -56,16 +60,7 @@ private:
 
     QBasicTimer timer;
 
-    GLuint texture;
-
-    Entity::Rect* eRect;
-    Entity::SpriteBatch* esb;
-
-    TextureAtlas *atlas;
-
-    VertexBufferManager *VBManager;
-
-    QRect workArea;
+    ClipInfo clipInfo;
 };
 
 #endif

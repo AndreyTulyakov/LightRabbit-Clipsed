@@ -11,14 +11,22 @@ MainWindow::MainWindow(QWidget *parent) :
     application = 0;
     formTextureList = new FormTextureList(this);
 
-
+    glWidget = nullptr;
 
 }
 
 
-void MainWindow::startGLWidget()
+void MainWindow::startGLWidget(ClipInfo pInfo)
 {
+    if(glWidget != nullptr)
+    {
+        ui->gridLayout->removeWidget(glWidget);
+        delete glWidget;
+        glWidget = nullptr;
+    }
+
     glWidget = new GLWidget(this);
+    glWidget->setClipInfo(pInfo);
     QGLFormat base_format = glWidget->format();
     base_format.setProfile(QGLFormat::CoreProfile);
     glWidget->setFormat(base_format);
@@ -87,6 +95,8 @@ void MainWindow::on_actionNew_triggered()
     if(formNewClip->exec() == QDialog::Accepted)
     {
         info = formNewClip->getInfo();
+
+        startGLWidget(info);
     }
 
     delete formNewClip;

@@ -50,7 +50,7 @@ private slots:
 
     void on_actionTextures_triggered();
 
-    void startGLWidget();
+    void startGLWidget(ClipInfo pInfo);
 
     void on_actionNew_triggered();
 
