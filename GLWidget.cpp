@@ -18,6 +18,7 @@ GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
 
+    workArea = QRect(0,0,400,300);
 }
 
 GLWidget::~GLWidget()
@@ -69,7 +70,7 @@ void GLWidget::initializeGL()
 
     rootScene.attachChild(new Entity::Line(-100, 0, 100, 0));
 
-    eRect = new Entity::Rect(-50, -50, 100, 100);
+    eRect = new Entity::Rect(workArea.x(), workArea.y(), workArea.width(), workArea.height());
     eRect->setColor(1, 1, 1, 0.5f);
     rootScene.attachChild(eRect);
 

@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-
+#include <QMessageBox>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -11,20 +11,21 @@ MainWindow::MainWindow(QWidget *parent) :
     application = 0;
     formTextureList = new FormTextureList(this);
 
+
+
+}
+
+
+void MainWindow::startGLWidget()
+{
     glWidget = new GLWidget(this);
-
     QGLFormat base_format = glWidget->format();
-
     base_format.setProfile(QGLFormat::CoreProfile);
     glWidget->setFormat(base_format);
-
-
     ui->gridLayout->addWidget(glWidget);
-    ui->gridLayout->removeWidget(ui->widget);
-
-
     this->statusBar()->showMessage("Started GLWidget", 2000);
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -74,4 +75,19 @@ void MainWindow::on_actionAdd_Sound_triggered()
 void MainWindow::on_actionTextures_triggered()
 {
     formTextureList->exec();
+}
+
+
+
+void MainWindow::on_actionNew_triggered()
+{
+    FormNewClip* formNewClip = new FormNewClip(this);
+    ClipInfo info;
+
+    if(formNewClip->exec() == QDialog::Accepted)
+    {
+        info = formNewClip->getInfo();
+    }
+
+    delete formNewClip;
 }

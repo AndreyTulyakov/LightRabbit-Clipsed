@@ -20,7 +20,7 @@
 #include "FormAbout.h"
 #include "FormAddSprite.h"
 #include "FormTextureList.h"
-
+#include "FormNewClip.h"
 
 namespace Ui
 {
@@ -50,13 +50,21 @@ private slots:
 
     void on_actionTextures_triggered();
 
+    void startGLWidget();
+
+    void on_actionNew_triggered();
+
 private:
+
+
+
     Ui::MainWindow *ui;
     QApplication *application;
 
     FormTextureList *formTextureList;
 
     GLWidget *glWidget;
+    QList<TextureAtlas*> Atlases;
 
 };
 

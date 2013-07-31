@@ -65,6 +65,7 @@ private:
 
     VertexBufferManager *VBManager;
 
+    QRect workArea;
 };
 
 #endif

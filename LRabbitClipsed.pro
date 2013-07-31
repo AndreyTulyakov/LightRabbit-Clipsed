@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     TextureAtlas.cpp \
     TextureRegion.cpp \
     FormAddSprite.cpp \
-    FormTextureList.cpp
+    FormTextureList.cpp \
+    FormNewClip.cpp
 
 HEADERS  += \
     DrawableEntity.h \
@@ -54,13 +55,15 @@ HEADERS  += \
     TextureAtlas.h \
     TextureRegion.h \
     FormAddSprite.h \
-    FormTextureList.h
+    FormTextureList.h \
+    FormNewClip.h
 
 FORMS    += \
     FormAbout.ui \
     MainWindow.ui \
     FormAddSprite.ui \
-    FormTextureList.ui
+    FormTextureList.ui \
+    FormNewClip.ui
 
 OTHER_FILES += \
     README.md
