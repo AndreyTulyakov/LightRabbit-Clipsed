@@ -30,11 +30,8 @@ void GLWidget::setClipInfo(ClipInfo pInfo)
     clipInfo = pInfo;
 }
 
-
-
 void GLWidget::timerEvent(QTimerEvent *)
 {
-
     updateGL();
 }
 

@@ -13,12 +13,18 @@
   <property name="windowTitle">
    <string>LRabbit Clipsed</string>
   </property>
+  <property name="animated">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout">
       <property name="sizeConstraint">
        <enum>QLayout::SetMaximumSize</enum>
+      </property>
+      <property name="spacing">
+       <number>1</number>
       </property>
      </layout>
     </item>
@@ -88,11 +94,6 @@
     <string>Close</string>
    </property>
   </action>
-  <action name="actionSave">
-   <property name="text">
-    <string>Save</string>
-   </property>
-  </action>
   <action name="actionSave_As">
    <property name="text">
     <string>Save As</string>
@@ -154,8 +155,14 @@
    </property>
   </action>
   <action name="actionAdd_Sprite">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Add Sprite</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionAdd_Text">

@@ -51,12 +51,20 @@ private slots:
     void on_actionTextures_triggered();
 
     void startGLWidget(ClipInfo pInfo);
+    void killGLWidget();
 
     void on_actionNew_triggered();
 
+    void on_actionClose_triggered();
+
+    void on_actionSave_As_triggered();
+
+    void on_actionOpen_triggered();
+
 private:
 
-
+    QString fileExtension;
+    QString fileExtMask;
 
     Ui::MainWindow *ui;
     QApplication *application;
