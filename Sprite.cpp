@@ -11,10 +11,7 @@ Sprite::Sprite()
 {
     initializeGLFunctions();
 
-    atlas = 0;
-    width = 0;
-    height = 0;
-
+    region = new TextureRegion();
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
     initGeometry();
@@ -24,9 +21,7 @@ Sprite::Sprite(TextureAtlas* pAtlas)
 {
     initializeGLFunctions();
 
-    atlas = pAtlas;
-    width = atlas->width();
-    height = atlas->height();
+    region = new TextureRegion(pAtlas,0,0,pAtlas->width(),pAtlas->height());
 
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
@@ -37,9 +32,8 @@ Sprite::Sprite(TextureRegion *pRegion)
 {
     initializeGLFunctions();
 
-    atlas =  pRegion->getAtlas();
-    width = pRegion->getRegion().width();
-    height =  pRegion->getRegion().height();
+    region = new TextureRegion(pRegion->getAtlas());
+    region->setRegion(pRegion->getRegion());
 
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
@@ -53,29 +47,46 @@ Sprite::~Sprite()
 
 void Sprite::setAtlas(TextureAtlas *pAtlas)
 {
-    this->atlas = pAtlas;
+    region->setTextureAtlas(pAtlas);
 
-    if(atlas != 0 || atlas !=nullptr)
+    if(region->getAtlas() != 0 || region->getAtlas() !=nullptr)
     {
+        TextureRegion  reg(pAtlas,0,0,pAtlas->width(), pAtlas->height());
+        setRegion(&reg);
+    }
+
+}
+
+void Sprite::setRegion(TextureRegion *pRegion)
+{
+    region->setTextureAtlas(pRegion->getAtlas());
+    region->setRegion(pRegion->getRegion());
+
+    if(region->getAtlas() != 0 || region->getAtlas() !=nullptr)
+    {
+        QRectF reg = region->getAbsRegion();
+
         vertexBuffer->bind();
         Vertex2D* data = (Vertex2D*)vertexBuffer->map(QGLBuffer::ReadWrite);
 
-        float hw = atlas->width() /2;
-        float hh = atlas->height() /2;
+        float hw = region->getAtlas()->width() /2;
+        float hh = region->getAtlas()->height() /2;
 
         data[0].position =  QVector2D(-hw, -hh);
         data[1].position =  QVector2D( hw, -hh);
         data[2].position =  QVector2D(-hw,  hh);
         data[3].position =  QVector2D( hw,  hh);
 
-        data[0].texCoord =  QVector2D(0.0, 0.0);
-        data[1].texCoord =  QVector2D(1.0, 0.0);
-        data[2].texCoord =  QVector2D(0.0, 1.0);
-        data[3].texCoord =  QVector2D(1.0, 1.0);
+        data[0].texCoord =  QVector2D(reg.topLeft());
+        data[1].texCoord =  QVector2D(reg.topRight());
+        data[2].texCoord =  QVector2D(reg.bottomLeft());
+        data[3].texCoord =  QVector2D(reg.bottomRight());
 
         vertexBuffer->unmap();
     }
 }
+
+
 
 void Sprite::update()
 {
@@ -84,7 +95,7 @@ void Sprite::update()
 
 void Sprite::draw()
 {
-    if(atlas == 0)
+    if(region->getAtlas() == 0 || region->getAtlas() == nullptr)
         return;
 
     shaderProgram->bind();
@@ -99,7 +110,7 @@ void Sprite::draw()
     transform = camera->getCameraMatrix() * transform;
 
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, atlas->textureID());
+    glBindTexture(GL_TEXTURE_2D, region->getAtlas()->textureID());
     shaderProgram->setUniformValue("texture", 0);
 
     shaderProgram->setUniformValue("mvp_matrix", transform);
@@ -134,8 +145,8 @@ void Sprite::draw()
 
 void Sprite::initGeometry()
 {
-    float hw = width / 2;
-    float hh = height / 2;
+    float hw = region->getRegion().width() / 2;
+    float hh = region->getRegion().height() / 2;
 
     Vertex2D vertices[4] = {
         {QVector2D(-hw, -hh), QVector2D(0.0, 0.0)},  // v0

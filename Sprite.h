@@ -35,6 +35,7 @@ public:
     virtual ~Sprite();
 
     void setAtlas(TextureAtlas* pAtlas);
+    void setRegion(TextureRegion* pRegion);
 
     void init();
     void update();
@@ -42,8 +43,7 @@ public:
 
 private:
     void initGeometry();
-    float width, height;
-    TextureAtlas* atlas;
+    TextureRegion* region;
 };
 
 

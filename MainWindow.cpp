@@ -196,11 +196,22 @@ void MainWindow::on_pushButton_RemoveTexture_clicked()
         delete ((QListItemTextureAtlas*)items.at(0))->data;
         delete items.at(0);
         glWidget->showTextureSprite( 0 );
+        on_listWidgetTextures_itemSelectionChanged();
     }
 }
 
 void MainWindow::on_listWidgetTextures_clicked(const QModelIndex &index)
 {
-    TextureAtlas* texture = ((QListItemTextureAtlas*)ui->listWidgetTextures->item(index.row()))->data;
-    glWidget->showTextureSprite( texture );
+    on_listWidgetTextures_itemSelectionChanged();
+}
+
+void MainWindow::on_listWidgetTextures_itemSelectionChanged()
+{
+    QList<QListWidgetItem*> list = ui->listWidgetTextures->selectedItems();
+    if(list.size()>0)
+    {
+        TextureAtlas* texture = ((QListItemTextureAtlas*)list.at(0))->data;
+        glWidget->showTextureSprite( texture );
+    }
+
 }

@@ -81,6 +81,7 @@ private slots:
     void on_pushButton_RemoveTexture_clicked();
 
     void on_listWidgetTextures_clicked(const QModelIndex &index);
+    void on_listWidgetTextures_itemSelectionChanged();
 
 private:
 

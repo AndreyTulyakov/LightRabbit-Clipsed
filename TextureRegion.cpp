@@ -37,9 +37,6 @@ void TextureRegion::setRegion(QRect region)
 
 TextureAtlas *TextureRegion::getAtlas()
 {
-    if (atlas == 0) {
-        qDebug() << "TextureRegion::getAtlas: null atlas";
-    }
     return atlas;
 }
 

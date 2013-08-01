@@ -17,7 +17,7 @@
 GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
-
+    mode = GLWidgetMode::ClipEdit;
 }
 
 GLWidget::~GLWidget()
@@ -68,6 +68,19 @@ void GLWidget::initializeGL()
     // FUNCTIONAL TESTING ===============================================
 
     rootScene.setCamera(&camera);
+    {
+        Entity::Line* eLine1 = new Entity::Line(0, -100, 0, 100);
+        eLine1->setColor(1, 1, 1, 0.5f);
+        rootScene.attachChild(eLine1);
+
+        Entity::Line* eLine2 = new Entity::Line(-100, 0, 100, 0);
+        eLine2->setColor(1, 1, 1, 0.5f);
+        rootScene.attachChild(eLine2);
+
+        Entity::Rect* eRect = new Entity::Rect(-clipInfo.Width/2, -clipInfo.Height/2, clipInfo.Width, clipInfo.Height);
+        eRect->setColor(1, 1, 1, 0.5f);
+        rootScene.attachChild(eRect);
+    }
 
     textureScene.setCamera(&camera);
     {
@@ -81,22 +94,6 @@ void GLWidget::initializeGL()
 
         textureScene.attachChild(textureSprite);
     }
-
-    Entity::Line* eLine1 = new Entity::Line(0, -100, 0, 100);
-    eLine1->setColor(1, 1, 1, 0.5f);
-    rootScene.attachChild(eLine1);
-
-    Entity::Line* eLine2 = new Entity::Line(-100, 0, 100, 0);
-    eLine2->setColor(1, 1, 1, 0.5f);
-    rootScene.attachChild(eLine2);
-
-    Entity::Rect* eRect = new Entity::Rect(-clipInfo.Width/2, -clipInfo.Height/2, clipInfo.Width, clipInfo.Height);
-    eRect->setColor(1, 1, 1, 0.5f);
-    rootScene.attachChild(eRect);
-
-    Entity::Sprite *spr = new Entity::Sprite(new TextureAtlas("res/textures/image2.png",this->context()));
-    spr->setPosition(100,100,0);
-    rootScene.attachChild(spr);
 
     timer.start(1000 / 60, this);
 }
