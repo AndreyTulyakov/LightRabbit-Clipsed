@@ -47,11 +47,14 @@
         <height>1000</height>
        </size>
       </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -70,7 +73,7 @@
         <item row="3" column="0">
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="1">
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="pushButton_AddText">
             <property name="maximumSize">
              <size>
               <width>80</width>
@@ -83,7 +86,7 @@
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="pushButton_AddSound">
             <property name="maximumSize">
              <size>
               <width>80</width>
@@ -96,7 +99,7 @@
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="pushButton_AddSprite">
             <property name="maximumSize">
              <size>
               <width>80</width>
@@ -109,7 +112,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QPushButton" name="pushButton_6">
+           <widget class="QPushButton" name="pushButton_RemoveEntity">
             <property name="maximumSize">
              <size>
               <width>120</width>
@@ -143,7 +146,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0" colspan="2">
-         <widget class="QListWidget" name="listWidget">
+         <widget class="QListWidget" name="listWidgetTextures">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
             <horstretch>0</horstretch>
@@ -159,7 +162,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="pushButton_AddTexture">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -172,7 +175,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="pushButton_RemoveTexture">
           <property name="maximumSize">
            <size>
             <width>16777215</width>

@@ -172,3 +172,35 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         glWidget->mode = GLWidgetMode::ClipEdit;
     }
 }
+
+void MainWindow::on_pushButton_AddTexture_clicked()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open Image File"),"",tr("Images (*.png *.jpg *jpeg *.bmp)"));
+
+    if(!filename.isNull())
+    {
+        QFileInfo fileInfo(filename);
+        TextureAtlas* image = new TextureAtlas(filename, this->glWidget->context());
+        QListItemTextureAtlas *item = new QListItemTextureAtlas(fileInfo.fileName(),ui->listWidgetTextures);
+        item->data = image;
+        ui->listWidgetTextures->addItem(item);
+
+    }
+}
+
+void MainWindow::on_pushButton_RemoveTexture_clicked()
+{
+    QList<QListWidgetItem*> items = ui->listWidgetTextures->selectedItems();
+    if(items.size()>0)
+    {
+        delete ((QListItemTextureAtlas*)items.at(0))->data;
+        delete items.at(0);
+        glWidget->showTextureSprite( 0 );
+    }
+}
+
+void MainWindow::on_listWidgetTextures_clicked(const QModelIndex &index)
+{
+    TextureAtlas* texture = ((QListItemTextureAtlas*)ui->listWidgetTextures->item(index.row()))->data;
+    glWidget->showTextureSprite( texture );
+}

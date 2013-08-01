@@ -31,6 +31,7 @@
 #include "VertexBufferManager.h"
 
 #include "FormNewClip.h"
+#include "Sprite.h"
 
 enum GLWidgetMode
 {
@@ -49,6 +50,7 @@ public:
     ~GLWidget();
 
     void setClipInfo(ClipInfo pInfo);
+    void showTextureSprite(TextureAtlas* pAtlas);
 
 protected:
     void timerEvent(QTimerEvent *e);
@@ -59,14 +61,18 @@ protected:
 
     void initShaders();
 
+
+
 private:
 
     Camera2D camera;
-    Scene rootScene;
+    Scene rootScene, textureScene;
 
     QBasicTimer timer;
 
     ClipInfo clipInfo;
+
+    Entity::Sprite *textureSprite;
 
 
 };

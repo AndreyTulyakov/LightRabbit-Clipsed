@@ -27,10 +27,14 @@ namespace Entity
 class Sprite : public DrawableEntity , QGLFunctions
 {
 public:
+
+    Sprite();
     Sprite(TextureAtlas* pAtlas);
     Sprite(TextureRegion* pRegion);
 
     virtual ~Sprite();
+
+    void setAtlas(TextureAtlas* pAtlas);
 
     void init();
     void update();

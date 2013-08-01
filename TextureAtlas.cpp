@@ -5,7 +5,7 @@
 
 TextureAtlas::TextureAtlas(QString filename, QGLContext* context)
 {
-    filename = "res/textures/" + filename;
+    //filename = "res/textures/" + filename;
 
     glEnable(GL_TEXTURE_2D);
 

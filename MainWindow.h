@@ -21,6 +21,19 @@
 #include "FormAddSprite.h"
 #include "FormTextureList.h"
 #include "FormNewClip.h"
+#include <QListWidgetItem>
+
+class QListItemTextureAtlas : public QListWidgetItem
+{
+public:
+    QListItemTextureAtlas(QString name, QListWidget* view)  : QListWidgetItem(name, view)
+    {
+        data = 0;
+    }
+
+    TextureAtlas* data;
+};
+
 
 namespace Ui
 {
@@ -62,6 +75,12 @@ private slots:
     void on_actionOpen_triggered();
 
     void on_tabWidget_currentChanged(int index);
+
+    void on_pushButton_AddTexture_clicked();
+
+    void on_pushButton_RemoveTexture_clicked();
+
+    void on_listWidgetTextures_clicked(const QModelIndex &index);
 
 private:
 

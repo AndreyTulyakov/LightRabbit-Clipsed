@@ -22,6 +22,7 @@ GLWidget::GLWidget(QWidget *parent) :
 
 GLWidget::~GLWidget()
 {
+    delete textureSprite;
     DefaultShaders::deleteInstance();
     timer.stop();
 }
@@ -30,6 +31,14 @@ void GLWidget::setClipInfo(ClipInfo pInfo)
 {
     clipInfo = pInfo;
 }
+
+void GLWidget::showTextureSprite(TextureAtlas *pAtlas)
+{
+
+    textureSprite->setAtlas(pAtlas);
+    textureScene.attachChild(textureSprite);
+}
+
 
 void GLWidget::timerEvent(QTimerEvent *)
 {
@@ -52,13 +61,26 @@ void GLWidget::initializeGL()
     //glEnable(GL_LIGHTING);
     //glEnable(GL_MULTISAMPLE);
 
-    QVector4D c = clipInfo.Color;
-    glClearColor(c.x(),c.y(),c.z(),c.w());
+
+    textureSprite = new Entity::Sprite();
 
 
     // FUNCTIONAL TESTING ===============================================
 
     rootScene.setCamera(&camera);
+
+    textureScene.setCamera(&camera);
+    {
+        Entity::Line* eLine1 = new Entity::Line(0, -100, 0, 100);
+        eLine1->setColor(1, 1, 1, 0.5f);
+        textureScene.attachChild(eLine1);
+
+        Entity::Line* eLine2 = new Entity::Line(-100, 0, 100, 0);
+        eLine2->setColor(1, 1, 1, 0.5f);
+        textureScene.attachChild(eLine2);
+
+        textureScene.attachChild(textureSprite);
+    }
 
     Entity::Line* eLine1 = new Entity::Line(0, -100, 0, 100);
     eLine1->setColor(1, 1, 1, 0.5f);
@@ -71,6 +93,10 @@ void GLWidget::initializeGL()
     Entity::Rect* eRect = new Entity::Rect(-clipInfo.Width/2, -clipInfo.Height/2, clipInfo.Width, clipInfo.Height);
     eRect->setColor(1, 1, 1, 0.5f);
     rootScene.attachChild(eRect);
+
+    Entity::Sprite *spr = new Entity::Sprite(new TextureAtlas("res/textures/image2.png",this->context()));
+    spr->setPosition(100,100,0);
+    rootScene.attachChild(spr);
 
     timer.start(1000 / 60, this);
 }
@@ -102,6 +128,8 @@ void GLWidget::paintGL()
 
         glClearColor(0.66f,0.66f,0.75f,1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        textureScene.update();
+        textureScene.draw();
 
         break;
     }

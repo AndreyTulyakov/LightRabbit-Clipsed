@@ -7,6 +7,19 @@ namespace Entity
 {
 
 
+Sprite::Sprite()
+{
+    initializeGLFunctions();
+
+    atlas = 0;
+    width = 0;
+    height = 0;
+
+    shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
+
+    initGeometry();
+}
+
 Sprite::Sprite(TextureAtlas* pAtlas)
 {
     initializeGLFunctions();
@@ -38,6 +51,32 @@ Sprite::~Sprite()
 
 }
 
+void Sprite::setAtlas(TextureAtlas *pAtlas)
+{
+    this->atlas = pAtlas;
+
+    if(atlas != 0 || atlas !=nullptr)
+    {
+        vertexBuffer->bind();
+        Vertex2D* data = (Vertex2D*)vertexBuffer->map(QGLBuffer::ReadWrite);
+
+        float hw = atlas->width() /2;
+        float hh = atlas->height() /2;
+
+        data[0].position =  QVector2D(-hw, -hh);
+        data[1].position =  QVector2D( hw, -hh);
+        data[2].position =  QVector2D(-hw,  hh);
+        data[3].position =  QVector2D( hw,  hh);
+
+        data[0].texCoord =  QVector2D(0.0, 0.0);
+        data[1].texCoord =  QVector2D(1.0, 0.0);
+        data[2].texCoord =  QVector2D(0.0, 1.0);
+        data[3].texCoord =  QVector2D(1.0, 1.0);
+
+        vertexBuffer->unmap();
+    }
+}
+
 void Sprite::update()
 {
 
@@ -45,6 +84,9 @@ void Sprite::update()
 
 void Sprite::draw()
 {
+    if(atlas == 0)
+        return;
+
     shaderProgram->bind();
     vertexBuffer->bind();
 
@@ -86,6 +128,7 @@ void Sprite::draw()
     shaderProgram->disableAttributeArray(texcoordLocation);
 
 }
+
 
 
 
