@@ -23,6 +23,7 @@ GLWidget::GLWidget(QWidget *parent) :
 GLWidget::~GLWidget()
 {
     DefaultShaders::deleteInstance();
+    timer.stop();
 }
 
 void GLWidget::setClipInfo(ClipInfo pInfo)

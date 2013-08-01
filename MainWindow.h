@@ -61,6 +61,8 @@ private slots:
 
     void on_actionOpen_triggered();
 
+    void on_tabWidget_currentChanged(int index);
+
 private:
 
     QString fileExtension;

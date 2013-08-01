@@ -158,3 +158,17 @@ void MainWindow::on_actionOpen_triggered()
         ui->statusBar->showMessage("Opened " + filename, 2000);
     }
 }
+
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    if(index == 2)
+    {
+        glWidget->mode = GLWidgetMode::TextureShow;
+    }
+
+    if(index == 0 || index == 1)
+    {
+        glWidget->mode = GLWidgetMode::ClipEdit;
+    }
+}
