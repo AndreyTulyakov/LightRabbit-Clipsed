@@ -51,8 +51,8 @@ void GLWidget::initializeGL()
     //glEnable(GL_LIGHTING);
     //glEnable(GL_MULTISAMPLE);
 
-    QVector4D color = clipInfo.Color;
-    glClearColor(color.x(),color.y(),color.z(),color.w());
+    QVector4D c = clipInfo.Color;
+    glClearColor(c.x(),c.y(),c.z(),c.w());
 
 
     // FUNCTIONAL TESTING ===============================================
@@ -84,8 +84,26 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    rootScene.update();
-    rootScene.draw();
+    switch(mode)
+    {
+    case GLWidgetMode::ClipEdit:
+
+        glClearColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        rootScene.update();
+        rootScene.draw();
+
+        break;
+
+
+    case GLWidgetMode::TextureShow:
+
+        glClearColor(0.66f,0.66f,0.75f,1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        break;
+    }
+
+
 }

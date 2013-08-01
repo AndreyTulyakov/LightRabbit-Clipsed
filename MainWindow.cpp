@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     glWidget = nullptr;
 
+    ui->tabWidget->setVisible(false);
+
 }
 
 
@@ -31,10 +33,13 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
     base_format.setProfile(QGLFormat::CoreProfile);
     glWidget->setFormat(base_format);
 
+
+    ui->tabWidget->setVisible(true);
     ui->gridLayout->addWidget(glWidget);
-    ui->menuObject->setEnabled(true);
+
 
     this->statusBar()->showMessage("Started GLWidget", 2000);
+
 }
 
 void MainWindow::killGLWidget()
@@ -46,7 +51,7 @@ void MainWindow::killGLWidget()
         glWidget = nullptr;
     }
 
-    ui->menuObject->setEnabled(false);
+    ui->tabWidget->setVisible(false);
 }
 
 
@@ -150,7 +155,6 @@ void MainWindow::on_actionOpen_triggered()
 
     if(!filename.isNull())
     {
-
         ui->statusBar->showMessage("Opened " + filename, 2000);
     }
 }

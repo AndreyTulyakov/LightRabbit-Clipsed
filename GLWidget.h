@@ -32,6 +32,10 @@
 
 #include "FormNewClip.h"
 
+enum GLWidgetMode
+{
+    ClipEdit, TextureShow
+};
 
 class GLWidget : public QGLWidget, protected QGLFunctions
 {
@@ -39,6 +43,8 @@ class GLWidget : public QGLWidget, protected QGLFunctions
 
 
 public:
+    GLWidgetMode mode;
+
     explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
 
@@ -61,6 +67,8 @@ private:
     QBasicTimer timer;
 
     ClipInfo clipInfo;
+
+
 };
 
 #endif
