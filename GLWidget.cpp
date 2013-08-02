@@ -20,6 +20,7 @@ GLWidget::GLWidget(QWidget *parent) :
     mode = GLWidgetMode::ClipEdit;
     setMouseTracking(true);
 
+
     mouseRight = false;
 }
 
@@ -40,6 +41,12 @@ void GLWidget::showTextureSprite(TextureAtlas *pAtlas)
 
     textureSprite->setAtlas(pAtlas);
     textureScene.attachChild(textureSprite);
+}
+
+void GLWidget::centerTexCamera()
+{
+    texCamera.setPosition(-width() / 2, - height() / 2, 1);
+    texCamera.setZoom(1);
 }
 
 
@@ -80,12 +87,12 @@ void GLWidget::initializeGL()
         eLine2->setColor(1, 1, 1, 0.5f);
         rootScene.attachChild(eLine2);
 
-        Entity::Rect* eRect = new Entity::Rect(-clipInfo.Width/2, -clipInfo.Height/2, clipInfo.Width, clipInfo.Height);
+        Entity::Rect* eRect = new Entity::Rect(-clipInfo.Width / 2, -clipInfo.Height / 2, clipInfo.Width, clipInfo.Height);
         eRect->setColor(1, 1, 1, 0.5f);
         rootScene.attachChild(eRect);
     }
 
-    textureScene.setCamera(&camera);
+    textureScene.setCamera(&texCamera);
     {
         Entity::Line* eLine1 = new Entity::Line(0, -100, 0, 100);
         eLine1->setColor(1, 1, 1, 0.5f);
@@ -109,13 +116,15 @@ void GLWidget::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
     camera.setOrtho(w, h, -10, 100, false);
     camera.setPosition(-width() / 2, - height() / 2, 1);
+
+    texCamera.setOrtho(w, h, -10, 10, false);
+    texCamera.setPosition(-width() / 2, - height() / 2, 1);
 }
 
 void GLWidget::paintGL()
 {
 
-    switch(mode)
-    {
+    switch (mode) {
     case GLWidgetMode::ClipEdit:
 
         glClearColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1);
@@ -128,7 +137,7 @@ void GLWidget::paintGL()
 
     case GLWidgetMode::TextureShow:
 
-        glClearColor(0.66f,0.66f,0.75f,1);
+        glClearColor(0.66f, 0.66f, 0.75f, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         textureScene.update();
         textureScene.draw();
@@ -140,22 +149,24 @@ void GLWidget::paintGL()
 }
 
 
-void GLWidget::mouseMoveEvent ( QMouseEvent * event )
+void GLWidget::mouseMoveEvent(QMouseEvent * event)
 {
-    if(mouseRight)
-    {
+    // Move Camera
+    if (mouseRight) {
         QPoint pos = event->pos() - oldMousePos;
 
-        camera.setPosition(camera.getPosition().x() - pos.x(), camera.getPosition().y() + pos.y(), 0);
+        if (mode == GLWidgetMode::TextureShow)
+            texCamera.setPosition(texCamera.getPosition().x() - pos.x(), texCamera.getPosition().y() + pos.y(), 0);
+        else
+            camera.setPosition(camera.getPosition().x() - pos.x(), camera.getPosition().y() + pos.y(), 0);
 
         oldMousePos = event->pos();
     }
 }
 
-void GLWidget::mousePressEvent ( QMouseEvent * event )
+void GLWidget::mousePressEvent(QMouseEvent * event)
 {
-    switch(event->button())
-    {
+    switch (event->button()) {
     case Qt::MouseButton::LeftButton:
         qDebug() << "Left press";
         break;
@@ -172,54 +183,33 @@ void GLWidget::mousePressEvent ( QMouseEvent * event )
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    switch(event->button())
-    {
+    switch (event->button()) {
     case Qt::MouseButton::LeftButton:
         qDebug() << "Left release";
+
         break;
 
     case Qt::MouseButton::RightButton:
         mouseRight = false;
         break;
 
-
     default:
         break;
     }
 }
 
-void GLWidget::wheelEvent( QWheelEvent * event )
+void GLWidget::wheelEvent(QWheelEvent * event)
 {
-    float sf = 0.1f;
+    float k = 0.2f;
+    float sf = 0;
 
-    if( event->delta() > 0)
-    {
-        qDebug() << "Plus";
+    if (event->delta() > 0)
+        sf += k;
+    else
+        sf -= k;
+
+    if (mode == GLWidgetMode::TextureShow)
+        texCamera.setZoom(texCamera.getZoom() + sf);
+    else
         camera.setZoom(camera.getZoom() + sf);
-    }
-
-    if( event->delta() < 0)
-    {
-        qDebug() << "Minus";
-        camera.setZoom(camera.getZoom() - sf);
-    }
-}
-
-void GLWidget::keyPressEvent(QKeyEvent * event)
-{
-    float sf = 0.1f;
-
-    if( event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus)
-    {
-        qDebug() << "Plus";
-        camera.setZoom(camera.getZoom() + sf);
-    }
-
-    if( event->key() == Qt::Key_Minus || event->key() == Qt::Key_hyphen )
-    {
-        qDebug() << "Minus";
-        camera.setZoom(camera.getZoom() - sf);
-    }
-
-        event->accept();
 }

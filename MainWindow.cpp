@@ -63,6 +63,12 @@ void MainWindow::setApplication(QApplication *app)
     application = app;
 }
 
+void MainWindow::showInStatusBar(QString msg, int time)
+{
+    this->statusBar()->showMessage(msg, time);
+
+}
+
 void MainWindow::on_actionAbout_triggered()
 {
     FormAbout *form = new FormAbout(this);
@@ -161,6 +167,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     if(index == 2)
     {
         glWidget->mode = GLWidgetMode::TextureShow;
+        glWidget->centerTexCamera();
     }
 
     if(index == 0 || index == 1)

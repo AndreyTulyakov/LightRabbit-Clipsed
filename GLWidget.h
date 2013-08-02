@@ -33,6 +33,7 @@
 #include "FormNewClip.h"
 #include "Sprite.h"
 
+
 enum GLWidgetMode
 {
     ClipEdit, TextureShow
@@ -46,7 +47,6 @@ class GLWidget : public QGLWidget, protected QGLFunctions
     void mousePressEvent(QMouseEvent * event );
     void mouseReleaseEvent(QMouseEvent * event );
     void wheelEvent(QWheelEvent * event );
-    void keyPressEvent(QKeyEvent * event);
 
 public:
     GLWidgetMode mode;
@@ -56,6 +56,7 @@ public:
 
     void setClipInfo(ClipInfo pInfo);
     void showTextureSprite(TextureAtlas* pAtlas);
+    void centerTexCamera();
 
 protected:
     void timerEvent(QTimerEvent *e);
@@ -70,7 +71,9 @@ protected:
 
 private:
 
-    Camera2D camera;
+
+
+    Camera2D camera, texCamera;
     Scene rootScene, textureScene;
 
     QBasicTimer timer;

@@ -49,6 +49,8 @@ public:
 
     void setApplication(QApplication *app);
 
+    void showInStatusBar(QString msg, int time);
+
 private slots:
     void on_actionAbout_triggered();
 
