@@ -32,7 +32,6 @@ SOURCES += main.cpp\
     SceneObject.cpp \
     TextureAtlas.cpp \
     TextureRegion.cpp \
-    FormAddSprite.cpp \
     FormNewClip.cpp
 
 HEADERS  += \
@@ -53,13 +52,12 @@ HEADERS  += \
     SceneObject.h \
     TextureAtlas.h \
     TextureRegion.h \
-    FormAddSprite.h \
-    FormNewClip.h
+    FormNewClip.h \
+    ListWidgetItems.h
 
 FORMS    += \
     FormAbout.ui \
     MainWindow.ui \
-    FormAddSprite.ui \
     FormNewClip.ui
 
 OTHER_FILES += \

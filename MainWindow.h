@@ -18,21 +18,9 @@
 #include "TextureAtlas.h"
 
 #include "FormAbout.h"
-#include "FormAddSprite.h"
 #include "FormNewClip.h"
-#include <QListWidgetItem>
 
-class QListItemTextureAtlas : public QListWidgetItem
-{
-public:
-    QListItemTextureAtlas(QString name, QListWidget* view)  : QListWidgetItem(name, view)
-    {
-        data = 0;
-    }
-
-    TextureAtlas* data;
-};
-
+#include "ListWidgetItems.h"
 
 namespace Ui
 {
@@ -56,13 +44,6 @@ private slots:
 
     void on_actionExit_triggered();
 
-    void on_actionAdd_Sprite_triggered();
-
-    void on_actionAdd_Text_triggered();
-
-    void on_actionAdd_Sound_triggered();
-
-    void on_actionTextures_triggered();
 
     void startGLWidget(ClipInfo pInfo);
     void killGLWidget();
@@ -84,7 +65,19 @@ private slots:
     void on_listWidgetTextures_clicked(const QModelIndex &index);
     void on_listWidgetTextures_itemSelectionChanged();
 
+    void on_pushButton_AddSprite_clicked();
+
+    void on_EntityListWidget_clicked(const QModelIndex &index);
+
+    void on_button_SaveProperties_clicked();
+
+    void on_comboBoxTextures_currentIndexChanged(int index);
+
 private:
+
+    QListWidgetItem *getSelectedItem(QListWidget* wList);
+    void spritePropertiesToEditPanel(Entity::Sprite *spr);
+    void spritePropertiesFromEditPanel(Entity::Sprite *spr);
 
     QString fileExtension;
     QString fileExtMask;

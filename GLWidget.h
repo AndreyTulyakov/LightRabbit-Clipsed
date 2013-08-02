@@ -58,6 +58,9 @@ public:
     void showTextureSprite(TextureAtlas* pAtlas);
     void centerTexCamera();
 
+    void attachToRootScene(SceneObject* obj);
+    void detachFromRootScene(SceneObject* obj);
+
 protected:
     void timerEvent(QTimerEvent *e);
 

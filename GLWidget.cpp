@@ -49,6 +49,16 @@ void GLWidget::centerTexCamera()
     texCamera.setZoom(1);
 }
 
+void GLWidget::attachToRootScene(SceneObject *obj)
+{
+    rootScene.attachChild(obj);
+}
+
+void GLWidget::detachFromRootScene(SceneObject *obj)
+{
+    rootScene.detachChild(obj);
+}
+
 
 void GLWidget::timerEvent(QTimerEvent *)
 {
