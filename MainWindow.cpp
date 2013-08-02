@@ -14,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     fileExtension = ".lrclip";
     fileExtMask = "LRabbit Clips (*" + fileExtension + ")";
 
-    formTextureList = new FormTextureList(this);
-
     glWidget = nullptr;
 
     ui->tabWidget->setVisible(false);
@@ -57,7 +55,6 @@ void MainWindow::killGLWidget()
 
 MainWindow::~MainWindow()
 {
-    delete formTextureList;
     delete ui;
 }
 
@@ -102,7 +99,6 @@ void MainWindow::on_actionAdd_Sound_triggered()
 
 void MainWindow::on_actionTextures_triggered()
 {
-    formTextureList->exec();
 }
 
 

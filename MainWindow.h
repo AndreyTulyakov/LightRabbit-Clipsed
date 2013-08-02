@@ -19,7 +19,6 @@
 
 #include "FormAbout.h"
 #include "FormAddSprite.h"
-#include "FormTextureList.h"
 #include "FormNewClip.h"
 #include <QListWidgetItem>
 
@@ -90,8 +89,6 @@ private:
 
     Ui::MainWindow *ui;
     QApplication *application;
-
-    FormTextureList *formTextureList;
 
     GLWidget *glWidget;
     QList<TextureAtlas*> Atlases;

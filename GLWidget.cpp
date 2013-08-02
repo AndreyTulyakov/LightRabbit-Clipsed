@@ -18,6 +18,9 @@ GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
     mode = GLWidgetMode::ClipEdit;
+    setMouseTracking(true);
+
+    mouseRight = false;
 }
 
 GLWidget::~GLWidget()
@@ -99,6 +102,8 @@ void GLWidget::initializeGL()
 }
 
 
+
+
 void GLWidget::resizeGL(int w, int h)
 {
     glViewport(0, 0, w, h);
@@ -132,4 +137,89 @@ void GLWidget::paintGL()
     }
 
 
+}
+
+
+void GLWidget::mouseMoveEvent ( QMouseEvent * event )
+{
+    if(mouseRight)
+    {
+        QPoint pos = event->pos() - oldMousePos;
+
+        camera.setPosition(camera.getPosition().x() - pos.x(), camera.getPosition().y() + pos.y(), 0);
+
+        oldMousePos = event->pos();
+    }
+}
+
+void GLWidget::mousePressEvent ( QMouseEvent * event )
+{
+    switch(event->button())
+    {
+    case Qt::MouseButton::LeftButton:
+        qDebug() << "Left press";
+        break;
+
+    case Qt::MouseButton::RightButton:
+        mouseRight = true;
+        oldMousePos = event->pos();
+        break;
+
+    default:
+        break;
+    }
+}
+
+void GLWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    switch(event->button())
+    {
+    case Qt::MouseButton::LeftButton:
+        qDebug() << "Left release";
+        break;
+
+    case Qt::MouseButton::RightButton:
+        mouseRight = false;
+        break;
+
+
+    default:
+        break;
+    }
+}
+
+void GLWidget::wheelEvent( QWheelEvent * event )
+{
+    float sf = 0.1f;
+
+    if( event->delta() > 0)
+    {
+        qDebug() << "Plus";
+        camera.setZoom(camera.getZoom() + sf);
+    }
+
+    if( event->delta() < 0)
+    {
+        qDebug() << "Minus";
+        camera.setZoom(camera.getZoom() - sf);
+    }
+}
+
+void GLWidget::keyPressEvent(QKeyEvent * event)
+{
+    float sf = 0.1f;
+
+    if( event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus)
+    {
+        qDebug() << "Plus";
+        camera.setZoom(camera.getZoom() + sf);
+    }
+
+    if( event->key() == Qt::Key_Minus || event->key() == Qt::Key_hyphen )
+    {
+        qDebug() << "Minus";
+        camera.setZoom(camera.getZoom() - sf);
+    }
+
+        event->accept();
 }

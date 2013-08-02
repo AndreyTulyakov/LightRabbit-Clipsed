@@ -25,9 +25,14 @@ private:
     QMatrix4x4 translation;
     QMatrix4x4 rotation;
     QMatrix4x4 view;
+    QMatrix4x4 zoom;
+    float zoomFactor;
 
 public:
     Camera2D();
+
+    float getZoom();
+    float setZoom(float pZoom);
 
     QMatrix4x4 getCameraMatrix();
 

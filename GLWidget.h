@@ -42,6 +42,11 @@ class GLWidget : public QGLWidget, protected QGLFunctions
 {
     Q_OBJECT
 
+    void mouseMoveEvent(QMouseEvent * event );
+    void mousePressEvent(QMouseEvent * event );
+    void mouseReleaseEvent(QMouseEvent * event );
+    void wheelEvent(QWheelEvent * event );
+    void keyPressEvent(QKeyEvent * event);
 
 public:
     GLWidgetMode mode;
@@ -74,7 +79,8 @@ private:
 
     Entity::Sprite *textureSprite;
 
-
+    bool mouseRight;
+    QPoint oldMousePos;
 };
 
 #endif
