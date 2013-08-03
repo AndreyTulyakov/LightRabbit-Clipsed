@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     SceneObject.cpp \
     TextureAtlas.cpp \
     TextureRegion.cpp \
-    FormNewClip.cpp
+    FormNewClip.cpp \
+    MainWindow2.cpp
 
 HEADERS  += \
     DrawableEntity.h \
