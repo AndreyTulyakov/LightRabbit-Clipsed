@@ -17,7 +17,7 @@ float Camera2D::getZoom()
     return zoomFactor;
 }
 
-float Camera2D::setZoom(float pZoom)
+void Camera2D::setZoom(float pZoom)
 {
     zoomFactor = pZoom;
     if(zoomFactor < 0.01f)

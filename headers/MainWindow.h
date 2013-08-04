@@ -73,11 +73,28 @@ private slots:
 
     void on_comboBoxTextures_currentIndexChanged(int index);
 
+    void on_button_NewRegion_clicked();
+
+    void on_button_RemoveRegion_clicked();
+
+    void on_RegionListWidget_itemChanged(QListWidgetItem *item);
+
+    void on_cb_RegionTexture_currentIndexChanged(const QString &arg1);
+
+    void on_RegionListWidget_clicked(const QModelIndex &index);
+
+
 private:
 
     QListWidgetItem *getSelectedItem(QListWidget* wList);
     void spritePropertiesToEditPanel(Entity::Sprite *spr);
     void spritePropertiesFromEditPanel(Entity::Sprite *spr);
+
+    void updatedRegionListWidget(bool GrabPanel);
+    void regionPropertiesToPanel(ListWidgetRegion *regionItem);
+    void regionPropertiesFromPanel(ListWidgetRegion *regionItem);
+
+    void textureListWidgetChanged();
 
     QString fileExtension;
     QString fileExtMask;
@@ -89,5 +106,7 @@ private:
     QList<TextureAtlas*> Atlases;
 
 };
+
+
 
 #endif // MAINWINDOW_H

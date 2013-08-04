@@ -15,10 +15,12 @@ void MainWindow::on_pushButton_AddTexture_clicked()
     {
         QFileInfo fileInfo(filename);
         TextureAtlas* image = new TextureAtlas(filename, this->glWidget->context());
-        ListItemTextureAtlas *item = new ListItemTextureAtlas(fileInfo.fileName(),ui->TextureListWidget);
+        ListWidgetTextureAtlas *item = new ListWidgetTextureAtlas(fileInfo.fileName(),ui->TextureListWidget);
         item->data = image;
         ui->TextureListWidget->addItem(item);
         on_listWidgetTextures_itemSelectionChanged();
+
+        textureListWidgetChanged();
     }
 }
 
@@ -27,9 +29,10 @@ void MainWindow::on_pushButton_RemoveTexture_clicked()
     QList<QListWidgetItem*> items = ui->TextureListWidget->selectedItems();
     if(items.size()>0)
     {
-        delete ((ListItemTextureAtlas*)items.at(0))->data;
+        delete ((ListWidgetTextureAtlas*)items.at(0))->data;
         delete items.at(0);
         glWidget->showTextureSprite( 0 );
+        textureListWidgetChanged();
     }
     on_listWidgetTextures_itemSelectionChanged();
 }
@@ -41,17 +44,11 @@ void MainWindow::on_listWidgetTextures_clicked(const QModelIndex &index)
 
 void MainWindow::on_listWidgetTextures_itemSelectionChanged()
 {
-    ui->cb_RegionSelector->clear();
-    for(int i=0; i < ui->TextureListWidget->count(); i++)
-    {
-        ui->cb_RegionSelector->addItem(ui->TextureListWidget->item(i)->text());
-    }
-
     QListWidgetItem* lwe = getSelectedItem(ui->TextureListWidget);
 
     if(lwe != 0)
     {
-        TextureAtlas* texture = ((ListItemTextureAtlas*)lwe)->data;
+        TextureAtlas* texture = ((ListWidgetTextureAtlas*)lwe)->data;
         glWidget->showTextureSprite( texture );
     }
 
@@ -70,12 +67,21 @@ QListWidgetItem *MainWindow::getSelectedItem(QListWidget *wList)
 void MainWindow::on_comboBoxTextures_currentIndexChanged(int index)
 {
     ListWidgetEntity* lwe = ((ListWidgetEntity*)getSelectedItem(ui->EntityListWidget));
-    ListItemTextureAtlas* lita = (ListItemTextureAtlas*)ui->TextureListWidget->item(index);
+    ListWidgetTextureAtlas* lita = (ListWidgetTextureAtlas*)ui->TextureListWidget->item(index);
 
     if(lwe != 0)
     {
         Entity::Sprite* spr = (Entity::Sprite*)lwe->data;
         TextureAtlas* atlas = (TextureAtlas*)lita->data;
         spr->setAtlas(atlas);
+    }
+}
+
+void MainWindow::textureListWidgetChanged()
+{
+    ui->cb_RegionTexture->clear();
+    for(int i = 0; i < ui->TextureListWidget->count(); i++)
+    {
+        ui->cb_RegionTexture->addItem(ui->TextureListWidget->item(i)->text());
     }
 }

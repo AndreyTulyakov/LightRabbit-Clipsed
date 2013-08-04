@@ -32,7 +32,7 @@ public:
     Camera2D();
 
     float getZoom();
-    float setZoom(float pZoom);
+    void setZoom(float pZoom);
 
     QMatrix4x4 getCameraMatrix();
 

@@ -2,16 +2,17 @@
 #define LISTWIDGETITEMS_H
 
 #include <QListWidgetItem>
+#include "TextureRegion.h"
 
 enum EntityType
 {
     Undefined, Sprite, Text, Sound
 };
 
-class ListItemTextureAtlas : public QListWidgetItem
+class ListWidgetTextureAtlas : public QListWidgetItem
 {
 public:
-    ListItemTextureAtlas(QString name, QListWidget* view)  : QListWidgetItem(name, view)
+    ListWidgetTextureAtlas(QString name, QListWidget* view)  : QListWidgetItem(name, view)
     {
         data = 0;
     }
@@ -37,6 +38,17 @@ public:
 
     void* data;
     EntityType type;
+};
+
+class ListWidgetRegion : public QListWidgetItem
+{
+public:
+    ListWidgetRegion(QString name, QListWidget* view)  : QListWidgetItem(name, view)
+    {
+    }
+
+    TextureRegion region;
+    QString textureName;
 };
 
 
