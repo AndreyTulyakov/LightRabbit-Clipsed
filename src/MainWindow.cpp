@@ -3,6 +3,7 @@
 #include <QMessageBox>
 
 #include <QFileDialog>
+#include <QColorDialog>
 
 #include "Sprite.h"
 
@@ -305,4 +306,10 @@ void MainWindow::on_ListTabs_currentChanged(int index)
         glWidget->mode = GLWidgetMode::SoundList;
         return;
     }
+}
+
+void MainWindow::on_action_background_color_triggered()
+{
+    if(glWidget != 0 && glWidget != nullptr)
+        glWidget->setBackgroundColor(QColorDialog::getColor(Qt::white, this));
 }

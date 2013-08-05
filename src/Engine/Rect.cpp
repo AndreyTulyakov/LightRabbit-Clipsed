@@ -16,12 +16,24 @@ Rect::Rect(float x1, float y1, float x2, float y2)
     p1 = QPoint(x1, y1);
     p2 = QPoint(x2, y2);
 
+    filledDraw = false;
+
     initGeometry();
 }
 
 Rect::~Rect()
 {
 
+}
+
+void Rect::setFilledDraw(bool arg)
+{
+    filledDraw = arg;
+}
+
+bool Rect::isFilledDraw()
+{
+    return filledDraw;
 }
 
 void Rect::update()
@@ -49,7 +61,15 @@ void Rect::draw()
     shaderProgram->enableAttributeArray(vertexLocation);
     glVertexAttribPointer(vertexLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2DSimple), (const void *)offset);
 
-    glDrawArrays(GL_LINE_LOOP, 0, 4);
+    if(filledDraw)
+    {
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    }
+    else
+    {
+        glDrawArrays(GL_LINE_LOOP, 0, 4);
+    }
+
 }
 
 

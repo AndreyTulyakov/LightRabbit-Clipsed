@@ -90,6 +90,14 @@ GLWidget* GLWidget::getInstance(QString pInstanceName)
     return 0;
 }
 
+void GLWidget::setBackgroundColor(QColor color)
+{
+    qreal r,g,b;
+    color.getRgbF(&r, &g, &b);
+    clipInfo.Color = QVector4D(r,g,b,1);
+    eRect->setColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1.0f);
+}
+
 
 void GLWidget::timerEvent(QTimerEvent *)
 {
@@ -142,8 +150,9 @@ void GLWidget::initializeGL()
         rootScene.attachChild(eLine2);
         */
 
-        Entity::Rect *eRect = new Entity::Rect(-clipInfo.Width / 2, -clipInfo.Height / 2, clipInfo.Width, clipInfo.Height);
-        eRect->setColor(1, 1, 1, 0.5f);
+        eRect = new Entity::Rect(-clipInfo.Width / 2, -clipInfo.Height / 2, clipInfo.Width, clipInfo.Height);
+        eRect->setColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1.0f);
+        eRect->setFilledDraw(true);
         rootScene.attachChild(eRect);
 
         rootScene.attachChild(spriteEmptyScene);
@@ -179,7 +188,7 @@ void GLWidget::paintGL()
     {
         case GLWidgetMode::ClipEdit:
 
-            glClearColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1);
+            glClearColor(0.66f, 0.66f, 0.66f, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             rootScene.update();
             rootScene.draw();

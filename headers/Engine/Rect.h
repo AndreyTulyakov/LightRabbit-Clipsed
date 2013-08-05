@@ -28,11 +28,14 @@ class Rect : public DrawableEntity , QGLFunctions
 
         void init();
 
+        void setFilledDraw(bool arg);
+        bool isFilledDraw();
+
         void update();
         void draw();
 
     private:
-
+        bool filledDraw;
         void initGeometry();
         QPoint p1, p2;
 };

@@ -591,7 +591,14 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuScene">
+    <property name="title">
+     <string>Scene</string>
+    </property>
+    <addaction name="action_background_color"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuScene"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -699,6 +706,11 @@
   <action name="actionTexture_list">
    <property name="text">
     <string>Texture list</string>
+   </property>
+  </action>
+  <action name="action_background_color">
+   <property name="text">
+    <string>Background color</string>
    </property>
   </action>
  </widget>

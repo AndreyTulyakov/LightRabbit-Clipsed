@@ -83,6 +83,8 @@ class MainWindow : public QMainWindow
 
         void on_ListTabs_currentChanged(int index);
 
+        void on_action_background_color_triggered();
+
 private:
 
         QListWidgetItem *getSelectedItem(QListWidget *wList);

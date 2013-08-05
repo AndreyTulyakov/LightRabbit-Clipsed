@@ -66,6 +66,8 @@ class GLWidget : public QGLWidget, protected QGLFunctions
 
         static GLWidget* getInstance(QString pInstanceName);
 
+        void setBackgroundColor(QColor color);
+
     protected:
         void timerEvent(QTimerEvent *e);
 
@@ -80,19 +82,21 @@ class GLWidget : public QGLWidget, protected QGLFunctions
 
         static QMap<QString, GLWidget*> instances;
 
-        Camera2D camera, texCamera;
-        Scene rootScene, textureScene, sceneSound;
-
-        QBasicTimer timer;
-
         ClipInfo clipInfo;
-
-        Entity::Sprite *spriteCurrentTexture, *spriteSound, *spriteEmptyScene;
-
         bool mouseRight;
         QPoint oldMousePos;
 
+        Entity::Rect *eRect;
+
+        Camera2D camera, texCamera;
+        Scene rootScene, textureScene, sceneSound;
+        Entity::Sprite *spriteCurrentTexture, *spriteSound, *spriteEmptyScene;
         TextureAtlas *atlasSound, *atlasTexture, *atlasScene;
+        QBasicTimer timer;
+
+
+
+
 };
 
 #endif

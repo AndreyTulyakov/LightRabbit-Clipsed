@@ -37,7 +37,8 @@ ClipInfo FormNewClip::getInfo()
 
 void FormNewClip::on_buttonSetColor_clicked()
 {
-    color = QColorDialog::getColor(Qt::white, this);
+    QColor color = QColorDialog::getColor(Qt::white, this);
+
 }
 
 void FormNewClip::on_checkColor_toggled(bool checked)
