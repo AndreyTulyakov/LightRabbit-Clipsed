@@ -44,6 +44,7 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
 
     this->statusBar()->showMessage("Started GLWidget", 2000);
 
+    on_ListTabs_currentChanged(ui->ListTabs->currentIndex());
 }
 
 void MainWindow::killGLWidget()
@@ -143,7 +144,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 {
     if (index == 1)
     {
-        glWidget->mode = GLWidgetMode::TextureShow;
+        glWidget->mode = GLWidgetMode::TextureList;
         glWidget->centerTexCamera();
     }
 
@@ -223,7 +224,7 @@ void MainWindow::on_pushButton_AddTexture_clicked()
         ui->TextureListWidget->addItem(item);
 
         on_listWidgetTextures_itemSelectionChanged();
-        textureListWidgetChanged();
+        //textureListWidgetChanged();
     }
 }
 
@@ -234,7 +235,7 @@ void MainWindow::on_pushButton_RemoveTexture_clicked()
     {
         delete items.at(0);
         glWidget->showTextureSprite(0);
-        textureListWidgetChanged();
+        //textureListWidgetChanged();
     }
     on_listWidgetTextures_itemSelectionChanged();
 }
@@ -279,7 +280,26 @@ void MainWindow::on_comboBoxTextures_currentIndexChanged(int index)
     }
 }
 
-void MainWindow::textureListWidgetChanged()
-{
 
+void MainWindow::on_ListTabs_currentChanged(int index)
+{
+    qDebug() << "Switched tab:" << QString::number(index);
+
+    if(index == 0)
+    {
+        glWidget->mode = GLWidgetMode::ClipEdit;
+        return;
+    }
+
+    if(index == 1)
+    {
+        glWidget->mode = GLWidgetMode::TextureList;
+        return;
+    }
+
+    if(index == 2)
+    {
+        glWidget->mode = GLWidgetMode::SoundList;
+        return;
+    }
 }

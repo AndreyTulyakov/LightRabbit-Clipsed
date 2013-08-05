@@ -38,7 +38,7 @@
 
 enum GLWidgetMode
 {
-    ClipEdit, TextureShow
+    ClipEdit, TextureList, SoundList
 };
 
 class GLWidget : public QGLWidget, protected QGLFunctions

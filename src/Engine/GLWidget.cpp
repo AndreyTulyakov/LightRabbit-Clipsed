@@ -166,12 +166,19 @@ void GLWidget::paintGL()
             break;
 
 
-        case GLWidgetMode::TextureShow:
+        case GLWidgetMode::TextureList:
 
-            glClearColor(0.66f, 0.66f, 0.75f, 1);
+            glClearColor(0.66f, 0.66f, 0.85f, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             textureScene.update();
             textureScene.draw();
+
+            break;
+
+        case GLWidgetMode::SoundList:
+
+            glClearColor(0.4f, 0.9f, 0.4f, 1);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             break;
     }
@@ -187,9 +194,10 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     {
         QPoint pos = event->pos() - oldMousePos;
 
-        if (mode == GLWidgetMode::TextureShow)
+        if (mode == GLWidgetMode::TextureList)
             texCamera.setPosition(texCamera.getPosition().x() - pos.x(), texCamera.getPosition().y() + pos.y(), 0);
-        else
+
+        if (mode == GLWidgetMode::ClipEdit)
             camera.setPosition(camera.getPosition().x() - pos.x(), camera.getPosition().y() + pos.y(), 0);
 
         oldMousePos = event->pos();
@@ -242,8 +250,9 @@ void GLWidget::wheelEvent(QWheelEvent *event)
     else
         sf -= k;
 
-    if (mode == GLWidgetMode::TextureShow)
+    if (mode == GLWidgetMode::TextureList)
         texCamera.setZoom(texCamera.getZoom() + sf);
-    else
+
+    if (mode == GLWidgetMode::ClipEdit)
         camera.setZoom(camera.getZoom() + sf);
 }

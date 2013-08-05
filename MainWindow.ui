@@ -60,7 +60,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -68,9 +68,9 @@
       <property name="usesScrollButtons">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="tab_0">
+      <widget class="QWidget" name="tab_Entity">
        <attribute name="title">
-        <string>Entity list</string>
+        <string>Entity List</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="3" column="0">
@@ -490,7 +490,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="tab_Texture">
        <attribute name="title">
         <string>Texture List</string>
        </attribute>

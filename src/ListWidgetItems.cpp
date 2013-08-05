@@ -14,7 +14,7 @@ ListWidgetTextureAtlas::ListWidgetTextureAtlas(QString pFilename, QListWidget *v
 
     atlas = new TextureAtlas(pFilename, GLWidget::getInstance("Main")->context());
 
-    setText(QString("#") + index + QString(" - ") + filename);
+    setText(QString("#") + QString::number(index) + QString(" - ") + filename);
 }
 
 ListWidgetTextureAtlas::~ListWidgetTextureAtlas()

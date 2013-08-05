@@ -81,8 +81,9 @@ class MainWindow : public QMainWindow
 
         void on_comboBoxTextures_currentIndexChanged(int index);
 
+        void on_ListTabs_currentChanged(int index);
 
-    private:
+private:
 
         QListWidgetItem *getSelectedItem(QListWidget *wList);
         void spritePropertiesToEditPanel(Entity::Sprite *spr);
