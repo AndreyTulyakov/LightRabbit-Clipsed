@@ -59,6 +59,7 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         void setClipInfo(ClipInfo pInfo);
         void showTextureSprite(TextureAtlas *pAtlas);
         void centerTexCamera();
+        void selectTexture(TextureAtlas* arg);
 
         void attachToRootScene(SceneObject *obj);
         void detachFromRootScene(SceneObject *obj);
@@ -80,16 +81,18 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         static QMap<QString, GLWidget*> instances;
 
         Camera2D camera, texCamera;
-        Scene rootScene, textureScene;
+        Scene rootScene, textureScene, sceneSound;
 
         QBasicTimer timer;
 
         ClipInfo clipInfo;
 
-        Entity::Sprite *textureSprite;
+        Entity::Sprite *spriteCurrentTexture, *spriteSound, *spriteEmptyScene;
 
         bool mouseRight;
         QPoint oldMousePos;
+
+        TextureAtlas *atlasSound, *atlasTexture, *atlasScene;
 };
 
 #endif

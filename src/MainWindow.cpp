@@ -35,8 +35,6 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
     glWidget->setMinimumWidth(400);
     glWidget->setMinimumHeight(240);
 
-
-
     ui->gridLayout->addWidget(glWidget);
 
     ui->ListTabs->setVisible(true);
@@ -97,10 +95,13 @@ void MainWindow::on_actionNew_triggered()
     {
         info = formNewClip->getInfo();
 
+
+
         startGLWidget(info);
     }
-
     delete formNewClip;
+
+
 }
 
 void MainWindow::on_actionClose_triggered()
@@ -293,12 +294,14 @@ void MainWindow::on_ListTabs_currentChanged(int index)
 
     if(index == 1)
     {
+        glWidget->centerTexCamera();
         glWidget->mode = GLWidgetMode::TextureList;
         return;
     }
 
     if(index == 2)
     {
+        glWidget->centerTexCamera();
         glWidget->mode = GLWidgetMode::SoundList;
         return;
     }

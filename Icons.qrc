@@ -6,5 +6,8 @@
         <file>Icons/1375198887_transform_crop.png</file>
         <file>Icons/1375198910_transform_flip.png</file>
         <file>Icons/1375198926_transform_layer.png</file>
+        <file>Icons/sound_icon.png</file>
+        <file>Icons/texture_icon.png</file>
+        <file>Icons/scene_icon.png</file>
     </qresource>
 </RCC>

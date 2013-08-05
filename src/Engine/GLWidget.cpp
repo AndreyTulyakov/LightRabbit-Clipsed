@@ -20,19 +20,18 @@ GLWidget::GLWidget(QWidget *parent, QString pInstanceName) :
     QGLWidget(parent)
 {
     widgetName = pInstanceName;
-
     mode = GLWidgetMode::ClipEdit;
     setMouseTracking(true);
-
     instances.insert(widgetName,this);
-
     mouseRight = false;
 }
 
 GLWidget::~GLWidget()
 {
+    delete atlasSound;
     instances.remove(widgetName);
-    delete textureSprite;
+    delete spriteCurrentTexture;
+    delete spriteSound;
     DefaultShaders::deleteInstance();
     timer.stop();
 }
@@ -44,15 +43,27 @@ void GLWidget::setClipInfo(ClipInfo pInfo)
 
 void GLWidget::showTextureSprite(TextureAtlas *pAtlas)
 {
-
-    textureSprite->setAtlas(pAtlas);
-    textureScene.attachChild(textureSprite);
+    spriteCurrentTexture->setAtlas(pAtlas);
+    textureScene.attachChild(spriteCurrentTexture);
 }
 
 void GLWidget::centerTexCamera()
 {
     texCamera.setPosition(-width() / 2, - height() / 2, 1);
     texCamera.setZoom(1);
+}
+
+void GLWidget::selectTexture(TextureAtlas *arg)
+{
+    if(arg == 0 || arg == nullptr)
+    {
+        spriteCurrentTexture->setAtlas(atlasTexture);
+    }
+    else
+    {
+        spriteCurrentTexture->setAtlas(arg);
+    }
+
 }
 
 void GLWidget::attachToRootScene(SceneObject *obj)
@@ -92,6 +103,7 @@ void GLWidget::initializeGL()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
     //glEnable(GL_DEPTH_TEST);
     //glEnable(GL_CULL_FACE);
 
@@ -102,13 +114,25 @@ void GLWidget::initializeGL()
     //glEnable(GL_MULTISAMPLE);
 
 
-    textureSprite = new Entity::Sprite();
+    spriteCurrentTexture = new Entity::Sprite();
+    spriteSound = new Entity::Sprite();
+    spriteEmptyScene = new Entity::Sprite();
 
+    atlasSound = new TextureAtlas(":/Icons/sound_icon.png",this->context());
+    atlasTexture = new TextureAtlas(":/Icons/texture_icon.png",this->context());
+    atlasScene = new TextureAtlas(":/Icons/scene_icon.png",this->context());
+
+    spriteSound->setAtlas(atlasSound);
+    spriteEmptyScene->setAtlas(atlasScene);
+
+    sceneSound.setCamera(&texCamera);
+    sceneSound.attachChild(spriteSound);
 
     // FUNCTIONAL TESTING ===============================================
 
     rootScene.setCamera(&camera);
     {
+        /*
         Entity::Line *eLine1 = new Entity::Line(0, -100, 0, 100);
         eLine1->setColor(1, 1, 1, 0.5f);
         rootScene.attachChild(eLine1);
@@ -116,24 +140,21 @@ void GLWidget::initializeGL()
         Entity::Line *eLine2 = new Entity::Line(-100, 0, 100, 0);
         eLine2->setColor(1, 1, 1, 0.5f);
         rootScene.attachChild(eLine2);
+        */
 
         Entity::Rect *eRect = new Entity::Rect(-clipInfo.Width / 2, -clipInfo.Height / 2, clipInfo.Width, clipInfo.Height);
         eRect->setColor(1, 1, 1, 0.5f);
         rootScene.attachChild(eRect);
+
+        rootScene.attachChild(spriteEmptyScene);
     }
 
     textureScene.setCamera(&texCamera);
     {
-        Entity::Line *eLine1 = new Entity::Line(0, -100, 0, 100);
-        eLine1->setColor(1, 1, 1, 0.5f);
-        textureScene.attachChild(eLine1);
-
-        Entity::Line *eLine2 = new Entity::Line(-100, 0, 100, 0);
-        eLine2->setColor(1, 1, 1, 0.5f);
-        textureScene.attachChild(eLine2);
-
-        textureScene.attachChild(textureSprite);
+        textureScene.attachChild(spriteCurrentTexture);
     }
+
+    selectTexture(0);
 
     timer.start(1000 / 60, this);
 }
@@ -179,7 +200,8 @@ void GLWidget::paintGL()
 
             glClearColor(0.4f, 0.9f, 0.4f, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+            sceneSound.update();
+            sceneSound.draw();
             break;
     }
 
@@ -242,7 +264,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
-    float k = 0.2f;
+    float k = 0.5f;
     float sf = 0;
 
     if (event->delta() > 0)
@@ -251,8 +273,35 @@ void GLWidget::wheelEvent(QWheelEvent *event)
         sf -= k;
 
     if (mode == GLWidgetMode::TextureList)
+    {
+        if((texCamera.getZoom() + sf)>2.0f)
+        {
+            texCamera.setZoom(2.0f);
+            return;
+        }
+
+        if((texCamera.getZoom() + sf)<0.5f)
+        {
+            texCamera.setZoom(0.5f);
+            return;
+        }
         texCamera.setZoom(texCamera.getZoom() + sf);
+    }
 
     if (mode == GLWidgetMode::ClipEdit)
+    {
+        if((camera.getZoom() + sf)>2.0f)
+        {
+            camera.setZoom(2.0f);
+            return;
+        }
+
+        if((camera.getZoom() + sf)<0.5f)
+        {
+            camera.setZoom(0.5f);
+            return;
+        }
+
         camera.setZoom(camera.getZoom() + sf);
+    }
 }
