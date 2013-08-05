@@ -14,18 +14,24 @@
 #include <math.h>
 #include <locale.h>
 
-GLWidget::GLWidget(QWidget *parent) :
+QMap<QString, GLWidget*> GLWidget::instances;
+
+GLWidget::GLWidget(QWidget *parent, QString pInstanceName) :
     QGLWidget(parent)
 {
+    widgetName = pInstanceName;
+
     mode = GLWidgetMode::ClipEdit;
     setMouseTracking(true);
 
+    instances.insert(widgetName,this);
 
     mouseRight = false;
 }
 
 GLWidget::~GLWidget()
 {
+    instances.remove(widgetName);
     delete textureSprite;
     DefaultShaders::deleteInstance();
     timer.stop();
@@ -59,6 +65,20 @@ void GLWidget::detachFromRootScene(SceneObject *obj)
     rootScene.detachChild(obj);
 }
 
+GLWidget* GLWidget::getInstance(QString pInstanceName)
+{
+    if (instances.contains(pInstanceName))
+    {
+        return instances.value(pInstanceName);
+    }
+    else
+    {
+        qDebug() << "GLWidget::getInstance: can't find instance:" << pInstanceName << endl;
+    }
+
+    return 0;
+}
+
 
 void GLWidget::timerEvent(QTimerEvent *)
 {
@@ -89,26 +109,26 @@ void GLWidget::initializeGL()
 
     rootScene.setCamera(&camera);
     {
-        Entity::Line* eLine1 = new Entity::Line(0, -100, 0, 100);
+        Entity::Line *eLine1 = new Entity::Line(0, -100, 0, 100);
         eLine1->setColor(1, 1, 1, 0.5f);
         rootScene.attachChild(eLine1);
 
-        Entity::Line* eLine2 = new Entity::Line(-100, 0, 100, 0);
+        Entity::Line *eLine2 = new Entity::Line(-100, 0, 100, 0);
         eLine2->setColor(1, 1, 1, 0.5f);
         rootScene.attachChild(eLine2);
 
-        Entity::Rect* eRect = new Entity::Rect(-clipInfo.Width / 2, -clipInfo.Height / 2, clipInfo.Width, clipInfo.Height);
+        Entity::Rect *eRect = new Entity::Rect(-clipInfo.Width / 2, -clipInfo.Height / 2, clipInfo.Width, clipInfo.Height);
         eRect->setColor(1, 1, 1, 0.5f);
         rootScene.attachChild(eRect);
     }
 
     textureScene.setCamera(&texCamera);
     {
-        Entity::Line* eLine1 = new Entity::Line(0, -100, 0, 100);
+        Entity::Line *eLine1 = new Entity::Line(0, -100, 0, 100);
         eLine1->setColor(1, 1, 1, 0.5f);
         textureScene.attachChild(eLine1);
 
-        Entity::Line* eLine2 = new Entity::Line(-100, 0, 100, 0);
+        Entity::Line *eLine2 = new Entity::Line(-100, 0, 100, 0);
         eLine2->setColor(1, 1, 1, 0.5f);
         textureScene.attachChild(eLine2);
 
@@ -134,35 +154,37 @@ void GLWidget::resizeGL(int w, int h)
 void GLWidget::paintGL()
 {
 
-    switch (mode) {
-    case GLWidgetMode::ClipEdit:
+    switch (mode)
+    {
+        case GLWidgetMode::ClipEdit:
 
-        glClearColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        rootScene.update();
-        rootScene.draw();
+            glClearColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            rootScene.update();
+            rootScene.draw();
 
-        break;
+            break;
 
 
-    case GLWidgetMode::TextureShow:
+        case GLWidgetMode::TextureShow:
 
-        glClearColor(0.66f, 0.66f, 0.75f, 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        textureScene.update();
-        textureScene.draw();
+            glClearColor(0.66f, 0.66f, 0.75f, 1);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            textureScene.update();
+            textureScene.draw();
 
-        break;
+            break;
     }
 
 
 }
 
 
-void GLWidget::mouseMoveEvent(QMouseEvent * event)
+void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
     // Move Camera
-    if (mouseRight) {
+    if (mouseRight)
+    {
         QPoint pos = event->pos() - oldMousePos;
 
         if (mode == GLWidgetMode::TextureShow)
@@ -174,41 +196,43 @@ void GLWidget::mouseMoveEvent(QMouseEvent * event)
     }
 }
 
-void GLWidget::mousePressEvent(QMouseEvent * event)
+void GLWidget::mousePressEvent(QMouseEvent *event)
 {
-    switch (event->button()) {
-    case Qt::MouseButton::LeftButton:
-        qDebug() << "Left press";
-        break;
+    switch (event->button())
+    {
+        case Qt::MouseButton::LeftButton:
+            qDebug() << "Left press";
+            break;
 
-    case Qt::MouseButton::RightButton:
-        mouseRight = true;
-        oldMousePos = event->pos();
-        break;
+        case Qt::MouseButton::RightButton:
+            mouseRight = true;
+            oldMousePos = event->pos();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    switch (event->button()) {
-    case Qt::MouseButton::LeftButton:
-        qDebug() << "Left release";
+    switch (event->button())
+    {
+        case Qt::MouseButton::LeftButton:
+            qDebug() << "Left release";
 
-        break;
+            break;
 
-    case Qt::MouseButton::RightButton:
-        mouseRight = false;
-        break;
+        case Qt::MouseButton::RightButton:
+            mouseRight = false;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
-void GLWidget::wheelEvent(QWheelEvent * event)
+void GLWidget::wheelEvent(QWheelEvent *event)
 {
     float k = 0.2f;
     float sf = 0;

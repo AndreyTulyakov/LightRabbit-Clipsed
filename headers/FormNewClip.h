@@ -10,7 +10,7 @@ struct ClipInfo
     {
         Width = 400;
         Height = 300;
-        Color = QVector4D(0.5f, 0.5f, 0.5f ,1);
+        Color = QVector4D(0.5f, 0.5f, 0.5f , 1);
         EnabledColor = false;
     }
 
@@ -20,29 +20,30 @@ struct ClipInfo
     QVector4D Color;
 };
 
-namespace Ui {
+namespace Ui
+{
 class FormNewClip;
 }
 
 class FormNewClip : public QDialog
 {
-    Q_OBJECT
-    
-public:
-    explicit FormNewClip(QWidget *parent = 0);
-    ~FormNewClip();
+        Q_OBJECT
 
-    ClipInfo getInfo();
-    
-private slots:
-    void on_buttonSetColor_clicked();
+    public:
+        explicit FormNewClip(QWidget *parent = 0);
+        ~FormNewClip();
 
-    void on_checkColor_toggled(bool checked);
+        ClipInfo getInfo();
 
-private:
-    Ui::FormNewClip *ui;
+    private slots:
+        void on_buttonSetColor_clicked();
 
-    QColor color;
+        void on_checkColor_toggled(bool checked);
+
+    private:
+        Ui::FormNewClip *ui;
+
+        QColor color;
 };
 
 #endif // FORMNEWCLIP_H

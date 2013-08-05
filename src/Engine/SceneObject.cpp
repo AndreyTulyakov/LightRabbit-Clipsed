@@ -18,9 +18,12 @@ void SceneObject::attachChild(SceneObject *arg)
 
 void SceneObject::detachChild(SceneObject *arg)
 {
-    if (childs.contains(arg)) {
+    if (childs.contains(arg))
+    {
         childs.removeAt(childs.indexOf(arg));
-    } else {
+    }
+    else
+    {
         qDebug() << "SceneObject::detachChild: detach object not found.\n";
     }
 }

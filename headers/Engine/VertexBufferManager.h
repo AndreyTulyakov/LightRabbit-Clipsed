@@ -18,28 +18,28 @@
 
 class VertexBufferManager: public QGLFunctions
 {
-public:
+    public:
 
-    static VertexBufferManager *getInstance();
-    static void deleteInstance();
+        static VertexBufferManager *getInstance();
+        static void deleteInstance();
 
-    void bind(int buffer);
-    int addData(int sizeVertexData, void* vertexData, int sizeIndicesData, void* indicesData);
+        void bind(int buffer);
+        int addData(int sizeVertexData, void *vertexData, int sizeIndicesData, void *indicesData);
 
 
-private:
-    GLuint vboIds[2];
+    private:
+        GLuint vboIds[2];
 
-    VertexBufferManager();
-    ~VertexBufferManager();
+        VertexBufferManager();
+        ~VertexBufferManager();
 
-    static VertexBufferManager *instance;
+        static VertexBufferManager *instance;
 
-    int VBSize;
-    int VBUsed;
+        int VBSize;
+        int VBUsed;
 
-    int IBSize;
-    int IBUsed;
+        int IBSize;
+        int IBUsed;
 
 };
 

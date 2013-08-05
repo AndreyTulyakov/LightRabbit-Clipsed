@@ -22,19 +22,19 @@ namespace Entity
 class Rect : public DrawableEntity , QGLFunctions
 {
 
-public:
-    Rect(float x1, float y1, float x2, float y2);
-    virtual ~Rect();
+    public:
+        Rect(float x1, float y1, float x2, float y2);
+        virtual ~Rect();
 
-    void init();
+        void init();
 
-    void update();
-    void draw();
+        void update();
+        void draw();
 
-private:
+    private:
 
-    void initGeometry();
-    QPoint p1, p2;
+        void initGeometry();
+        QPoint p1, p2;
 };
 
 }

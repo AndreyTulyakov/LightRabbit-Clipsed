@@ -14,19 +14,22 @@
 #define VERTEXTYPES_H
 
 
-struct Vertex2D {
+struct Vertex2D
+{
     QVector2D position;
     QVector2D texCoord;
 };
 
-struct Vertex2DTextureColor {
+struct Vertex2DTextureColor
+{
     QVector2D position;
     QVector2D texCoord;
     QVector4D color;
 };
 
 
-struct Vertex2DSimple {
+struct Vertex2DSimple
+{
     QVector2D position;
 };
 

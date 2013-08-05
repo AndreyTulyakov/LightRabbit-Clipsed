@@ -1,11 +1,12 @@
 
 #include "VertexBufferManager.h"
 
-VertexBufferManager* VertexBufferManager::instance = 0;
+VertexBufferManager *VertexBufferManager::instance = 0;
 
 VertexBufferManager *VertexBufferManager::getInstance()
 {
-    if (instance == 0) {
+    if (instance == 0)
+    {
         instance = new VertexBufferManager();
     }
     return instance;
@@ -13,7 +14,8 @@ VertexBufferManager *VertexBufferManager::getInstance()
 
 void VertexBufferManager::deleteInstance()
 {
-    if (instance != 0) {
+    if (instance != 0)
+    {
         delete instance;
         instance = 0;
     }
@@ -34,8 +36,8 @@ VertexBufferManager::VertexBufferManager()
     IBSize = 1000;
     IBUsed = 0;
 
-    void* VBData = calloc(VBSize, 1);
-    void* IBData = calloc(IBSize, 1);
+    void *VBData = calloc(VBSize, 1);
+    void *IBData = calloc(IBSize, 1);
 
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
     glBufferData(GL_ARRAY_BUFFER, VBSize, VBData, GL_DYNAMIC_DRAW);

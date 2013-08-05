@@ -20,14 +20,14 @@ float Camera2D::getZoom()
 void Camera2D::setZoom(float pZoom)
 {
     zoomFactor = pZoom;
-    if(zoomFactor < 0.01f)
+    if (zoomFactor < 0.01f)
         zoomFactor = 0.01f;
 
-    if(zoomFactor > 1000.0f)
+    if (zoomFactor > 1000.0f)
         zoomFactor = 1000.0f;
 
     zoom.setToIdentity();
-    zoom.scale(zoomFactor,zoomFactor,1);
+    zoom.scale(zoomFactor, zoomFactor, 1);
 }
 
 QMatrix4x4 Camera2D::getCameraMatrix()
@@ -52,9 +52,12 @@ void Camera2D::setRotationRoll(float arg)
 void Camera2D::setOrtho(float width, float height, float near, float far, bool LeftTopStart)
 {
     projection.setToIdentity();
-    if (LeftTopStart) {
+    if (LeftTopStart)
+    {
         projection.ortho(0, width, height, 0, near, far);
-    } else {
+    }
+    else
+    {
         projection.ortho(0, width, 0, height, near, far);
     }
 

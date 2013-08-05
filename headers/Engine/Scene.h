@@ -18,15 +18,15 @@
 
 class Scene : public SceneObject
 {
-public:
-    Scene();
+    public:
+        Scene();
 
-    void setCamera(Camera2D* arg);
-    void draw();
-    void update();
+        void setCamera(Camera2D *arg);
+        void draw();
+        void update();
 
-private:
-    Camera2D* camera;
+    private:
+        Camera2D *camera;
 };
 
 #endif // SCENE_H

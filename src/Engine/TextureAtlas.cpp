@@ -3,7 +3,7 @@
 #include <QImage>
 #include <qdebug.h>
 
-TextureAtlas::TextureAtlas(QString filename, QGLContext* context)
+TextureAtlas::TextureAtlas(QString filename, QGLContext *context)
 {
     //filename = "res/textures/" + filename;
 
@@ -23,7 +23,7 @@ TextureAtlas::TextureAtlas(QString filename, QGLContext* context)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
-TextureAtlas::TextureAtlas(QImage* image, QGLContext* context)
+TextureAtlas::TextureAtlas(QImage *image, QGLContext *context)
 {
     glEnable(GL_TEXTURE_2D);
 

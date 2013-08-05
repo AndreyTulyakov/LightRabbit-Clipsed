@@ -13,14 +13,20 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+//#include <QMainWindow>
+
+#include "ui_MainWindow.h"
+#include <QMessageBox>
+
+#include <QFileDialog>
+
+#include "Sprite.h"
 #include "GLWidget.h"
 #include "TextureAtlas.h"
-
 #include "FormAbout.h"
 #include "FormNewClip.h"
-
 #include "ListWidgetItems.h"
+
 
 namespace Ui
 {
@@ -29,81 +35,71 @@ class MainWindow;
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+        Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    public:
+        explicit MainWindow(QWidget *parent = 0);
+        ~MainWindow();
 
-    void setApplication(QApplication *app);
+        void setApplication(QApplication *app);
 
-    void showInStatusBar(QString msg, int time);
-
-private slots:
-    void on_actionAbout_triggered();
-
-    void on_actionExit_triggered();
+        void showInStatusBar(QString msg, int time);
 
 
-    void startGLWidget(ClipInfo pInfo);
-    void killGLWidget();
 
-    void on_actionNew_triggered();
+    private slots:
+        void on_actionAbout_triggered();
 
-    void on_actionClose_triggered();
-
-    void on_actionSave_As_triggered();
-
-    void on_actionOpen_triggered();
-
-    void on_tabWidget_currentChanged(int index);
-
-    void on_pushButton_AddTexture_clicked();
-
-    void on_pushButton_RemoveTexture_clicked();
-
-    void on_listWidgetTextures_clicked(const QModelIndex &index);
-    void on_listWidgetTextures_itemSelectionChanged();
-
-    void on_pushButton_AddSprite_clicked();
-
-    void on_EntityListWidget_clicked(const QModelIndex &index);
-
-    void on_button_SaveProperties_clicked();
-
-    void on_comboBoxTextures_currentIndexChanged(int index);
-
-    void on_button_NewRegion_clicked();
-
-    void on_button_RemoveRegion_clicked();
-
-    void on_RegionListWidget_itemChanged(QListWidgetItem *item);
-
-    void on_cb_RegionTexture_currentIndexChanged(const QString &arg1);
-
-    void on_RegionListWidget_clicked(const QModelIndex &index);
+        void on_actionExit_triggered();
 
 
-private:
+        void startGLWidget(ClipInfo pInfo);
+        void killGLWidget();
 
-    QListWidgetItem *getSelectedItem(QListWidget* wList);
-    void spritePropertiesToEditPanel(Entity::Sprite *spr);
-    void spritePropertiesFromEditPanel(Entity::Sprite *spr);
+        void on_actionNew_triggered();
 
-    void updatedRegionListWidget(bool GrabPanel);
-    void regionPropertiesToPanel(ListWidgetRegion *regionItem);
-    void regionPropertiesFromPanel(ListWidgetRegion *regionItem);
+        void on_actionClose_triggered();
 
-    void textureListWidgetChanged();
+        void on_actionSave_As_triggered();
 
-    QString fileExtension;
-    QString fileExtMask;
+        void on_actionOpen_triggered();
 
-    Ui::MainWindow *ui;
-    QApplication *application;
+        void on_tabWidget_currentChanged(int index);
 
-    GLWidget *glWidget;
-    QList<TextureAtlas*> Atlases;
+        void on_pushButton_AddTexture_clicked();
+
+        void on_pushButton_RemoveTexture_clicked();
+
+        void on_listWidgetTextures_clicked(const QModelIndex &index);
+        void on_listWidgetTextures_itemSelectionChanged();
+
+        void on_pushButton_AddSprite_clicked();
+
+        void on_EntityListWidget_clicked(const QModelIndex &index);
+
+        void on_button_SaveProperties_clicked();
+
+        void on_comboBoxTextures_currentIndexChanged(int index);
+
+
+    private:
+
+        QListWidgetItem *getSelectedItem(QListWidget *wList);
+        void spritePropertiesToEditPanel(Entity::Sprite *spr);
+        void spritePropertiesFromEditPanel(Entity::Sprite *spr);
+
+        void textureListWidgetChanged();
+
+        QString fileExtension;
+        QString fileExtMask;
+
+        Ui::MainWindow *ui;
+        QApplication *application;
+
+        GLWidget *glWidget;
+
+
+        QList<TextureAtlas *> Atlases;
 
 };
 

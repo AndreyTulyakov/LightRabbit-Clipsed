@@ -93,9 +93,10 @@ void SpriteBatch::draw()
 void SpriteBatch::addStart()
 {
     used = 0;
-    if (!nowMapped) {
+    if (!nowMapped)
+    {
         vertexBuffer->bind();
-        mapedVertices = (Vertex2DTextureColor*)vertexBuffer->map(QGLBuffer::ReadWrite);
+        mapedVertices = (Vertex2DTextureColor *)vertexBuffer->map(QGLBuffer::ReadWrite);
         nowMapped = true;
     }
 }
@@ -104,9 +105,12 @@ void SpriteBatch::addStart()
 
 void SpriteBatch::addEnd()
 {
-    if (nowMapped) {
+    if (nowMapped)
+    {
         vertexBuffer->unmap();
-    } else {
+    }
+    else
+    {
         qDebug() << "SpriteBatch::addEnd: try before call :addStart";
     }
 
@@ -117,10 +121,14 @@ void SpriteBatch::addEnd()
 
 void SpriteBatch::addSprite(TextureRegion *texRegion, float x, float y, float scaleX, float scaleY, float rotation, float r, float g, float b, float a)
 {
-    if (nowMapped) {
-        if (used >= capacity) {
+    if (nowMapped)
+    {
+        if (used >= capacity)
+        {
             qDebug() << "SpriteBatch::addSprite: max capacity is" << capacity;
-        } else {
+        }
+        else
+        {
             float hw = texRegion->getRegion().width() / 2;
             float hh = texRegion->getRegion().height() / 2;
 
@@ -138,7 +146,8 @@ void SpriteBatch::addSprite(TextureRegion *texRegion, float x, float y, float sc
             transform.rotate(rotation, 0, 0, 1);
             transform.scale(scaleX, scaleY, 1.0f);
 
-            for (int k = 0; k < 4; k++) {
+            for (int k = 0; k < 4; k++)
+            {
                 QVector4D pos4(mapedVertices[i + k].position, 0, 1);
                 pos4 = transform * pos4;
                 mapedVertices[i + k].position = QVector2D(pos4.x(), pos4.y());
@@ -146,7 +155,9 @@ void SpriteBatch::addSprite(TextureRegion *texRegion, float x, float y, float sc
 
             used++;
         }
-    } else {
+    }
+    else
+    {
         qDebug() << "SpriteBatch::addSprite: try before call :addStart";
     }
 }
@@ -157,7 +168,8 @@ void SpriteBatch::initGeometry()
 {
     GLushort *indices = new GLushort[capacity * 6];
 
-    for (int i = 0; i < capacity; i++) {
+    for (int i = 0; i < capacity; i++)
+    {
 
         int j = i * 6;
         int k = i * 4;

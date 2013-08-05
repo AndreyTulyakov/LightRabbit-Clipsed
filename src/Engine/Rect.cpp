@@ -56,7 +56,8 @@ void Rect::draw()
 void Rect::initGeometry()
 {
 
-    Vertex2DSimple vertices[] = {
+    Vertex2DSimple vertices[] =
+    {
         {QVector2D(p1.x(), p1.y())},
         {QVector2D(p1.x() + p2.x(), p1.y())},
         {QVector2D(p1.x() + p2.x(), p1.y() + p2.y())},

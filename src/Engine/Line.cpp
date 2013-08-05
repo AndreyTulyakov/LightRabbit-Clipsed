@@ -58,7 +58,8 @@ void Line::draw()
 
 void Line::initGeometry()
 {
-    Vertex2DSimple vertices[] = {
+    Vertex2DSimple vertices[] =
+    {
         {QVector2D(p1.x(), p1.y())},  // v0
         {QVector2D(p2.x(), p2.y())},  // v1
     };

@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QGLShaderProgram>
 
-DefaultShaders* DefaultShaders::instance = 0;
+DefaultShaders *DefaultShaders::instance = 0;
 
 
 DefaultShaders::DefaultShaders()
@@ -15,8 +15,9 @@ DefaultShaders::DefaultShaders()
 
 DefaultShaders::~DefaultShaders()
 {
-    QMapIterator<QString, QGLShaderProgram*> i(shaders);
-    while (i.hasNext()) {
+    QMapIterator<QString, QGLShaderProgram *> i(shaders);
+    while (i.hasNext())
+    {
         i.next();
         delete i.value();
     }
@@ -24,7 +25,7 @@ DefaultShaders::~DefaultShaders()
     shaders.clear();
 }
 
-QGLShaderProgram* DefaultShaders::loadShaders(QString vsFilename, QString fsFilename)
+QGLShaderProgram *DefaultShaders::loadShaders(QString vsFilename, QString fsFilename)
 {
     vsFilename = ":/shaders/" + vsFilename;
     fsFilename = ":/shaders/" + fsFilename;
@@ -54,13 +55,16 @@ QGLShaderProgram* DefaultShaders::loadShaders(QString vsFilename, QString fsFile
 
 
 
-QGLShaderProgram* DefaultShaders::getShader(QString shaderName)
+QGLShaderProgram *DefaultShaders::getShader(QString shaderName)
 {
-    QGLShaderProgram* value = 0;
+    QGLShaderProgram *value = 0;
 
-    if (shaders.contains(shaderName)) {
+    if (shaders.contains(shaderName))
+    {
         value = shaders.value(shaderName);
-    } else {
+    }
+    else
+    {
         qDebug() << "DefaultShaders::getShader: can't find shader:" << shaderName << endl;
     }
 
@@ -73,7 +77,7 @@ QGLShaderProgram* DefaultShaders::getShader(QString shaderName)
 
 
 
-DefaultShaders* DefaultShaders::getInstance()
+DefaultShaders *DefaultShaders::getInstance()
 {
     if (instance == 0)
         instance = new DefaultShaders();

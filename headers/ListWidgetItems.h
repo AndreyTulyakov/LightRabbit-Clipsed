@@ -1,8 +1,13 @@
+#pragma once
+
 #ifndef LISTWIDGETITEMS_H
 #define LISTWIDGETITEMS_H
 
 #include <QListWidgetItem>
+#include <QFileInfo>
+
 #include "TextureRegion.h"
+#include <GLWidget.h>
 
 enum EntityType
 {
@@ -11,44 +16,52 @@ enum EntityType
 
 class ListWidgetTextureAtlas : public QListWidgetItem
 {
-public:
-    ListWidgetTextureAtlas(QString name, QListWidget* view)  : QListWidgetItem(name, view)
-    {
-        data = 0;
-    }
+    public:
+        ListWidgetTextureAtlas(QString pFilename, QListWidget *view);
+        ~ListWidgetTextureAtlas();
 
-    TextureAtlas* data;
+        int getIndex();
+        TextureAtlas *getAtlas();
+        QString getFilename();
+
+
+    private:
+        static int counter;
+
+        TextureAtlas *atlas;
+        int index;
+        QString filename;
 };
 
 class ListWidgetEntity : public QListWidgetItem
 {
-public:
-    ListWidgetEntity(QString name, QListWidget* view, EntityType pType)  : QListWidgetItem(name, view)
-    {
-        data = 0;
-        type = pType;
-    }
+    public:
+        ListWidgetEntity(QString name, QListWidget *view, EntityType pType)  : QListWidgetItem(name, view)
+        {
+            data = 0;
+            type = pType;
+        }
 
-    ListWidgetEntity(QString name, QListWidget* view, EntityType pType, void* pData)  : QListWidgetItem(name, view)
-    {
-        data = 0;
-        type = pType;
-        data = pData;
-    }
+        ListWidgetEntity(QString name, QListWidget *view, EntityType pType, void *pData)  : QListWidgetItem(name, view)
+        {
+            data = 0;
+            type = pType;
+            data = pData;
+        }
 
-    void* data;
-    EntityType type;
+        void *data;
+        EntityType type;
 };
 
 class ListWidgetRegion : public QListWidgetItem
 {
-public:
-    ListWidgetRegion(QString name, QListWidget* view)  : QListWidgetItem(name, view)
-    {
-    }
+    public:
+        ListWidgetRegion(QString name, QListWidget *view)  : QListWidgetItem(name, view)
+        {
+        }
 
-    TextureRegion region;
-    QString textureName;
+        TextureRegion region;
+        QString textureName;
 };
 
 

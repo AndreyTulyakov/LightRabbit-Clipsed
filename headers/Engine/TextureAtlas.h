@@ -17,17 +17,17 @@
 
 class TextureAtlas
 {
-public:
-    TextureAtlas(QString filename, QGLContext* context);
-    TextureAtlas(QImage* image, QGLContext* context);
+    public:
+        TextureAtlas(QString filename, QGLContext *context);
+        TextureAtlas(QImage *image, QGLContext *context);
 
-    int textureID();
-    int width();
-    int height();
+        int textureID();
+        int width();
+        int height();
 
-private:
-    int mTextureID;
-    int mWidth, mHeight;
+    private:
+        int mTextureID;
+        int mWidth, mHeight;
 };
 
 #endif // TEXTUREATLAS_H

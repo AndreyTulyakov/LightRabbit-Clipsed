@@ -27,7 +27,7 @@ SOURCES += \
     src/FormNewClip.cpp \
     src/main.cpp \
     src/MainWindow.cpp \
-    src/MainWindow2.cpp
+    src/ListWidgetItems.cpp
 
 HEADERS  += \
     headers/FormAbout.h \

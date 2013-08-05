@@ -14,16 +14,19 @@ void Scene::setCamera(Camera2D *arg)
 
 void Scene::draw()
 {
-    if (camera == 0) {
+    if (camera == 0)
+    {
         qDebug() << "You need set camera for scene before draw!\n";
         return;
     }
 
-    for (int i = 0; i < childs.length(); i++) {
+    for (int i = 0; i < childs.length(); i++)
+    {
 
-        DrawableEntity* object = dynamic_cast< DrawableEntity* >(childs.at(i));
+        DrawableEntity *object = dynamic_cast< DrawableEntity * >(childs.at(i));
 
-        if (object) {
+        if (object)
+        {
             object->setCamera(camera);
             object->draw();
         }
@@ -32,7 +35,8 @@ void Scene::draw()
 
 void Scene::update()
 {
-    for (int i = 0; i < childs.length(); i++) {
+    for (int i = 0; i < childs.length(); i++)
+    {
         childs.at(i)->update();
     }
 }

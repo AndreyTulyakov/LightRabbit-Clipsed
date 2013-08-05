@@ -18,18 +18,18 @@
 
 class SceneObject : public EntityObject
 {
-protected:
-    QList<SceneObject *> childs;
+    protected:
+        QList<SceneObject *> childs;
 
-public:
-    SceneObject();
-    virtual ~SceneObject();
+    public:
+        SceneObject();
+        virtual ~SceneObject();
 
-    void attachChild(SceneObject* arg);
-    void detachChild(SceneObject* arg);
+        void attachChild(SceneObject *arg);
+        void detachChild(SceneObject *arg);
 
-    virtual void update() = 0;
-    virtual void draw() = 0;
+        virtual void update() = 0;
+        virtual void draw() = 0;
 };
 
 #endif // SCENEOBJECT_H

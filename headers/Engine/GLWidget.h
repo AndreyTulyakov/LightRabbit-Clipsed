@@ -10,6 +10,7 @@
  *
  */
 
+#pragma once
 
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
@@ -23,6 +24,7 @@
 
 #include <QGLFunctions>
 #include <QBasicTimer>
+#include <QMap>
 
 #include "Rect.h"
 #include "SpriteBatch.h"
@@ -41,52 +43,53 @@ enum GLWidgetMode
 
 class GLWidget : public QGLWidget, protected QGLFunctions
 {
-    Q_OBJECT
+        Q_OBJECT
 
-    void mouseMoveEvent(QMouseEvent * event );
-    void mousePressEvent(QMouseEvent * event );
-    void mouseReleaseEvent(QMouseEvent * event );
-    void wheelEvent(QWheelEvent * event );
+        void mouseMoveEvent(QMouseEvent *event);
+        void mousePressEvent(QMouseEvent *event);
+        void mouseReleaseEvent(QMouseEvent *event);
+        void wheelEvent(QWheelEvent *event);
 
-public:
-    GLWidgetMode mode;
+    public:
+        GLWidgetMode mode;
 
-    explicit GLWidget(QWidget *parent = 0);
-    ~GLWidget();
+        explicit GLWidget(QWidget *parent, QString pInstanceName);
+        ~GLWidget();
 
-    void setClipInfo(ClipInfo pInfo);
-    void showTextureSprite(TextureAtlas* pAtlas);
-    void centerTexCamera();
+        void setClipInfo(ClipInfo pInfo);
+        void showTextureSprite(TextureAtlas *pAtlas);
+        void centerTexCamera();
 
-    void attachToRootScene(SceneObject* obj);
-    void detachFromRootScene(SceneObject* obj);
+        void attachToRootScene(SceneObject *obj);
+        void detachFromRootScene(SceneObject *obj);
 
-protected:
-    void timerEvent(QTimerEvent *e);
+        static GLWidget* getInstance(QString pInstanceName);
 
-    void initializeGL();
-    void resizeGL(int w, int h);
-    void paintGL();
+    protected:
+        void timerEvent(QTimerEvent *e);
 
-    void initShaders();
+        void initializeGL();
+        void resizeGL(int w, int h);
+        void paintGL();
 
+        void initShaders();
 
+    private:
+        QString widgetName;
 
-private:
+        static QMap<QString, GLWidget*> instances;
 
+        Camera2D camera, texCamera;
+        Scene rootScene, textureScene;
 
+        QBasicTimer timer;
 
-    Camera2D camera, texCamera;
-    Scene rootScene, textureScene;
+        ClipInfo clipInfo;
 
-    QBasicTimer timer;
+        Entity::Sprite *textureSprite;
 
-    ClipInfo clipInfo;
-
-    Entity::Sprite *textureSprite;
-
-    bool mouseRight;
-    QPoint oldMousePos;
+        bool mouseRight;
+        QPoint oldMousePos;
 };
 
 #endif

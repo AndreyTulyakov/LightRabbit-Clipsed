@@ -22,17 +22,17 @@ class FormAbout;
 
 class FormAbout : public QDialog
 {
-    Q_OBJECT
+        Q_OBJECT
 
-public:
-    explicit FormAbout(QWidget *parent = 0);
-    ~FormAbout();
+    public:
+        explicit FormAbout(QWidget *parent = 0);
+        ~FormAbout();
 
-private slots:
-    void on_ButtonClose_clicked();
+    private slots:
+        void on_ButtonClose_clicked();
 
-private:
-    Ui::FormAbout *ui;
+    private:
+        Ui::FormAbout *ui;
 };
 
 #endif // FORMABOUT_H

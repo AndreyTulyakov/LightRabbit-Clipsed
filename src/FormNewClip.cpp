@@ -23,7 +23,7 @@ ClipInfo FormNewClip::getInfo()
     info.Width  = ui->spinBoxW->value();
     info.Height = ui->spinBoxH->value();
 
-    if(ui->checkColor->isChecked())
+    if (ui->checkColor->isChecked())
     {
         info.EnabledColor = true;
         info.Color.setX(color.redF());

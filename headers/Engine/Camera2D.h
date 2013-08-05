@@ -20,25 +20,25 @@
 
 class Camera2D : public EntityObject
 {
-private:
-    QMatrix4x4 projection;
-    QMatrix4x4 translation;
-    QMatrix4x4 rotation;
-    QMatrix4x4 view;
-    QMatrix4x4 zoom;
-    float zoomFactor;
+    private:
+        QMatrix4x4 projection;
+        QMatrix4x4 translation;
+        QMatrix4x4 rotation;
+        QMatrix4x4 view;
+        QMatrix4x4 zoom;
+        float zoomFactor;
 
-public:
-    Camera2D();
+    public:
+        Camera2D();
 
-    float getZoom();
-    void setZoom(float pZoom);
+        float getZoom();
+        void setZoom(float pZoom);
 
-    QMatrix4x4 getCameraMatrix();
+        QMatrix4x4 getCameraMatrix();
 
-    void setOrtho(float width, float height, float near, float far, bool LeftTopStart = false);
-    void setRotationRoll(float arg);
-    void setPosition(float x, float y, float z);
+        void setOrtho(float width, float height, float near, float far, bool LeftTopStart = false);
+        void setRotationRoll(float arg);
+        void setPosition(float x, float y, float z);
 
 };
 

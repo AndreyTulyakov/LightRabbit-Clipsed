@@ -19,24 +19,24 @@
 
 class DefaultShaders
 {
-public:
+    public:
 
-    static DefaultShaders* getInstance();
-    static void deleteInstance();
+        static DefaultShaders *getInstance();
+        static void deleteInstance();
 
-    QGLShaderProgram* getShader(QString shaderName);
+        QGLShaderProgram *getShader(QString shaderName);
 
 
 
-private:
-    DefaultShaders();
-    ~DefaultShaders();
+    private:
+        DefaultShaders();
+        ~DefaultShaders();
 
-    static DefaultShaders *instance;
+        static DefaultShaders *instance;
 
-    QMap<QString, QGLShaderProgram*> shaders;
+        QMap<QString, QGLShaderProgram *> shaders;
 
-    QGLShaderProgram* loadShaders(QString vsFilename, QString fsFilename);
+        QGLShaderProgram *loadShaders(QString vsFilename, QString fsFilename);
 };
 
 #endif // DEFAULTSHADERS_H

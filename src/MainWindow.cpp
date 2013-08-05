@@ -12,15 +12,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     application = 0;
+    glWidget = nullptr;
 
     fileExtension = ".lrclip";
     fileExtMask = "LRabbit Clips (*" + fileExtension + ")";
 
-    glWidget = nullptr;
-
     ui->ListTabs->setVisible(false);
     ui->tabProperty->setVisible(false);
-    ui->sa_RegionProperties->setEnabled(false);
 
 }
 
@@ -28,7 +26,8 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
 {
     killGLWidget();
 
-    glWidget = new GLWidget(this);
+    glWidget = new GLWidget(this, "Main");
+
     glWidget->setClipInfo(pInfo);
     QGLFormat base_format = glWidget->format();
     base_format.setProfile(QGLFormat::CoreProfile);
@@ -212,106 +211,75 @@ void MainWindow::on_button_SaveProperties_clicked()
 }
 
 
-// REGION LIST WIDGET
-static int unnamedRegionCounter = 0;
+// TEXTURES CODE
 
-void MainWindow::on_button_NewRegion_clicked()
+void MainWindow::on_pushButton_AddTexture_clicked()
 {
-    QString name = "unnamed_" + QString::number(unnamedRegionCounter);
-    ListWidgetRegion *lwe = new ListWidgetRegion(name, ui->RegionListWidget);
-    ui->RegionListWidget->addItem(lwe);
-    updatedRegionListWidget(false);
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open Image File"), "", tr("Images (*.png *.jpg *jpeg *.bmp)"));
 
-    unnamedRegionCounter++;
+    if (!filename.isNull())
+    {
+        ListWidgetTextureAtlas *item = new ListWidgetTextureAtlas(filename, ui->TextureListWidget);
+        ui->TextureListWidget->addItem(item);
+
+        on_listWidgetTextures_itemSelectionChanged();
+        textureListWidgetChanged();
+    }
 }
 
-
-
-void MainWindow::on_button_RemoveRegion_clicked()
+void MainWindow::on_pushButton_RemoveTexture_clicked()
 {
-    ListWidgetRegion *lwe = (ListWidgetRegion *)getSelectedItem(ui->RegionListWidget);
+    QList<QListWidgetItem *> items = ui->TextureListWidget->selectedItems();
+    if (items.size() > 0)
+    {
+        delete items.at(0);
+        glWidget->showTextureSprite(0);
+        textureListWidgetChanged();
+    }
+    on_listWidgetTextures_itemSelectionChanged();
+}
+
+void MainWindow::on_listWidgetTextures_clicked(const QModelIndex &index)
+{
+    on_listWidgetTextures_itemSelectionChanged();
+}
+
+void MainWindow::on_listWidgetTextures_itemSelectionChanged()
+{
+    QListWidgetItem *lwe = getSelectedItem(ui->TextureListWidget);
+
     if (lwe != 0)
     {
-        delete lwe;
-    }
-    updatedRegionListWidget(false);
-}
-
-void MainWindow::updatedRegionListWidget(bool GrabPanel)
-{
-    ListWidgetRegion *lwe = (ListWidgetRegion *)getSelectedItem(ui->RegionListWidget);
-
-    if(GrabPanel == true && lwe != 0)
-    {
-        regionPropertiesFromPanel(lwe);
-    }
-
-    ui->cb_RegionSelector->clear();
-    for (int i = 0; i < ui->RegionListWidget->count(); i++)
-    {
-        ui->cb_RegionSelector->addItem(ui->RegionListWidget->item(i)->text());
-    }
-
-
-    if (lwe == 0)
-    {
-        ui->sa_RegionProperties->setEnabled(false);
-    }
-    else
-    {
-        ui->sa_RegionProperties->setEnabled(true);
-    }
-
-    regionPropertiesToPanel(lwe);
-
-}
-
-void MainWindow::regionPropertiesToPanel(ListWidgetRegion *regionItem)
-{
-    if (regionItem != 0)
-    {
-        QRect rect = regionItem->region.getRegion();
-        ui->le_RegionName->setText(regionItem->text());
-        ui->cb_RegionTexture->setCurrentText(regionItem->textureName);
-        ui->sb_RegionX->setValue(rect.x());
-        ui->sb_RegionY->setValue(rect.y());
-        ui->sb_RegionW->setValue(rect.width());
-        ui->sb_RegionH->setValue(rect.height());
-    }
-    else
-    {
-        ui->le_RegionName->setText("");
-        ui->cb_RegionTexture->setCurrentIndex(-1);
-        ui->sb_RegionX->setValue(0);
-        ui->sb_RegionY->setValue(0);
-        ui->sb_RegionW->setValue(0);
-        ui->sb_RegionH->setValue(0);
+        TextureAtlas *texture = ((ListWidgetTextureAtlas *)lwe)->getAtlas();
+        glWidget->showTextureSprite(texture);
     }
 
 }
 
-void MainWindow::regionPropertiesFromPanel(ListWidgetRegion *regionItem)
+QListWidgetItem *MainWindow::getSelectedItem(QListWidget *wList)
 {
-    regionItem->setText(ui->le_RegionName->text());
-    regionItem->textureName =  ui->cb_RegionTexture->currentText();
-
-    regionItem->region.setTextureAtlas(((ListWidgetTextureAtlas *)ui->TextureListWidget->item(ui->cb_RegionTexture->currentIndex()))->data);
-    regionItem->region.setRegion(ui->sb_RegionX->value(), ui->sb_RegionY->value(), ui->sb_RegionW->value(), ui->sb_RegionH->value());
+    QList<QListWidgetItem *> list = wList->selectedItems();
+    if (list.size() > 0)
+    {
+        return list.at(0);
+    }
+    return 0;
 }
 
-
-
-void MainWindow::on_RegionListWidget_itemChanged(QListWidgetItem *item)
+void MainWindow::on_comboBoxTextures_currentIndexChanged(int index)
 {
-    updatedRegionListWidget(false);
+    ListWidgetEntity *lwe = ((ListWidgetEntity *)getSelectedItem(ui->EntityListWidget));
+    ListWidgetTextureAtlas *lita = (ListWidgetTextureAtlas *)ui->TextureListWidget->item(index);
+
+    if (lwe != 0)
+    {
+        Entity::Sprite *spr = (Entity::Sprite *)lwe->data;
+        TextureAtlas *atlas = (TextureAtlas *)lita->getAtlas();
+        spr->setAtlas(atlas);
+    }
 }
 
-void MainWindow::on_cb_RegionTexture_currentIndexChanged(const QString &arg1)
+void MainWindow::textureListWidgetChanged()
 {
-     updatedRegionListWidget(true);
-}
 
-void MainWindow::on_RegionListWidget_clicked(const QModelIndex &index)
-{
-    updatedRegionListWidget(false);
 }
