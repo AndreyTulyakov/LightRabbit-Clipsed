@@ -200,7 +200,7 @@ void GLWidget::paintGL()
     {
         case GLWidgetMode::ClipEdit:
 
-            glClearColor(0.22f, 0.22f, 0.22f, 1);
+            glClearColor(0.49f, 0.49f, 0.49f, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             rootScene.update();
             rootScene.draw();

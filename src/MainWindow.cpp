@@ -42,6 +42,9 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
     ui->tabProperty->setVisible(true);
     ui->action_background_color->setEnabled(true);
 
+    ui->actionNew->setEnabled(false);
+    ui->actionOpen->setEnabled(false);
+
     this->statusBar()->showMessage("Started GLWidget", 2000);
 
     on_ListTabs_currentChanged(ui->ListTabs->currentIndex());
@@ -59,6 +62,9 @@ void MainWindow::killGLWidget()
     ui->ListTabs->setVisible(false);
     ui->tabProperty->setVisible(false);
     ui->action_background_color->setEnabled(false);
+
+    ui->actionNew->setEnabled(true);
+    ui->actionOpen->setEnabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -101,8 +107,6 @@ void MainWindow::on_actionNew_triggered()
         startGLWidget(info);
     }
     delete formNewClip;
-
-
 }
 
 void MainWindow::on_actionClose_triggered()
@@ -115,6 +119,7 @@ void MainWindow::on_actionClose_triggered()
             on_actionSave_As_triggered();
         }
         killGLWidget();
+
     }
 }
 
@@ -139,6 +144,7 @@ void MainWindow::on_actionOpen_triggered()
     if (!filename.isNull())
     {
         ui->statusBar->showMessage("Opened " + filename, 2000);
+        //
     }
 }
 

@@ -9,6 +9,8 @@ FormNewClip::FormNewClip(QWidget *parent) :
     ui(new Ui::FormNewClip)
 {
     ui->setupUi(this);
+
+    color.setRgbF(0.75,0.75,0.75);
 }
 
 FormNewClip::~FormNewClip()
@@ -23,25 +25,19 @@ ClipInfo FormNewClip::getInfo()
     info.Width  = ui->spinBoxW->value();
     info.Height = ui->spinBoxH->value();
 
-    if (ui->checkColor->isChecked())
-    {
-        info.EnabledColor = true;
-        info.Color.setX(color.redF());
-        info.Color.setY(color.greenF());
-        info.Color.setZ(color.blueF());
-        info.Color.setW(color.alphaF());
-    }
+    info.Color.setX(color.redF());
+    info.Color.setY(color.greenF());
+    info.Color.setZ(color.blueF());
+    info.Color.setW(color.alphaF());
 
     return info;
 }
 
 void FormNewClip::on_buttonSetColor_clicked()
 {
-    QColor color = QColorDialog::getColor(Qt::white, this);
-
-}
-
-void FormNewClip::on_checkColor_toggled(bool checked)
-{
-    ui->buttonSetColor->setEnabled(checked);
+    QColor c = QColorDialog::getColor(Qt::white, this);
+    if(c.isValid())
+        color = c;
+    else
+        color.setRgbF(0.75,0.75,0.75);
 }

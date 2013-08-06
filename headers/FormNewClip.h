@@ -11,12 +11,10 @@ struct ClipInfo
         Width = 400;
         Height = 300;
         Color = QVector4D(0.5f, 0.5f, 0.5f , 1);
-        EnabledColor = false;
     }
 
     int Width;
     int Height;
-    bool EnabledColor;
     QVector4D Color;
 };
 
@@ -37,8 +35,6 @@ class FormNewClip : public QDialog
 
     private slots:
         void on_buttonSetColor_clicked();
-
-        void on_checkColor_toggled(bool checked);
 
     private:
         Ui::FormNewClip *ui;
