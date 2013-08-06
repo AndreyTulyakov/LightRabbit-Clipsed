@@ -91,8 +91,8 @@ class GLWidget : public QGLWidget, protected QGLFunctions
 
         Camera2D camera, texCamera;
         Scene rootScene, textureScene, sceneSound;
-        Entity::Sprite *spriteCurrentTexture, *spriteSound, *spriteEmptyScene;
-        TextureAtlas *atlasSound, *atlasTexture, *atlasScene;
+        Entity::Sprite *spriteCurrentTexture, *spriteSound;
+        TextureAtlas *atlasSound, *atlasTexture;
         QBasicTimer timer;
 
 

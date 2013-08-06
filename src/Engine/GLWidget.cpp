@@ -137,14 +137,11 @@ void GLWidget::initializeGL()
 
     spriteCurrentTexture = new Entity::Sprite();
     spriteSound = new Entity::Sprite();
-    spriteEmptyScene = new Entity::Sprite();
 
     atlasSound = new TextureAtlas(":/Icons/sound_icon.png");
     atlasTexture = new TextureAtlas(":/Icons/texture_icon.png");
-    atlasScene = new TextureAtlas(":/Icons/scene_icon.png");
 
     spriteSound->setAtlas(atlasSound);
-    spriteEmptyScene->setAtlas(atlasScene);
 
     sceneSound.setCamera(&texCamera);
     sceneSound.attachChild(spriteSound);
@@ -169,8 +166,6 @@ void GLWidget::initializeGL()
         eRect->setColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1.0f);
         eRect->setFilledDraw(true);
         rootScene.attachChild(eRect);
-
-        rootScene.attachChild(spriteEmptyScene);
     }
 
     textureScene.setCamera(&texCamera);
@@ -205,7 +200,7 @@ void GLWidget::paintGL()
     {
         case GLWidgetMode::ClipEdit:
 
-            glClearColor(0.66f, 0.66f, 0.66f, 1);
+            glClearColor(0.22f, 0.22f, 0.22f, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             rootScene.update();
             rootScene.draw();

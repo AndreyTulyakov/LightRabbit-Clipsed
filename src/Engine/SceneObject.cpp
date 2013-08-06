@@ -33,6 +33,11 @@ void SceneObject::clearChilds()
     childs.clear();
 }
 
+bool SceneObject::isContainChild(SceneObject *arg)
+{
+    return childs.contains(arg);
+}
+
 int SceneObject::childCount()
 {
     return childs.size();
