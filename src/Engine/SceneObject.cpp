@@ -3,7 +3,7 @@
 
 SceneObject::SceneObject()
 {
-
+    visible = true;
 }
 
 SceneObject::~SceneObject()
@@ -31,4 +31,14 @@ void SceneObject::detachChild(SceneObject *arg)
 int SceneObject::childCount()
 {
     return childs.size();
+}
+
+bool SceneObject::isVisible()
+{
+    return visible;
+}
+
+void SceneObject::setVisible(bool arg)
+{
+    visible = arg;
 }

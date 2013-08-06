@@ -30,6 +30,9 @@ void Line::update()
 
 void Line::draw()
 {
+    if (!visible)
+        return;
+
     shaderProgram->bind();
     vertexBuffer->bind();
 

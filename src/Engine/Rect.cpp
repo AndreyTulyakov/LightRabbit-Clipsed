@@ -43,6 +43,9 @@ void Rect::update()
 
 void Rect::draw()
 {
+    if (!visible)
+        return;
+
     shaderProgram->bind();
     vertexBuffer->bind();
 

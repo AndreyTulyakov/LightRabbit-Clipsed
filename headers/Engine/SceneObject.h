@@ -20,6 +20,7 @@ class SceneObject : public EntityObject
 {
     protected:
         QList<SceneObject *> childs;
+        bool visible;
 
     public:
         SceneObject();
@@ -32,6 +33,8 @@ class SceneObject : public EntityObject
         virtual void draw() = 0;
 
         int childCount();
+        bool isVisible();
+        void setVisible(bool arg);
 };
 
 #endif // SCENEOBJECT_H

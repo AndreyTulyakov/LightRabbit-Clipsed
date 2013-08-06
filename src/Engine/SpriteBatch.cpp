@@ -35,6 +35,9 @@ void SpriteBatch::update()
 
 void SpriteBatch::draw()
 {
+    if (!visible)
+        return;
+
     if (used == 0)
         return;
 

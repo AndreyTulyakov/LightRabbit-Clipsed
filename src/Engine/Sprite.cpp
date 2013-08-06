@@ -95,6 +95,9 @@ void Sprite::update()
 
 void Sprite::draw()
 {
+    if (!visible)
+        return;
+
     if (region->getAtlas() == 0 || region->getAtlas() == nullptr)
         return;
 
