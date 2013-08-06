@@ -43,8 +43,16 @@ void GLWidget::setClipInfo(ClipInfo pInfo)
 
 void GLWidget::showTextureSprite(TextureAtlas *pAtlas)
 {
-    spriteCurrentTexture->setAtlas(pAtlas);
-    textureScene.attachChild(spriteCurrentTexture);
+    if(pAtlas == 0)
+    {
+        spriteCurrentTexture->setAtlas(atlasTexture);
+    }
+    else
+    {
+        spriteCurrentTexture->setAtlas(pAtlas);
+    }
+
+
 }
 
 void GLWidget::centerTexCamera()
@@ -131,15 +139,17 @@ void GLWidget::initializeGL()
     spriteSound = new Entity::Sprite();
     spriteEmptyScene = new Entity::Sprite();
 
-    atlasSound = new TextureAtlas(":/Icons/sound_icon.png",this->context());
-    atlasTexture = new TextureAtlas(":/Icons/texture_icon.png",this->context());
-    atlasScene = new TextureAtlas(":/Icons/scene_icon.png",this->context());
+    atlasSound = new TextureAtlas(":/Icons/sound_icon.png");
+    atlasTexture = new TextureAtlas(":/Icons/texture_icon.png");
+    atlasScene = new TextureAtlas(":/Icons/scene_icon.png");
 
     spriteSound->setAtlas(atlasSound);
     spriteEmptyScene->setAtlas(atlasScene);
 
     sceneSound.setCamera(&texCamera);
     sceneSound.attachChild(spriteSound);
+
+    textureScene.attachChild(spriteCurrentTexture);
 
     // FUNCTIONAL TESTING ===============================================
 
@@ -171,6 +181,8 @@ void GLWidget::initializeGL()
     selectTexture(0);
 
     timer.start(1000 / 60, this);
+
+    this->makeCurrent();
 }
 
 
@@ -218,7 +230,6 @@ void GLWidget::paintGL()
             sceneSound.draw();
             break;
     }
-
 
 }
 

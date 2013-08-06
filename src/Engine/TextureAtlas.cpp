@@ -3,7 +3,7 @@
 #include <QImage>
 #include <qdebug.h>
 
-TextureAtlas::TextureAtlas(QString filename, QGLContext *context)
+TextureAtlas::TextureAtlas(QString filename)
 {
     //filename = "res/textures/" + filename;
 
@@ -14,6 +14,8 @@ TextureAtlas::TextureAtlas(QString filename, QGLContext *context)
     mWidth = image.width();
     mHeight = image.height();
 
+    QGLContext *context = (QGLContext *)QGLContext::currentContext();
+    //mTextureID = context->bindTexture(image);
     mTextureID = context->bindTexture(image);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

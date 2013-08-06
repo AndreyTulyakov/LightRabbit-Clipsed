@@ -85,6 +85,10 @@ class MainWindow : public QMainWindow
 
         void on_action_background_color_triggered();
 
+        void on_pushButton_RemoveEntity_clicked();
+
+        void on_TextureListWidget_clicked(const QModelIndex &index);
+
 private:
 
         QListWidgetItem *getSelectedItem(QListWidget *wList);

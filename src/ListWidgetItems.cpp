@@ -12,7 +12,7 @@ ListWidgetTextureAtlas::ListWidgetTextureAtlas(QString pFilename, QListWidget *v
     QFileInfo fileInfo(pFilename);
     filename = fileInfo.fileName();
 
-    atlas = new TextureAtlas(pFilename, GLWidget::getInstance("Main")->context());
+    atlas = new TextureAtlas(pFilename);//, GLWidget::getInstance("Main")->context());
 
     setText(QString("#") + QString::number(index) + QString(" - ") + filename);
 }

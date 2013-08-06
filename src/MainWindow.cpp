@@ -181,13 +181,56 @@ void MainWindow::spritePropertiesFromEditPanel(Entity::Sprite *spr)
     spr->setColor(ui->sb_ColorR->value(), ui->sb_ColorG->value(), ui->sb_ColorB->value(), ui->sb_Alpha->value());
 }
 
+static int EntityCounter = 0;
+
 void MainWindow::on_pushButton_AddSprite_clicked()
 {
     Entity::Sprite *spr = new Entity::Sprite();
-    ListWidgetEntity *lwe = new ListWidgetEntity("unnamed", ui->EntityListWidget, EntityType::Sprite, spr);
+    ListWidgetEntity *lwe = new ListWidgetEntity( QString("unnamed") + QString::number(EntityCounter++), ui->EntityListWidget, EntityType::Sprite, spr);
     ui->EntityListWidget->addItem(lwe);
     glWidget->attachToRootScene(spr);
 }
+
+
+void MainWindow::on_pushButton_RemoveEntity_clicked()
+{
+    ListWidgetEntity *lwe = (ListWidgetEntity *)getSelectedItem(ui->EntityListWidget);
+
+    if(lwe != 0)
+    {
+        switch(lwe->type)
+        {
+        case EntityType::Undefined:
+            qDebug() << "Remove undefined entity!";
+            break;
+
+        case EntityType::Sprite:
+        {
+            Entity::Sprite *spr = (Entity::Sprite*)lwe->data;
+            glWidget->detachFromRootScene(spr);
+            delete spr;
+
+            break;
+        }
+
+        case EntityType::Text:
+        {
+            //delete (Entity::Text*)lwe->data;
+
+            break;
+        }
+
+        case EntityType::Sound:
+            //delete (Entity::Sound*)lwe->data;
+
+            break;
+        }
+
+        delete lwe;
+    }
+
+}
+
 
 void MainWindow::on_EntityListWidget_clicked(const QModelIndex &index)
 {
@@ -224,9 +267,9 @@ void MainWindow::on_pushButton_AddTexture_clicked()
     {
         ListWidgetTextureAtlas *item = new ListWidgetTextureAtlas(filename, ui->TextureListWidget);
         ui->TextureListWidget->addItem(item);
+        ui->TextureListWidget->setCurrentItem(item);
 
         on_listWidgetTextures_itemSelectionChanged();
-        //textureListWidgetChanged();
     }
 }
 
@@ -235,11 +278,10 @@ void MainWindow::on_pushButton_RemoveTexture_clicked()
     QList<QListWidgetItem *> items = ui->TextureListWidget->selectedItems();
     if (items.size() > 0)
     {
-        delete items.at(0);
         glWidget->showTextureSprite(0);
-        //textureListWidgetChanged();
+        delete items.at(0);
+        on_listWidgetTextures_itemSelectionChanged();
     }
-    on_listWidgetTextures_itemSelectionChanged();
 }
 
 void MainWindow::on_listWidgetTextures_clicked(const QModelIndex &index)
@@ -256,8 +298,19 @@ void MainWindow::on_listWidgetTextures_itemSelectionChanged()
         TextureAtlas *texture = ((ListWidgetTextureAtlas *)lwe)->getAtlas();
         glWidget->showTextureSprite(texture);
     }
+    else
+    {
+        glWidget->showTextureSprite(0);
+    }
 
 }
+
+void MainWindow::on_TextureListWidget_clicked(const QModelIndex &index)
+{
+    on_listWidgetTextures_itemSelectionChanged();
+}
+
+// ----------------------------------------------------------------------------------------
 
 QListWidgetItem *MainWindow::getSelectedItem(QListWidget *wList)
 {
@@ -310,7 +363,8 @@ void MainWindow::on_ListTabs_currentChanged(int index)
 
 void MainWindow::on_action_background_color_triggered()
 {
-    if(glWidget != 0 && glWidget != nullptr){
+    if(glWidget != 0 && glWidget != nullptr)
+    {
         QColor c = QColorDialog::getColor(glWidget->getBackgroundColor(), this);
         if(c.isValid())
         {
@@ -318,3 +372,5 @@ void MainWindow::on_action_background_color_triggered()
         }
     }
 }
+
+
