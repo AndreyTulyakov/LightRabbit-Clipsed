@@ -27,7 +27,8 @@ SOURCES += \
     src/FormNewClip.cpp \
     src/main.cpp \
     src/MainWindow.cpp \
-    src/ListWidgetItems.cpp
+    src/ListWidgetItems.cpp \
+    src/Engine/Text.cpp
 
 HEADERS  += \
     headers/FormAbout.h \
@@ -48,7 +49,8 @@ HEADERS  += \
     headers/Engine/TextureAtlas.h \
     headers/Engine/TextureRegion.h \
     headers/Engine/VertexBufferManager.h \
-    headers/Engine/VertexTypes.h
+    headers/Engine/VertexTypes.h \
+    headers/Engine/Text.h
 
 INCLUDEPATH += headers \
     headers/Engine
