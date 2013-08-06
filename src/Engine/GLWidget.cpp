@@ -98,6 +98,11 @@ void GLWidget::setBackgroundColor(QColor color)
     eRect->setColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1.0f);
 }
 
+QColor GLWidget::getBackgroundColor()
+{
+    return QColor::fromRgbF(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1);
+}
+
 
 void GLWidget::timerEvent(QTimerEvent *)
 {

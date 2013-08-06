@@ -40,6 +40,7 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
 
     ui->ListTabs->setVisible(true);
     ui->tabProperty->setVisible(true);
+    ui->action_background_color->setEnabled(true);
 
     this->statusBar()->showMessage("Started GLWidget", 2000);
 
@@ -57,6 +58,7 @@ void MainWindow::killGLWidget()
 
     ui->ListTabs->setVisible(false);
     ui->tabProperty->setVisible(false);
+    ui->action_background_color->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -95,8 +97,6 @@ void MainWindow::on_actionNew_triggered()
     if (formNewClip->exec() == QDialog::Accepted)
     {
         info = formNewClip->getInfo();
-
-
 
         startGLWidget(info);
     }
@@ -310,6 +310,11 @@ void MainWindow::on_ListTabs_currentChanged(int index)
 
 void MainWindow::on_action_background_color_triggered()
 {
-    if(glWidget != 0 && glWidget != nullptr)
-        glWidget->setBackgroundColor(QColorDialog::getColor(Qt::white, this));
+    if(glWidget != 0 && glWidget != nullptr){
+        QColor c = QColorDialog::getColor(glWidget->getBackgroundColor(), this);
+        if(c.isValid())
+        {
+            glWidget->setBackgroundColor(c);
+        }
+    }
 }

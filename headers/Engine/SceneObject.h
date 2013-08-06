@@ -28,6 +28,7 @@ class SceneObject : public EntityObject
 
         void attachChild(SceneObject *arg);
         void detachChild(SceneObject *arg);
+        void clearChilds();
 
         virtual void update() = 0;
         virtual void draw() = 0;

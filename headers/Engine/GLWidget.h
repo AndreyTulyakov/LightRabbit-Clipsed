@@ -67,6 +67,7 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         static GLWidget* getInstance(QString pInstanceName);
 
         void setBackgroundColor(QColor color);
+        QColor getBackgroundColor();
 
     protected:
         void timerEvent(QTimerEvent *e);

@@ -28,6 +28,11 @@ void SceneObject::detachChild(SceneObject *arg)
     }
 }
 
+void SceneObject::clearChilds()
+{
+    childs.clear();
+}
+
 int SceneObject::childCount()
 {
     return childs.size();
