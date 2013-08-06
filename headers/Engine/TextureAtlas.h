@@ -19,7 +19,7 @@ class TextureAtlas
 {
     public:
         TextureAtlas(QString filename);
-        TextureAtlas(QImage *image, QGLContext *context);
+        TextureAtlas(QImage *image);
 
         int textureID();
         int width();

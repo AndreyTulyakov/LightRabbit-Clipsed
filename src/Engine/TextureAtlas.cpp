@@ -15,7 +15,6 @@ TextureAtlas::TextureAtlas(QString filename)
     mHeight = image.height();
 
     QGLContext *context = (QGLContext *)QGLContext::currentContext();
-    //mTextureID = context->bindTexture(image);
     mTextureID = context->bindTexture(image);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -25,13 +24,14 @@ TextureAtlas::TextureAtlas(QString filename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
-TextureAtlas::TextureAtlas(QImage *image, QGLContext *context)
+TextureAtlas::TextureAtlas(QImage *image)
 {
     glEnable(GL_TEXTURE_2D);
 
     mWidth = image->width();
     mHeight = image->height();
 
+    QGLContext *context = (QGLContext *)QGLContext::currentContext();
     mTextureID = context->bindTexture(*image);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
