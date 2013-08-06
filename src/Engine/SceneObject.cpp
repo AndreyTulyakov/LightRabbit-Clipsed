@@ -27,3 +27,8 @@ void SceneObject::detachChild(SceneObject *arg)
         qDebug() << "SceneObject::detachChild: detach object not found.\n";
     }
 }
+
+int SceneObject::childCount()
+{
+    return childs.size();
+}

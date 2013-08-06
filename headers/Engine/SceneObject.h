@@ -30,6 +30,8 @@ class SceneObject : public EntityObject
 
         virtual void update() = 0;
         virtual void draw() = 0;
+
+        int childCount();
 };
 
 #endif // SCENEOBJECT_H
