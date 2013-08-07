@@ -29,7 +29,8 @@ SOURCES += \
     src/MainWindow.cpp \
     src/ListWidgetItems.cpp \
     src/Engine/Text.cpp \
-    src/Engine/Sound.cpp
+    src/Engine/Sound.cpp \
+    src/TimelineWidget.cpp
 
 HEADERS  += \
     headers/FormAbout.h \
@@ -52,7 +53,8 @@ HEADERS  += \
     headers/Engine/VertexBufferManager.h \
     headers/Engine/VertexTypes.h \
     headers/Engine/Text.h \
-    headers/Engine/Sound.h
+    headers/Engine/Sound.h \
+    headers/TimelineWidget.h
 
 INCLUDEPATH += headers \
     headers/Engine
@@ -60,7 +62,8 @@ INCLUDEPATH += headers \
 FORMS    += \
     FormAbout.ui \
     MainWindow.ui \
-    FormNewClip.ui
+    FormNewClip.ui \
+    TimelineWidget.ui
 
 OTHER_FILES += \
     README.md

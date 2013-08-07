@@ -27,6 +27,8 @@
 #include "FormNewClip.h"
 #include "ListWidgetItems.h"
 
+#include "TimelineWidget.h"
+
 
 namespace Ui
 {
@@ -111,6 +113,7 @@ private:
         QApplication *application;
 
         GLWidget *glWidget;
+        TimelineWidget *timeline;
 
 
         QList<TextureAtlas *> Atlases;
