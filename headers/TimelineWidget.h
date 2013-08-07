@@ -2,6 +2,7 @@
 #define TIMELINEWIDGET_H
 
 #include <QWidget>
+#include <QTimer>
 
 namespace Ui {
 class TimelineWidget;
@@ -14,6 +15,11 @@ class TimelineWidget : public QWidget
 public:
     explicit TimelineWidget(QWidget *parent = 0);
     ~TimelineWidget();
+
+protected:
+    void paintEvent(QPaintEvent *event);
+
+    QTimer timer;
     
 private:
     Ui::TimelineWidget *ui;
