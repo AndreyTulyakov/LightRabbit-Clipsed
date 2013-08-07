@@ -28,7 +28,8 @@ SOURCES += \
     src/main.cpp \
     src/MainWindow.cpp \
     src/ListWidgetItems.cpp \
-    src/Engine/Text.cpp
+    src/Engine/Text.cpp \
+    src/Engine/Sound.cpp
 
 HEADERS  += \
     headers/FormAbout.h \
@@ -50,7 +51,8 @@ HEADERS  += \
     headers/Engine/TextureRegion.h \
     headers/Engine/VertexBufferManager.h \
     headers/Engine/VertexTypes.h \
-    headers/Engine/Text.h
+    headers/Engine/Text.h \
+    headers/Engine/Sound.h
 
 INCLUDEPATH += headers \
     headers/Engine

@@ -73,7 +73,7 @@ class MainWindow : public QMainWindow
         void on_listWidgetTextures_clicked(const QModelIndex &index);
         void on_listWidgetTextures_itemSelectionChanged();
 
-        void on_pushButton_AddSprite_clicked();
+
 
         void on_EntityListWidget_clicked(const QModelIndex &index);
 
@@ -83,13 +83,20 @@ class MainWindow : public QMainWindow
 
         void on_ListTabs_currentChanged(int index);
 
-        void on_action_background_color_triggered();
-
-        void on_pushButton_RemoveEntity_clicked();
-
         void on_TextureListWidget_clicked(const QModelIndex &index);
 
+        void on_AddSprite_clicked();
+        void on_AddText_clicked();
+        void on_AddSound_clicked();
+        void on_RemoveEntity_clicked();
+
+        void on_actionBackgroundColor_triggered();
+
 private:
+
+        void showEntityProperties(ListWidgetEntity *arg);
+        void grabEntityProperties(ListWidgetEntity *arg);
+        void onEntityListChanged();
 
         QListWidgetItem *getSelectedItem(QListWidget *wList);
         void spritePropertiesToEditPanel(Entity::Sprite *spr);
