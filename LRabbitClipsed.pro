@@ -30,7 +30,7 @@ SOURCES += \
     src/ListWidgetItems.cpp \
     src/Engine/Text.cpp \
     src/Engine/Sound.cpp \
-    src/TimelineWidget.cpp
+    src/TimeLineWidget.cpp
 
 HEADERS  += \
     headers/FormAbout.h \
@@ -54,16 +54,17 @@ HEADERS  += \
     headers/Engine/VertexTypes.h \
     headers/Engine/Text.h \
     headers/Engine/Sound.h \
-    headers/TimelineWidget.h
+    headers/Engine/headers/TimelineWidget.h \
+    headers/TimeLineWidget.h
 
 INCLUDEPATH += headers \
     headers/Engine
 
 FORMS    += \
-    FormAbout.ui \
-    MainWindow.ui \
-    FormNewClip.ui \
-    TimelineWidget.ui
+    forms/TimeLineWidget.ui \
+    forms/FormAbout.ui \
+    forms/FormNewClip.ui \
+    forms/MainWindow.ui
 
 OTHER_FILES += \
     README.md

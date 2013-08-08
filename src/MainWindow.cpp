@@ -10,8 +10,6 @@
 #include "Sprite.h"
 #include "Sound.h"
 
-#include "TimelineWidget.h"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -33,7 +31,7 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
 {
     killGLWidget();
 
-    timeline = new TimelineWidget(this);
+    timeline = new TimeLineWidget(this);
     ui->gridLayout->addWidget(timeline);
 
     glWidget = new GLWidget(this, "Main");
