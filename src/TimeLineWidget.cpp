@@ -1,24 +1,22 @@
 #include "headers/TimeLineWidget.h"
 #include "ui_TimeLineWidget.h"
 
-TimeLineWidget::TimeLineWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TimeLineWidget)
+
+
+
+TimeLineWidget::TimeLineWidget(QWidget *parent) : QWidget(parent), ui(new Ui::TimeLineWidget)
 {
     ui->setupUi(this);
 
-    timeMax = 5000;
     cellWidth = 12;
 
+    setTimeStep(50);
+    setTimeLengh(5000);
     stop();
 
-    setTimeStep(50);
-
-    this->setMinimumWidth( (timeMax/timeStep) * cellWidth + 1);
-
     connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer.start();
 
+    timer.start();
 }
 
 TimeLineWidget::~TimeLineWidget()
@@ -28,8 +26,19 @@ TimeLineWidget::~TimeLineWidget()
 
 void TimeLineWidget::setTimeStep(int msec)
 {
-    timeStep = 50;
+    if(msec < 1)
+        msec = 1;
+
+    timeStep = msec;
     timer.setInterval(timeStep);
+    this->setFixedWidth((timeLengh/timeStep) * cellWidth + 1);
+}
+
+void TimeLineWidget::setCurrentTime(int msec)
+{
+    currentTime = (msec/timeStep)*timeStep;
+    nextFrame();
+    prevFrame();
 }
 
 void TimeLineWidget::play()
@@ -53,7 +62,7 @@ void TimeLineWidget::pause()
 void TimeLineWidget::nextFrame()
 {
     currentTime += timeStep;
-    if(currentTime >= timeMax)
+    if(currentTime >= timeLengh)
         currentTime = 0;
 }
 
@@ -61,7 +70,7 @@ void TimeLineWidget::prevFrame()
 {
     currentTime -= timeStep;
     if(currentTime < 0)
-        currentTime = timeMax-1;
+        currentTime = timeLengh-timeStep;
 }
 
 int TimeLineWidget::getCurrentTime()
@@ -69,9 +78,35 @@ int TimeLineWidget::getCurrentTime()
     return currentTime;
 }
 
+int TimeLineWidget::getCurrentIndex()
+{
+    return currentTime/timeStep;
+}
+
+int TimeLineWidget::getTimeLengh()
+{
+    return timeLengh;
+}
+
+int TimeLineWidget::getTimeStep()
+{
+    return timeStep;
+}
+
+void TimeLineWidget::setTimeLengh(int msec)
+{
+    timeLengh = msec;
+    this->setFixedWidth((timeLengh/timeStep) * cellWidth + 1);
+}
+
+QTimer *TimeLineWidget::getTimer()
+{
+    return &timer;
+}
+
 void TimeLineWidget::paintEvent(QPaintEvent *event)
 {
-        QColor backColor(192, 192, 255);
+        QColor backColor(0, 0, 192, 32);
         QColor minuteColor(32, 32, 128, 255);
         QColor color3(0, 0, 0);
         QColor color4(0,0,0,32);
@@ -79,6 +114,7 @@ void TimeLineWidget::paintEvent(QPaintEvent *event)
 
         QPainter painter(this);
 
+        painter.setBrush(backColor);
         painter.setPen(backColor);
         painter.drawRect(QRect(0, 0, width(), height()));
 
@@ -88,11 +124,11 @@ void TimeLineWidget::paintEvent(QPaintEvent *event)
         painter.drawRect(QRect(curPos, 0, cellWidth, height()));
 
         painter.setPen(color3);
-        painter.drawLine(0, 10, timeMax / 2, 10);
+        painter.drawLine(0, 10, timeLengh / 2, 10);
 
         painter.setPen(minuteColor);
 
-        for (int j = 0; j <= timeMax; j+=timeStep)
+        for (int j = 0; j <= timeLengh; j+=timeStep)
         {
             int i = (j/timeStep)*cellWidth;
 
@@ -114,6 +150,41 @@ void TimeLineWidget::paintEvent(QPaintEvent *event)
         {
             currentTime += timeStep;
         }
-        if(currentTime >= timeMax)
+        if(currentTime >= timeLengh)
             currentTime = 0;
+}
+
+void TimeLineWidget::mousePressEvent(QMouseEvent *event)
+{
+    switch (event->button())
+    {
+    case Qt::MouseButton::LeftButton:
+    {
+        int selected = (event->x()-1)/cellWidth;
+        setCurrentTime(selected * timeStep);
+        break;
+    }
+
+    default:
+        break;
+    }
+}
+
+void TimeLineWidget::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_Space:
+    {
+        if(playing)
+            pause();
+        else
+            play();
+
+        break;
+    }
+
+    default:
+        break;
+    }
 }

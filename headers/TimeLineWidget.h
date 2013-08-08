@@ -5,6 +5,8 @@
 #include <QTime>
 #include <QTimer>
 #include <QPainter>
+#include <QMouseEvent>
+#include <QKeyEvent>
 
 namespace Ui {
 class TimeLineWidget;
@@ -13,26 +15,39 @@ class TimeLineWidget;
 class TimeLineWidget : public QWidget
 {
     Q_OBJECT
+
     
 public:
-    explicit TimeLineWidget(QWidget *parent = 0);
+    explicit TimeLineWidget(QWidget* parent = 0);
     ~TimeLineWidget();
 
-    void setTimeStep(int msec);
+
     void play();
     void stop();
     void pause();
     void nextFrame();
     void prevFrame();
+
     int getCurrentTime();
+    int getCurrentIndex();
+    int getTimeLengh();
+    int getTimeStep();
+
+    void setTimeLengh(int msec);
+    void setTimeStep(int msec);
+    void setCurrentTime(int msec);
+
+    QTimer* getTimer();
 
     
 
 protected:
     void paintEvent(QPaintEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
     QTimer timer;
-    int timeMax;
+    int timeLengh;
     int timeStep;
     int cellWidth;
 
@@ -42,6 +57,8 @@ protected:
 
 private:
     Ui::TimeLineWidget *ui;
+
+
 };
 
 #endif // TIMELINEWIDGET_H

@@ -29,11 +29,16 @@ private slots:
 
     void on_nextFrame_clicked();
 
+    void timeoutSlot();
+
+    void on_setting_clicked();
+
 private:
     Ui::TimeLineContainerWidget *ui;
 
 protected:
     TimeLineWidget* timeline;
+    QTimer* timer;
 
 };
 

@@ -31,7 +31,8 @@ SOURCES += \
     src/Engine/Text.cpp \
     src/Engine/Sound.cpp \
     src/TimeLineWidget.cpp \
-    src/TimeLineContainerWidget.cpp
+    src/TimeLineContainerWidget.cpp \
+    src/FormTimelineSetting.cpp
 
 HEADERS  += \
     headers/FormAbout.h \
@@ -55,9 +56,9 @@ HEADERS  += \
     headers/Engine/VertexTypes.h \
     headers/Engine/Text.h \
     headers/Engine/Sound.h \
-    headers/Engine/headers/TimelineWidget.h \
     headers/TimeLineWidget.h \
-    headers/TimeLineContainerWidget.h
+    headers/TimeLineContainerWidget.h \
+    headers/FormTimelineSetting.h
 
 INCLUDEPATH += headers \
     headers/Engine
@@ -67,7 +68,8 @@ FORMS    += \
     forms/FormAbout.ui \
     forms/FormNewClip.ui \
     forms/MainWindow.ui \
-    forms/TimeLineContainerWidget.ui
+    forms/TimeLineContainerWidget.ui \
+    forms/FormTimelineSetting.ui
 
 OTHER_FILES += \
     README.md

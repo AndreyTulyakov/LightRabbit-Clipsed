@@ -41,9 +41,6 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
 
     ui->actionNew->setEnabled(false);
     ui->actionOpen->setEnabled(false);
-
-    this->statusBar()->showMessage("Started GLWidget", 2000);
-
 }
 
 void MainWindow::killGLWidget()
@@ -73,12 +70,6 @@ MainWindow::~MainWindow()
 void MainWindow::setApplication(QApplication *app)
 {
     application = app;
-}
-
-void MainWindow::showInStatusBar(QString msg, int time)
-{
-    this->statusBar()->showMessage(msg, time);
-
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -131,7 +122,6 @@ void MainWindow::on_actionSave_As_triggered()
         {
             filename.append(fileExtension);
         }
-        ui->statusBar->showMessage("Saved " + filename, 2000);
     }
 }
 
@@ -141,8 +131,7 @@ void MainWindow::on_actionOpen_triggered()
 
     if (!filename.isNull())
     {
-        ui->statusBar->showMessage("Opened " + filename, 2000);
-        //
+
     }
 }
 
