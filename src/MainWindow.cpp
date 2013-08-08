@@ -17,22 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     application = 0;
     glWidget = nullptr;
-    timeline = nullptr;
 
-    fileExtension = ".lrclip";
-    fileExtMask = "LRabbit Clips (*" + fileExtension + ")";
-
-    ui->ListTabs->setVisible(false);
-    ui->tabProperty->setVisible(false);
-
+    timelineContainer = new TimeLineContainerWidget(this);
+    ui->verticalLayout->addWidget(timelineContainer);
 }
 
 void MainWindow::startGLWidget(ClipInfo pInfo)
 {
     killGLWidget();
-
-    timeline = new TimeLineWidget(this);
-    ui->gridLayout->addWidget(timeline);
 
     glWidget = new GLWidget(this, "Main");
 
@@ -45,8 +37,6 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
 
     ui->gridLayout->addWidget(glWidget);
 
-    ui->ListTabs->setVisible(true);
-    ui->tabProperty->setVisible(true);
     ui->actionBackgroundColor->setEnabled(true);
 
     ui->actionNew->setEnabled(false);
@@ -54,10 +44,6 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
 
     this->statusBar()->showMessage("Started GLWidget", 2000);
 
-    on_ListTabs_currentChanged(ui->ListTabs->currentIndex());
-    ui->cb_TextureSelector->clear();
-    ui->cb_TextureSelector->addItem("None");
-    ui->tabProperty->setVisible(false);
 }
 
 void MainWindow::killGLWidget()
@@ -69,15 +55,6 @@ void MainWindow::killGLWidget()
         glWidget = nullptr;
     }
 
-    if (timeline != nullptr)
-    {
-        ui->gridLayout->removeWidget(timeline);
-        delete timeline;
-        timeline = nullptr;
-    }
-
-    ui->ListTabs->setVisible(false);
-    ui->tabProperty->setVisible(false);
     ui->actionBackgroundColor->setEnabled(false);
 
     ui->actionNew->setEnabled(true);
@@ -86,6 +63,10 @@ void MainWindow::killGLWidget()
 
 MainWindow::~MainWindow()
 {
+
+    ui->verticalLayout->removeWidget(timelineContainer);
+
+    delete timelineContainer;
     delete ui;
 }
 
@@ -181,104 +162,34 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 
 void MainWindow::spritePropertiesToEditPanel(Entity::Sprite *spr)
 {
-    ui->sb_PositionX->setValue(spr->getPosition().x());
-    ui->sb_PositionY->setValue(spr->getPosition().y());
 
-    ui->sb_ScaleX->setValue(spr->getScale().x());
-    ui->sb_ScaleX->setValue(spr->getScale().y());
-
-    ui->sb_Rotation->setValue(spr->getRotationZ());
-
-    ui->sb_Alpha->setValue(spr->getColor().w());
-    ui->sb_ColorR->setValue(spr->getColor().x());
-    ui->sb_ColorG->setValue(spr->getColor().y());
-    ui->sb_ColorB->setValue(spr->getColor().z());
 }
 
 void MainWindow::spritePropertiesFromEditPanel(Entity::Sprite *spr)
 {
-    spr->setPosition(ui->sb_PositionX->value(), ui->sb_PositionY->value(), 0);
-    spr->setScale(ui->sb_ScaleX->value(), ui->sb_ScaleY->value(), 1);
-    spr->setRotationZ(ui->sb_Rotation->value());
 
-    spr->setColor(ui->sb_ColorR->value(), ui->sb_ColorG->value(), ui->sb_ColorB->value(), ui->sb_Alpha->value());
 }
 
 static int EntityCounter = 0;
 
 void MainWindow::on_AddSprite_clicked()
 {
-    Entity::Sprite *spr = new Entity::Sprite();
-    ListWidgetEntity *lwe = new ListWidgetEntity(QString("sprite_") + QString::number(EntityCounter++), ui->EntityListWidget, EntityType::Sprite, spr);
-    ui->EntityListWidget->addItem(lwe);
-    glWidget->attachToRootScene(spr);
-    onEntityListChanged();
+
 }
 
 void MainWindow::on_AddText_clicked()
 {
-    QFont *font = new QFont("times");
-    Entity::Text *text = new Entity::Text(font);
-    ListWidgetEntity *lwe = new ListWidgetEntity(QString("text_") + QString::number(EntityCounter++), ui->EntityListWidget, EntityType::Text, text);
-    ui->EntityListWidget->addItem(lwe);
-    glWidget->attachToRootScene(text);
-    onEntityListChanged();
+
 }
 
 void MainWindow::on_AddSound_clicked()
 {
-    Entity::Sound *snd = new Entity::Sound();
-    ListWidgetEntity *lwe = new ListWidgetEntity(QString("sound_") + QString::number(EntityCounter++), ui->EntityListWidget, EntityType::Sound, snd);
-    ui->EntityListWidget->addItem(lwe);
-    onEntityListChanged();
+
 }
 
 void MainWindow::showEntityProperties(ListWidgetEntity *lwe)
 {
-    if (lwe != 0)
-    {
-        ui->tabProperty->setVisible(true);
 
-        switch (lwe->type)
-        {
-            case EntityType::Undefined:
-                break;
-
-            case EntityType::Sprite:
-            {
-                ui->tabProperty->setCurrentIndex(0);
-                ui->tab_EditSprite->show();
-                ui->tab_EditText->hide();
-                ui->tab_EditSound->hide();
-
-                ui->editSpriteName->setText(lwe->text());
-                break;
-            }
-
-            case EntityType::Text:
-            {
-                ui->tabProperty->setCurrentIndex(1);
-                ui->tab_EditSprite->hide();
-                ui->tab_EditText->show();
-                ui->tab_EditSound->hide();
-                break;
-            }
-
-            case EntityType::Sound:
-            {
-                ui->tabProperty->setCurrentIndex(2);
-                ui->tab_EditSprite->hide();
-                ui->tab_EditText->hide();
-                ui->tab_EditSound->show();
-                break;
-            }
-
-        }
-    }
-    else
-    {
-        ui->tabProperty->setVisible(false);
-    }
 
 }
 
@@ -289,65 +200,24 @@ void MainWindow::grabEntityProperties(ListWidgetEntity *arg)
 
 void MainWindow::onEntityListChanged()
 {
-    ListWidgetEntity *lwe = (ListWidgetEntity *)getSelectedItem(ui->EntityListWidget);
-    showEntityProperties(lwe);
+
 }
 
 
 void MainWindow::on_RemoveEntity_clicked()
 {
-    ListWidgetEntity *lwe = (ListWidgetEntity *)getSelectedItem(ui->EntityListWidget);
 
-    if (lwe != 0)
-    {
-        switch (lwe->type)
-        {
-            case EntityType::Undefined:
-                qDebug() << "Remove undefined entity!";
-                break;
-
-            case EntityType::Sprite:
-            {
-                Entity::Sprite *spr = (Entity::Sprite *)lwe->data;
-                glWidget->detachFromRootScene(spr);
-                delete spr;
-                break;
-            }
-
-            case EntityType::Text:
-            {
-                Entity::Text *text = (Entity::Text *)lwe->data;
-                glWidget->detachFromRootScene(text);
-                delete text;
-                break;
-            }
-
-            case EntityType::Sound:
-                delete(Entity::Sound *)lwe->data;
-                break;
-        }
-
-        delete lwe;
-    }
-    onEntityListChanged();
 }
 
 
 void MainWindow::on_EntityListWidget_clicked(const QModelIndex &index)
 {
-    ListWidgetEntity *lwe = (ListWidgetEntity *)ui->EntityListWidget->item(index.row());
-    showEntityProperties(lwe);
+
 }
 
 void MainWindow::on_button_SaveProperties_clicked()
 {
-    ListWidgetEntity *lwe = ((ListWidgetEntity *)getSelectedItem(ui->EntityListWidget));
-    if (lwe != 0)
-    {
-        lwe->setText(ui->editSpriteName->text());
-        Entity::Sprite *spr = (Entity::Sprite *)lwe->data;
-        spritePropertiesFromEditPanel(spr);
-    }
+
 }
 
 
@@ -355,27 +225,12 @@ void MainWindow::on_button_SaveProperties_clicked()
 
 void MainWindow::on_pushButton_AddTexture_clicked()
 {
-    QString filename = QFileDialog::getOpenFileName(this, tr("Open Image File"), "", tr("Images (*.png *.jpg *jpeg *.bmp)"));
 
-    if (!filename.isNull())
-    {
-        ListWidgetTextureAtlas *item = new ListWidgetTextureAtlas(filename, ui->TextureListWidget);
-        ui->TextureListWidget->addItem(item);
-        ui->TextureListWidget->setCurrentItem(item);
-
-        on_listWidgetTextures_itemSelectionChanged();
-    }
 }
 
 void MainWindow::on_pushButton_RemoveTexture_clicked()
 {
-    QList<QListWidgetItem *> items = ui->TextureListWidget->selectedItems();
-    if (items.size() > 0)
-    {
-        glWidget->showTextureSprite(0);
-        delete items.at(0);
-        on_listWidgetTextures_itemSelectionChanged();
-    }
+
 }
 
 void MainWindow::on_listWidgetTextures_clicked(const QModelIndex &index)
@@ -385,24 +240,7 @@ void MainWindow::on_listWidgetTextures_clicked(const QModelIndex &index)
 
 void MainWindow::on_listWidgetTextures_itemSelectionChanged()
 {
-    ui->cb_TextureSelector->clear();
-    ui->cb_TextureSelector->addItem("None");
-    for (int i = 0; i < ui->TextureListWidget->count(); i++)
-    {
-        ui->cb_TextureSelector->addItem(ui->TextureListWidget->item(i)->text());
-    }
 
-    QListWidgetItem *lwe = getSelectedItem(ui->TextureListWidget);
-
-    if (lwe != 0)
-    {
-        TextureAtlas *texture = ((ListWidgetTextureAtlas *)lwe)->getAtlas();
-        glWidget->showTextureSprite(texture);
-    }
-    else
-    {
-        glWidget->showTextureSprite(0);
-    }
 
 }
 
@@ -425,15 +263,7 @@ QListWidgetItem *MainWindow::getSelectedItem(QListWidget *wList)
 
 void MainWindow::on_comboBoxTextures_currentIndexChanged(int index)
 {
-    ListWidgetEntity *lwe = ((ListWidgetEntity *)getSelectedItem(ui->EntityListWidget));
-    ListWidgetTextureAtlas *lita = (ListWidgetTextureAtlas *)ui->TextureListWidget->item(index);
 
-    if (lwe != 0)
-    {
-        Entity::Sprite *spr = (Entity::Sprite *)lwe->data;
-        TextureAtlas *atlas = (TextureAtlas *)lita->getAtlas();
-        spr->setAtlas(atlas);
-    }
 }
 
 
