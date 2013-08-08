@@ -3,7 +3,6 @@
 
 
 
-
 TimeLineWidget::TimeLineWidget(QWidget *parent) : QWidget(parent), ui(new Ui::TimeLineWidget)
 {
     ui->setupUi(this);
@@ -106,26 +105,39 @@ QTimer *TimeLineWidget::getTimer()
 
 void TimeLineWidget::paintEvent(QPaintEvent *event)
 {
-        QColor backColor(0, 0, 192, 32);
-        QColor minuteColor(32, 32, 128, 255);
-        QColor color3(0, 0, 0);
-        QColor color4(0,0,0,32);
+        QColor color1(190, 190, 200);
+        QColor color2(200, 200, 210);
+        QColor color3(210, 210, 220);
+
+        QColor color4(128,128,128,64);
+        QColor color5(0,0,64,255);
+
+        QColor backColor(180, 180, 180, 255);
+        QColor minuteColor(32, 32, 64, 255);
 
 
         QPainter painter(this);
 
+        // Draw backgrounds
+        painter.setPen(color4);
+
         painter.setBrush(backColor);
-        painter.setPen(backColor);
         painter.drawRect(QRect(0, 0, width(), height()));
 
-        painter.setBrush(color4);
-        painter.setPen(color4);
-        int curPos = (currentTime/timeStep)*cellWidth;
-        painter.drawRect(QRect(curPos, 0, cellWidth, height()));
+        painter.setBrush(color1);
+        painter.drawRect(QRect(0, 0, width(), 20));
 
-        painter.setPen(color3);
-        painter.drawLine(0, 10, timeLengh / 2, 10);
+        painter.setBrush(color2);
+        painter.drawRect(QRect(0, 20, width(), 20));
 
+        painter.setBrush(color3);
+        painter.drawRect(QRect(0, 40, width(), 20));
+
+        painter.setBrush(Qt::NoBrush);
+        painter.setPen(color5);
+        painter.drawRect(QRect(0, 0, width()-1, height()-1));
+
+        // Draw cells
         painter.setPen(minuteColor);
 
         for (int j = 0; j <= timeLengh; j+=timeStep)
@@ -145,6 +157,14 @@ void TimeLineWidget::paintEvent(QPaintEvent *event)
             }
 
         }
+
+
+        // Draw selected cell
+        painter.setBrush(QColor(64,64,64,64));
+        painter.setPen(Qt::white);
+        int curPos = (currentTime/timeStep)*cellWidth;
+        painter.drawRect(QRect(curPos, 0, cellWidth, height()-1));
+
 
         if(playing)
         {

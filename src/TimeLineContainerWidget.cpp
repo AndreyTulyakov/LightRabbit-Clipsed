@@ -28,6 +28,10 @@ TimeLineContainerWidget::TimeLineContainerWidget(QWidget *parent) :
     pal->setColor(QPalette::WindowText, Qt::black);
     this->setPalette(*pal);
 
+    pal->setColor(QPalette::Background, QColor(128,128,128));
+    pal->setColor(QPalette::WindowText, Qt::white);
+    ui->scrollAreaWidgetContents->setPalette(*pal);
+
     QPalette *palette = new QPalette();
     palette->setColor(QPalette::Background, Qt::black);
     palette->setColor(QPalette::WindowText, Qt::white);
