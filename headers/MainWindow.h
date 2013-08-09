@@ -28,7 +28,7 @@
 #include "ListWidgetItems.h"
 
 #include "TimeLineContainerWidget.h"
-
+#include "EntityManagerWidget.h"
 
 namespace Ui
 {
@@ -111,6 +111,7 @@ private:
 
         GLWidget *glWidget;
         TimeLineContainerWidget *timelineContainer;
+        EntityManagerWidget *entityManager;
 
 
         QList<TextureAtlas *> Atlases;

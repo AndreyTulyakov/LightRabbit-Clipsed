@@ -7,6 +7,7 @@
 #include "Text.h"
 
 
+
 #include "Sprite.h"
 #include "Sound.h"
 
@@ -17,14 +18,25 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     application = 0;
     glWidget = nullptr;
+    timelineContainer = nullptr;
+    entityManager = nullptr;
 
-    timelineContainer = new TimeLineContainerWidget(this);
-    ui->verticalLayout->addWidget(timelineContainer);
+    ClipInfo info;
+    info.Width = 400;
+    info.Height = 300;
+    info.Color = QVector4D(0.9f,0.9f,0.9f,1);
+
+    startGLWidget(info);
 }
 
 void MainWindow::startGLWidget(ClipInfo pInfo)
 {
     killGLWidget();
+
+
+    entityManager = new EntityManagerWidget(this);
+    ui->horizontalLayout->addWidget(entityManager);
+
 
     glWidget = new GLWidget(this, "Main");
 
@@ -35,12 +47,15 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
     glWidget->setMinimumWidth(400);
     glWidget->setMinimumHeight(240);
 
-    ui->gridLayout->addWidget(glWidget);
+    ui->horizontalLayout->addWidget(glWidget);
 
     ui->actionBackgroundColor->setEnabled(true);
 
     ui->actionNew->setEnabled(false);
     ui->actionOpen->setEnabled(false);
+
+    timelineContainer = new TimeLineContainerWidget(this);
+    ui->verticalLayout->addWidget(timelineContainer);
 }
 
 void MainWindow::killGLWidget()
@@ -56,14 +71,21 @@ void MainWindow::killGLWidget()
 
     ui->actionNew->setEnabled(true);
     ui->actionOpen->setEnabled(true);
+
+
+
+    if(timelineContainer != nullptr)
+    {
+        ui->verticalLayout->removeWidget(timelineContainer);
+        delete timelineContainer;
+        timelineContainer = nullptr;
+    }
 }
 
 MainWindow::~MainWindow()
 {
 
-    ui->verticalLayout->removeWidget(timelineContainer);
 
-    delete timelineContainer;
     delete ui;
 }
 
