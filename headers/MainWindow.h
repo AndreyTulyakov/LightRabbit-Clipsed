@@ -29,6 +29,7 @@
 
 #include "TimeLineContainerWidget.h"
 #include "EntityManagerWidget.h"
+#include "EntitySettingWidget.h"
 
 namespace Ui
 {
@@ -73,6 +74,7 @@ private:
         GLWidget *glWidget;
         TimeLineContainerWidget *timelineContainer;
         EntityManagerWidget *entityManager;
+        EntitySettingWidget *entitySetting;
 
         QString fileExtension;
         QString fileExtMask;

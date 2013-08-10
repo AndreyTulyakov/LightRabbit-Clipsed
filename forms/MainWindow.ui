@@ -22,6 +22,9 @@
   <property name="windowTitle">
    <string>LRabbit Clipsed</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextOnly</enum>
   </property>

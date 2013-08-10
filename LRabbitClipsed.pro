@@ -33,7 +33,8 @@ SOURCES += \
     src/TimeLineWidget.cpp \
     src/TimeLineContainerWidget.cpp \
     src/FormTimelineSetting.cpp \
-    src/EntityManagerWidget.cpp
+    src/EntityManagerWidget.cpp \
+    src/EntitySettingWidget.cpp
 
 HEADERS  += \
     headers/FormAbout.h \
@@ -60,7 +61,8 @@ HEADERS  += \
     headers/TimeLineWidget.h \
     headers/TimeLineContainerWidget.h \
     headers/FormTimelineSetting.h \
-    headers/EntityManagerWidget.h
+    headers/EntityManagerWidget.h \
+    headers/EntitySettingWidget.h
 
 INCLUDEPATH += headers \
     headers/Engine
@@ -72,7 +74,8 @@ FORMS    += \
     forms/MainWindow.ui \
     forms/TimeLineContainerWidget.ui \
     forms/FormTimelineSetting.ui \
-    forms/EntityManagerWidget.ui
+    forms/EntityManagerWidget.ui \
+    forms/EntitySettingWidget.ui
 
 OTHER_FILES += \
     README.md

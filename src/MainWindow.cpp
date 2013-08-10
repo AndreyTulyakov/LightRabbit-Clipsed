@@ -20,11 +20,18 @@ MainWindow::MainWindow(QWidget *parent) :
     glWidget = nullptr;
     timelineContainer = nullptr;
     entityManager = nullptr;
+    entitySetting = nullptr;
 
     ClipInfo info;
     info.Width = 400;
     info.Height = 300;
     info.Color = QVector4D(0.9f, 0.9f, 0.9f, 1);
+
+    QPalette pal;
+    pal.setColor(QPalette::Background, QColor(240,240,255));
+    pal.setColor(QPalette::WindowText, Qt::black);
+    this->setPalette(pal);
+
 
     startGLWidget(info);
 }
@@ -54,6 +61,11 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
     }
 
     {
+        entitySetting = new EntitySettingWidget(this);
+        ui->horizontalLayout->addWidget(entitySetting);
+    }
+
+    {
         timelineContainer = new TimeLineContainerWidget(this);
         ui->verticalLayout->addWidget(timelineContainer);
     }
@@ -71,6 +83,13 @@ void MainWindow::killGLWidget()
         ui->gridLayout->removeWidget(glWidget);
         delete glWidget;
         glWidget = nullptr;
+    }
+
+    if(entitySetting != nullptr)
+    {
+        ui->gridLayout->removeWidget(entitySetting);
+        delete entitySetting;
+        entitySetting = nullptr;
     }
 
     ui->actionBackgroundColor->setEnabled(false);
