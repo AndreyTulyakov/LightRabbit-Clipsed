@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ClipInfo info;
     info.Width = 400;
     info.Height = 300;
-    info.Color = QVector4D(0.9f,0.9f,0.9f,1);
+    info.Color = QVector4D(0.9f, 0.9f, 0.9f, 1);
 
     startGLWidget(info);
 }
@@ -33,29 +33,35 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
 {
     killGLWidget();
 
+    {
+        entityManager = new EntityManagerWidget(this);
+        ui->horizontalLayout->addWidget(entityManager);
 
-    entityManager = new EntityManagerWidget(this);
-    ui->horizontalLayout->addWidget(entityManager);
+        connect(entityManager, SIGNAL(itemAdded(ListWidgetEntity *)), this, SLOT(entityAdded(ListWidgetEntity *)));
+        connect(entityManager, SIGNAL(itemSelected(ListWidgetEntity *)), this, SLOT(entitySelected(ListWidgetEntity *)));
+        connect(entityManager, SIGNAL(itemWasRemoved(ListWidgetEntity *)), this, SLOT(entityWasRemoved(ListWidgetEntity *)));
+    }
 
+    {
+        glWidget = new GLWidget(this, "Main");
+        glWidget->setClipInfo(pInfo);
+        QGLFormat base_format = glWidget->format();
+        base_format.setProfile(QGLFormat::CoreProfile);
+        glWidget->setFormat(base_format);
+        glWidget->setMinimumWidth(400);
+        glWidget->setMinimumHeight(240);
+        ui->horizontalLayout->addWidget(glWidget);
+    }
 
-    glWidget = new GLWidget(this, "Main");
-
-    glWidget->setClipInfo(pInfo);
-    QGLFormat base_format = glWidget->format();
-    base_format.setProfile(QGLFormat::CoreProfile);
-    glWidget->setFormat(base_format);
-    glWidget->setMinimumWidth(400);
-    glWidget->setMinimumHeight(240);
-
-    ui->horizontalLayout->addWidget(glWidget);
+    {
+        timelineContainer = new TimeLineContainerWidget(this);
+        ui->verticalLayout->addWidget(timelineContainer);
+    }
 
     ui->actionBackgroundColor->setEnabled(true);
 
     ui->actionNew->setEnabled(false);
     ui->actionOpen->setEnabled(false);
-
-    timelineContainer = new TimeLineContainerWidget(this);
-    ui->verticalLayout->addWidget(timelineContainer);
 }
 
 void MainWindow::killGLWidget()
@@ -74,7 +80,7 @@ void MainWindow::killGLWidget()
 
 
 
-    if(timelineContainer != nullptr)
+    if (timelineContainer != nullptr)
     {
         ui->verticalLayout->removeWidget(timelineContainer);
         delete timelineContainer;
@@ -104,6 +110,18 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionExit_triggered()
 {
     application->exit(0);
+}
+
+void MainWindow::on_actionBackgroundColor_triggered()
+{
+    if (glWidget != nullptr)
+    {
+        QColor c = QColorDialog::getColor(glWidget->getBackgroundColor(), this);
+        if (c.isValid())
+        {
+            glWidget->setBackgroundColor(c);
+        }
+    }
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -157,160 +175,48 @@ void MainWindow::on_actionOpen_triggered()
     }
 }
 
-void MainWindow::on_tabWidget_currentChanged(int index)
+
+void MainWindow::entitySelected(ListWidgetEntity *item)
 {
-    if (index == 1)
+
+}
+
+void MainWindow::entityAdded(ListWidgetEntity *item)
+{
+    switch (item->type)
     {
-        glWidget->mode = GLWidgetMode::TextureList;
-        glWidget->centerTexCamera();
-    }
+        case Sprite:
+            glWidget->attachToRootScene((Entity::Sprite *)item->data);
+            break;
 
-    if (index == 0)
-    {
-        glWidget->mode = GLWidgetMode::ClipEdit;
-    }
-}
+        case Text:
+            glWidget->attachToRootScene((Entity::Text *)item->data);
+            break;
 
-void MainWindow::spritePropertiesToEditPanel(Entity::Sprite *spr)
-{
+        case Sound:
+            break;
 
-}
-
-void MainWindow::spritePropertiesFromEditPanel(Entity::Sprite *spr)
-{
-
-}
-
-static int EntityCounter = 0;
-
-void MainWindow::on_AddSprite_clicked()
-{
-
-}
-
-void MainWindow::on_AddText_clicked()
-{
-
-}
-
-void MainWindow::on_AddSound_clicked()
-{
-
-}
-
-void MainWindow::showEntityProperties(ListWidgetEntity *lwe)
-{
-
-
-}
-
-void MainWindow::grabEntityProperties(ListWidgetEntity *arg)
-{
-
-}
-
-void MainWindow::onEntityListChanged()
-{
-
-}
-
-
-void MainWindow::on_RemoveEntity_clicked()
-{
-
-}
-
-
-void MainWindow::on_EntityListWidget_clicked(const QModelIndex &index)
-{
-
-}
-
-void MainWindow::on_button_SaveProperties_clicked()
-{
-
-}
-
-
-// TEXTURES CODE
-
-void MainWindow::on_pushButton_AddTexture_clicked()
-{
-
-}
-
-void MainWindow::on_pushButton_RemoveTexture_clicked()
-{
-
-}
-
-void MainWindow::on_listWidgetTextures_clicked(const QModelIndex &index)
-{
-    on_listWidgetTextures_itemSelectionChanged();
-}
-
-void MainWindow::on_listWidgetTextures_itemSelectionChanged()
-{
-
-
-}
-
-void MainWindow::on_TextureListWidget_clicked(const QModelIndex &index)
-{
-    on_listWidgetTextures_itemSelectionChanged();
-}
-
-// ----------------------------------------------------------------------------------------
-
-QListWidgetItem *MainWindow::getSelectedItem(QListWidget *wList)
-{
-    QList<QListWidgetItem *> list = wList->selectedItems();
-    if (list.size() > 0)
-    {
-        return list.at(0);
-    }
-    return 0;
-}
-
-void MainWindow::on_comboBoxTextures_currentIndexChanged(int index)
-{
-
-}
-
-
-void MainWindow::on_ListTabs_currentChanged(int index)
-{
-    qDebug() << "Switched tab:" << QString::number(index);
-
-    if (index == 0)
-    {
-        glWidget->mode = GLWidgetMode::ClipEdit;
-        return;
-    }
-
-    if (index == 1)
-    {
-        glWidget->centerTexCamera();
-        glWidget->mode = GLWidgetMode::TextureList;
-        return;
-    }
-
-    if (index == 2)
-    {
-        glWidget->centerTexCamera();
-        glWidget->mode = GLWidgetMode::SoundList;
-        return;
+        default:
+            break;
     }
 }
 
-void MainWindow::on_actionBackgroundColor_triggered()
+void MainWindow::entityWasRemoved(ListWidgetEntity *item)
 {
-    if (glWidget != 0 && glWidget != nullptr)
+    switch (item->type)
     {
-        QColor c = QColorDialog::getColor(glWidget->getBackgroundColor(), this);
-        if (c.isValid())
-        {
-            glWidget->setBackgroundColor(c);
-        }
+        case Sprite:
+            glWidget->detachFromRootScene((Entity::Sprite *)item->data);
+            break;
+
+        case Text:
+            glWidget->detachFromRootScene((Entity::Text *)item->data);
+            break;
+
+        case Sound:
+            break;
+
+        default:
+            break;
     }
 }

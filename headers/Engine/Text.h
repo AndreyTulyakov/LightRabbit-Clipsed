@@ -11,6 +11,7 @@ class Text : public DrawableEntity , QGLFunctions
 {
 public:
     Text(QFont* pFont);
+    Text();
 
 private:
     QFont* font;

@@ -11,7 +11,7 @@ Sprite::Sprite()
 {
     initializeGLFunctions();
 
-    region = new TextureRegion();
+    region = new TextureRegion(nullptr,0,0,128,128);
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
     initGeometry();
@@ -98,9 +98,6 @@ void Sprite::draw()
     if (!visible)
         return;
 
-    if (region->getAtlas() == 0 || region->getAtlas() == nullptr)
-        return;
-
     shaderProgram->bind();
     vertexBuffer->bind();
 
@@ -112,9 +109,12 @@ void Sprite::draw()
 
     transform = camera->getCameraMatrix() * transform;
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, region->getAtlas()->textureID());
-    shaderProgram->setUniformValue("texture", 0);
+    if (region->getAtlas() != nullptr)
+    {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, region->getAtlas()->textureID());
+        shaderProgram->setUniformValue("texture", 0);
+    }
 
     shaderProgram->setUniformValue("mvp_matrix", transform);
     shaderProgram->setUniformValue("color", color);

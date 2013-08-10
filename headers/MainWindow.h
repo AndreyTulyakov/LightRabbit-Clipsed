@@ -56,10 +56,16 @@ class MainWindow : public QMainWindow
 
         void on_actionBackgroundColor_triggered();
 
+        void entitySelected(ListWidgetEntity* item);
+        void entityAdded(ListWidgetEntity* item);
+        void entityWasRemoved(ListWidgetEntity* item);
+
+private:
+
         void startGLWidget(ClipInfo pInfo);
         void killGLWidget();
 
-private:
+
         Ui::MainWindow *ui;
         QApplication *application;
 

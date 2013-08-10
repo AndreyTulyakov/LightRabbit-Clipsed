@@ -36,6 +36,7 @@ ListWidgetEntity *EntityManagerWidget::getSelectedItem()
 void EntityManagerWidget::on_addSprite_clicked()
 {
     ListWidgetEntity *item = new ListWidgetEntity("Sprite_" + QString::number(EntityCounter) ,ui->entityList,EntityType::Sprite);
+    item->data = new Entity::Sprite();
     ui->entityList->addItem(item);
     emit itemAdded(item);
 
@@ -46,6 +47,7 @@ void EntityManagerWidget::on_addSprite_clicked()
 void EntityManagerWidget::on_addText_clicked()
 {
     ListWidgetEntity *item = new ListWidgetEntity("Text_" + QString::number(EntityCounter) ,ui->entityList,EntityType::Text);
+    item->data = new Entity::Text();
     ui->entityList->addItem(item);
     emit itemAdded(item);
 
@@ -56,6 +58,7 @@ void EntityManagerWidget::on_addText_clicked()
 void EntityManagerWidget::on_addSound_clicked()
 {
     ListWidgetEntity *item = new ListWidgetEntity("Sound_" + QString::number(EntityCounter) ,ui->entityList,EntityType::Sound);
+    item->data = new Entity::Sound();
     ui->entityList->addItem(item);
     emit itemAdded(item);
 
@@ -78,6 +81,25 @@ void EntityManagerWidget::on_removeEntity_clicked()
     if(item != 0)
     {
         emit itemWasRemoved(item);
+
+        switch(item->type)
+        {
+        case Sprite:
+            delete (Entity::Sprite*)item->data;
+            break;
+
+        case Text:
+            delete (Entity::Text*)item->data;
+            break;
+
+        case Sound:
+            delete (Entity::Sound*)item->data;
+            break;
+
+        default:
+            break;
+        }
+
         delete item;
         onUpdatelist();
     }
