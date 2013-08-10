@@ -47,75 +47,29 @@ class MainWindow : public QMainWindow
 
 
     private slots:
+        void on_actionNew_triggered();
+        void on_actionOpen_triggered();
+        void on_actionClose_triggered();
+        void on_actionSave_As_triggered();
         void on_actionAbout_triggered();
-
         void on_actionExit_triggered();
 
+        void on_actionBackgroundColor_triggered();
 
         void startGLWidget(ClipInfo pInfo);
         void killGLWidget();
 
-        void on_actionNew_triggered();
-
-        void on_actionClose_triggered();
-
-        void on_actionSave_As_triggered();
-
-        void on_actionOpen_triggered();
-
-        void on_tabWidget_currentChanged(int index);
-
-        void on_pushButton_AddTexture_clicked();
-
-        void on_pushButton_RemoveTexture_clicked();
-
-        void on_listWidgetTextures_clicked(const QModelIndex &index);
-        void on_listWidgetTextures_itemSelectionChanged();
-
-
-
-        void on_EntityListWidget_clicked(const QModelIndex &index);
-
-        void on_button_SaveProperties_clicked();
-
-        void on_comboBoxTextures_currentIndexChanged(int index);
-
-        void on_ListTabs_currentChanged(int index);
-
-        void on_TextureListWidget_clicked(const QModelIndex &index);
-
-        void on_AddSprite_clicked();
-        void on_AddText_clicked();
-        void on_AddSound_clicked();
-        void on_RemoveEntity_clicked();
-
-        void on_actionBackgroundColor_triggered();
-
 private:
-
-        void showEntityProperties(ListWidgetEntity *arg);
-        void grabEntityProperties(ListWidgetEntity *arg);
-        void onEntityListChanged();
-
-        QListWidgetItem *getSelectedItem(QListWidget *wList);
-        void spritePropertiesToEditPanel(Entity::Sprite *spr);
-        void spritePropertiesFromEditPanel(Entity::Sprite *spr);
-
-        void textureListWidgetChanged();
-
-        QString fileExtension;
-        QString fileExtMask;
-
         Ui::MainWindow *ui;
         QApplication *application;
 
+        // Widgets
         GLWidget *glWidget;
         TimeLineContainerWidget *timelineContainer;
         EntityManagerWidget *entityManager;
 
-
-        QList<TextureAtlas *> Atlases;
-
+        QString fileExtension;
+        QString fileExtMask;
 };
 
 
