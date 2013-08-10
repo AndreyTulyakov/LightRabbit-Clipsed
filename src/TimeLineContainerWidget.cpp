@@ -54,18 +54,18 @@ TimeLineWidget *TimeLineContainerWidget::getTimeline()
     return timeline;
 }
 
-void TimeLineContainerWidget::on_play_clicked()
-{
-    timeline->play();
-}
 
-void TimeLineContainerWidget::on_pause_clicked()
+void TimeLineContainerWidget::on_playPause_clicked()
 {
-    timeline->pause();
+    if(timeline->isPlaying())
+        timeline->pause();
+    else
+        timeline->play();
 }
 
 void TimeLineContainerWidget::on_stop_clicked()
 {
+    ui->playPause->setChecked(false);
     timeline->stop();
 }
 
@@ -99,3 +99,4 @@ void TimeLineContainerWidget::on_setting_clicked()
     }
     delete form;
 }
+

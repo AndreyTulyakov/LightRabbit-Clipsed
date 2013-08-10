@@ -103,6 +103,11 @@ QTimer *TimeLineWidget::getTimer()
     return &timer;
 }
 
+bool TimeLineWidget::isPlaying()
+{
+    return playing;
+}
+
 void TimeLineWidget::paintEvent(QPaintEvent *event)
 {
         QColor color1(190, 190, 200);
@@ -182,25 +187,6 @@ void TimeLineWidget::mousePressEvent(QMouseEvent *event)
     {
         int selected = (event->x()-1)/cellWidth;
         setCurrentTime(selected * timeStep);
-        break;
-    }
-
-    default:
-        break;
-    }
-}
-
-void TimeLineWidget::keyPressEvent(QKeyEvent *event)
-{
-    switch (event->key())
-    {
-    case Qt::Key_Space:
-    {
-        if(playing)
-            pause();
-        else
-            play();
-
         break;
     }
 

@@ -125,7 +125,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="play">
+        <widget class="QPushButton" name="playPause">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -141,18 +141,8 @@
          <property name="text">
           <string>Play</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pause">
-         <property name="maximumSize">
-          <size>
-           <width>64</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Pause</string>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

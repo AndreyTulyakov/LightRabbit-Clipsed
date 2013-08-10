@@ -19,9 +19,6 @@ public:
     TimeLineWidget *getTimeline();
     
 private slots:
-    void on_play_clicked();
-
-    void on_pause_clicked();
 
     void on_stop_clicked();
 
@@ -32,6 +29,8 @@ private slots:
     void timeoutSlot();
 
     void on_setting_clicked();
+
+    void on_playPause_clicked();
 
 private:
     Ui::TimeLineContainerWidget *ui;

@@ -39,12 +39,12 @@ public:
 
     QTimer* getTimer();
 
+    bool isPlaying();
     
 
 protected:
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
 
     QTimer timer;
     int timeLengh;
