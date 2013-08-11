@@ -47,6 +47,7 @@ signals:
     void itemSelected(ListWidgetEntity* selectedItem);
     void itemAdded(ListWidgetEntity* item);
     void itemWasRemoved(ListWidgetEntity* item);
+    void itemListEmpty();
 
 private:
     Ui::EntityManagerWidget *ui;

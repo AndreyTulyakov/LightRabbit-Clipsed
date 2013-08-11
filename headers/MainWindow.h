@@ -60,6 +60,7 @@ class MainWindow : public QMainWindow
         void entitySelected(ListWidgetEntity* item);
         void entityAdded(ListWidgetEntity* item);
         void entityWasRemoved(ListWidgetEntity* item);
+        void entityListIsEmpty();
 
 private:
 

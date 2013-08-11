@@ -30,7 +30,7 @@ ListWidgetEntity *EntityManagerWidget::getSelectedItem()
     {
         return (ListWidgetEntity *)list.at(0);
     }
-    return 0;
+    return nullptr;
 }
 
 void EntityManagerWidget::on_addSprite_clicked()
@@ -102,6 +102,12 @@ void EntityManagerWidget::on_removeEntity_clicked()
 
         delete item;
         onUpdatelist();
+    }
+
+    item = getSelectedItem();
+    if(item == nullptr)
+    {
+        emit itemListEmpty();
     }
 }
 

@@ -40,6 +40,7 @@ class ListWidgetEntity : public QListWidgetItem
         {
             data = 0;
             type = pType;
+            layout = 0;
         }
 
         ListWidgetEntity(QString name, QListWidget *view, EntityType pType, void *pData)  : QListWidgetItem(name, view)
@@ -47,10 +48,12 @@ class ListWidgetEntity : public QListWidgetItem
             data = 0;
             type = pType;
             data = pData;
+            layout = 0;
         }
 
         void *data;
         EntityType type;
+        int layout;
 };
 
 class ListWidgetRegion : public QListWidgetItem

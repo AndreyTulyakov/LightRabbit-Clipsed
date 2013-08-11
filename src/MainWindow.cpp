@@ -47,6 +47,7 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
         connect(entityManager, SIGNAL(itemAdded(ListWidgetEntity *)), this, SLOT(entityAdded(ListWidgetEntity *)));
         connect(entityManager, SIGNAL(itemSelected(ListWidgetEntity *)), this, SLOT(entitySelected(ListWidgetEntity *)));
         connect(entityManager, SIGNAL(itemWasRemoved(ListWidgetEntity *)), this, SLOT(entityWasRemoved(ListWidgetEntity *)));
+        connect(entityManager, SIGNAL(itemListEmpty()), this, SLOT(entityListIsEmpty()));
     }
 
     {
@@ -197,7 +198,7 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::entitySelected(ListWidgetEntity *item)
 {
-
+    entitySetting->setEntitySetting(item);
 }
 
 void MainWindow::entityAdded(ListWidgetEntity *item)
@@ -238,4 +239,9 @@ void MainWindow::entityWasRemoved(ListWidgetEntity *item)
         default:
             break;
     }
+}
+
+void MainWindow::entityListIsEmpty()
+{
+    entitySetting->notSelectedEntity();
 }
