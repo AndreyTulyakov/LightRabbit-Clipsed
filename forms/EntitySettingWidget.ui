@@ -64,32 +64,8 @@
      </property>
      <widget class="QWidget" name="spriteSetting">
       <layout class="QGridLayout" name="gridLayout">
-       <item row="4" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QDoubleSpinBox" name="sPositionX"/>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="sPositionY"/>
-         </item>
-        </layout>
-       </item>
-       <item row="7" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QDoubleSpinBox" name="sScaleX"/>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="sScaleY"/>
-         </item>
-        </layout>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Atlas</string>
-         </property>
-        </widget>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="spriteName"/>
        </item>
        <item row="6" column="1">
         <widget class="QDoubleSpinBox" name="sRotation"/>
@@ -101,7 +77,61 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Atlas</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QDoubleSpinBox" name="sPositionX"/>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="sPositionY"/>
+         </item>
+        </layout>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Region</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="spriteLayout">
+         <property name="maximum">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QDoubleSpinBox" name="sScaleX"/>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="sScaleY"/>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Layout</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
         <widget class="QComboBox" name="comboAtlas"/>
        </item>
        <item row="4" column="0">
@@ -114,20 +144,6 @@
          </property>
          <property name="text">
           <string>Position</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Region</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QPushButton" name="setRegion">
-         <property name="text">
-          <string>Set region</string>
          </property>
         </widget>
        </item>
@@ -151,22 +167,10 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="spriteName"/>
-       </item>
-       <item row="1" column="1">
-        <widget class="QSpinBox" name="spriteLayout"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>16777215</height>
-          </size>
-         </property>
+       <item row="9" column="1">
+        <widget class="QPushButton" name="setRegion">
          <property name="text">
-          <string>Layout</string>
+          <string>Set region</string>
          </property>
         </widget>
        </item>

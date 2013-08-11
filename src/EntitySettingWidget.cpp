@@ -17,6 +17,15 @@ EntitySettingWidget::EntitySettingWidget(QWidget *parent) :
     this->setPalette(pal);
 
     connect(ui->spriteName, SIGNAL(textEdited(QString)), this, SLOT(spriteSettingEdited()));
+    connect(ui->spriteLayout, SIGNAL(valueChanged(int)), this, SLOT(spriteSettingEdited()));
+
+    connect(ui->sPositionX, SIGNAL(valueChanged(double)), this, SLOT(spriteSettingEdited()));
+    connect(ui->sPositionY, SIGNAL(valueChanged(double)), this, SLOT(spriteSettingEdited()));
+
+    connect(ui->sRotation, SIGNAL(valueChanged(double)), this, SLOT(spriteSettingEdited()));
+
+    connect(ui->sScaleX, SIGNAL(valueChanged(double)), this, SLOT(spriteSettingEdited()));
+    connect(ui->sScaleY, SIGNAL(valueChanged(double)), this, SLOT(spriteSettingEdited()));
 }
 
 EntitySettingWidget::~EntitySettingWidget()
@@ -27,8 +36,6 @@ EntitySettingWidget::~EntitySettingWidget()
 void EntitySettingWidget::setEntitySetting(ListWidgetEntity *item)
 {
     this->show();
-
-    currentEntity = item;
 
     switch (item->type)
     {
@@ -58,8 +65,16 @@ void EntitySettingWidget::notSelectedEntity()
 
 void EntitySettingWidget::spriteSettingEdited()
 {
+    if(currentEntity == nullptr)
+        return;
+
     Entity::Sprite *sprite = (Entity::Sprite*)currentEntity->data;
     currentEntity->setText(ui->spriteName->text());
+    currentEntity->layout = ui->spriteLayout->value();
+
+    sprite->setPosition(ui->sPositionX->value(), ui->sPositionY->value(), 0);
+    sprite->setRotationZ(ui->sRotation->value());
+    sprite->setScale(ui->sScaleX->value(), ui->sScaleY->value(), 1);
 }
 
 void EntitySettingWidget::settingUpdated(ListWidgetEntity *item)
@@ -69,6 +84,8 @@ void EntitySettingWidget::settingUpdated(ListWidgetEntity *item)
 
 void EntitySettingWidget::setSpriteSetting(ListWidgetEntity *item)
 {
+    currentEntity = nullptr;
+
     Entity::Sprite *sprite = (Entity::Sprite*)item->data;
 
     ui->spriteName->setText(item->text());
@@ -82,4 +99,6 @@ void EntitySettingWidget::setSpriteSetting(ListWidgetEntity *item)
 
     ui->sScaleX->setValue(sprite->getScale().x());
     ui->sScaleY->setValue(sprite->getScale().y());
+
+    currentEntity = item;
 }
