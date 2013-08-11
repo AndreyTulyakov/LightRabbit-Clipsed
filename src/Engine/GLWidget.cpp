@@ -11,10 +11,12 @@
 
 #include <QMouseEvent>
 
+
+
 #include <math.h>
 #include <locale.h>
 
-QMap<QString, GLWidget*> GLWidget::instances;
+QMap<QString, GLWidget *> GLWidget::instances;
 
 GLWidget::GLWidget(QWidget *parent, QString pInstanceName) :
     QGLWidget(parent)
@@ -22,8 +24,10 @@ GLWidget::GLWidget(QWidget *parent, QString pInstanceName) :
     widgetName = pInstanceName;
     mode = GLWidgetMode::ClipEdit;
     setMouseTracking(true);
-    instances.insert(widgetName,this);
+    instances.insert(widgetName, this);
     mouseRight = false;
+
+    unselectAll();
 }
 
 GLWidget::~GLWidget()
@@ -43,7 +47,7 @@ void GLWidget::setClipInfo(ClipInfo pInfo)
 
 void GLWidget::showTextureSprite(TextureAtlas *pAtlas)
 {
-    if(pAtlas == 0)
+    if (pAtlas == 0)
     {
         spriteCurrentTexture->setAtlas(atlasTexture);
     }
@@ -63,7 +67,7 @@ void GLWidget::centerTexCamera()
 
 void GLWidget::selectTexture(TextureAtlas *arg)
 {
-    if(arg == 0 || arg == nullptr)
+    if (arg == 0 || arg == nullptr)
     {
         spriteCurrentTexture->setAtlas(atlasTexture);
     }
@@ -84,7 +88,7 @@ void GLWidget::detachFromRootScene(SceneObject *obj)
     rootScene.detachChild(obj);
 }
 
-GLWidget* GLWidget::getInstance(QString pInstanceName)
+GLWidget *GLWidget::getInstance(QString pInstanceName)
 {
     if (instances.contains(pInstanceName))
     {
@@ -100,15 +104,27 @@ GLWidget* GLWidget::getInstance(QString pInstanceName)
 
 void GLWidget::setBackgroundColor(QColor color)
 {
-    qreal r,g,b;
+    qreal r, g, b;
     color.getRgbF(&r, &g, &b);
-    clipInfo.Color = QVector4D(r,g,b,1);
+    clipInfo.Color = QVector4D(r, g, b, 1);
     eRect->setColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1.0f);
 }
 
 QColor GLWidget::getBackgroundColor()
 {
     return QColor::fromRgbF(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1);
+}
+
+void GLWidget::selectSprite(Entity::Sprite *sprite)
+{
+    selectedEntity = sprite;
+    entityIsSelected = EntityType::Sprite;
+}
+
+void GLWidget::unselectAll()
+{
+    selectedEntity = nullptr;
+    entityIsSelected = EntityType::Undefined;
 }
 
 
@@ -149,6 +165,9 @@ void GLWidget::initializeGL()
     textureScene.attachChild(spriteCurrentTexture);
 
     // FUNCTIONAL TESTING ===============================================
+
+    rectSelection = new Entity::Rect(0, 0, 10, 10);
+
 
     rootScene.setCamera(&camera);
     {
@@ -226,6 +245,38 @@ void GLWidget::paintGL()
             break;
     }
 
+    if (entityIsSelected != EntityType::Undefined)
+    {
+        updateSelected();
+        rectSelection->setCamera(&camera);
+        rectSelection->update();
+        rectSelection->draw();
+    }
+
+}
+
+void GLWidget::updateSelected()
+{
+    Entity::Sprite* sprite;
+
+    switch (entityIsSelected)
+    {
+        case Sprite:
+        sprite = (Entity::Sprite*)selectedEntity;
+        rectSelection->setPosition(sprite->getPosition());
+
+            break;
+
+        case Text:
+
+            break;
+
+        case Sound:
+            break;
+
+        default:
+            break;
+    }
 }
 
 
@@ -294,13 +345,13 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 
     if (mode == GLWidgetMode::TextureList)
     {
-        if((texCamera.getZoom() + sf)>2.0f)
+        if ((texCamera.getZoom() + sf) > 2.0f)
         {
             texCamera.setZoom(2.0f);
             return;
         }
 
-        if((texCamera.getZoom() + sf)<0.5f)
+        if ((texCamera.getZoom() + sf) < 0.5f)
         {
             texCamera.setZoom(0.5f);
             return;
@@ -310,13 +361,13 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 
     if (mode == GLWidgetMode::ClipEdit)
     {
-        if((camera.getZoom() + sf)>2.0f)
+        if ((camera.getZoom() + sf) > 2.0f)
         {
             camera.setZoom(2.0f);
             return;
         }
 
-        if((camera.getZoom() + sf)<0.5f)
+        if ((camera.getZoom() + sf) < 0.5f)
         {
             camera.setZoom(0.5f);
             return;

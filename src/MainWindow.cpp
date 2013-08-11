@@ -7,7 +7,6 @@
 #include "Text.h"
 
 
-
 #include "Sprite.h"
 #include "Sound.h"
 
@@ -199,6 +198,23 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::entitySelected(ListWidgetEntity *item)
 {
     entitySetting->setEntitySetting(item);
+
+    switch (item->type)
+    {
+        case Sprite:
+            glWidget->selectSprite( (Entity::Sprite*)item->data);
+            break;
+
+        case Text:
+
+            break;
+
+        case Sound:
+            break;
+
+        default:
+            break;
+    }
 }
 
 void MainWindow::entityAdded(ListWidgetEntity *item)
@@ -244,4 +260,5 @@ void MainWindow::entityWasRemoved(ListWidgetEntity *item)
 void MainWindow::entityListIsEmpty()
 {
     entitySetting->notSelectedEntity();
+    glWidget->unselectAll();
 }

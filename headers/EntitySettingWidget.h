@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "ListWidgetItems.h"
+#include "Sprite.h"
 
 namespace Ui {
 class EntitySettingWidget;

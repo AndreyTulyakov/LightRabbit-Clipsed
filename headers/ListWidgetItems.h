@@ -7,7 +7,6 @@
 #include <QFileInfo>
 
 #include "TextureRegion.h"
-#include <GLWidget.h>
 
 enum EntityType
 {

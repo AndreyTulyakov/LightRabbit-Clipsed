@@ -36,6 +36,9 @@
 #include "Sprite.h"
 
 
+#include "ListWidgetItems.h"
+
+
 enum GLWidgetMode
 {
     ClipEdit, TextureList, SoundList
@@ -69,6 +72,9 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         void setBackgroundColor(QColor color);
         QColor getBackgroundColor();
 
+        void selectSprite(Entity::Sprite* sprite);
+        void unselectAll();
+
     protected:
         void timerEvent(QTimerEvent *e);
 
@@ -77,6 +83,8 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         void paintGL();
 
         void initShaders();
+
+        void updateSelected();
 
     private:
         QString widgetName;
@@ -95,8 +103,9 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         TextureAtlas *atlasSound, *atlasTexture;
         QBasicTimer timer;
 
-
-
+        EntityType entityIsSelected;
+        SceneObject *selectedEntity;
+        Entity::Rect* rectSelection;
 
 };
 

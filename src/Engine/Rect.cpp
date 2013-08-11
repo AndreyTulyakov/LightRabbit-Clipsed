@@ -18,6 +18,9 @@ Rect::Rect(float x1, float y1, float x2, float y2)
 
     filledDraw = false;
 
+    width = 0;
+    height = 0;
+
     initGeometry();
 }
 
@@ -34,6 +37,22 @@ void Rect::setFilledDraw(bool arg)
 bool Rect::isFilledDraw()
 {
     return filledDraw;
+}
+
+void Rect::setSize(float pWidth, float pHeight)
+{
+    vertexBuffer->bind();
+    Vertex2DSimple *data = (Vertex2DSimple *)vertexBuffer->map(QGLBuffer::ReadWrite);
+
+    float hw = pWidth / 2;
+    float hh = pWidth / 2;
+
+    data[0].position =  QVector2D(-hw, -hh);
+    data[1].position =  QVector2D( hw, -hh);
+    data[2].position =  QVector2D( hw,  hh);
+    data[3].position =  QVector2D(-hw,  hh);
+
+    vertexBuffer->unmap();
 }
 
 void Rect::update()

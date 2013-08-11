@@ -23,13 +23,16 @@ class Rect : public DrawableEntity , QGLFunctions
 {
 
     public:
-        Rect(float x1, float y1, float x2, float y2);
+        Rect(float pX, float pY, float pWidth, float pHeight); !!!
         virtual ~Rect();
 
         void init();
 
         void setFilledDraw(bool arg);
         bool isFilledDraw();
+
+        // НЕОБХОДИМО ПЕРЕПИСАТЬ КОНСТРУКТОР И КЛАСС НА ИСПОЛЬЗОВАНИЕ X,Y,W,H + ВЕКТОРНЫЕ ПЕРЕГРУЗКИ
+        void setSize(float pWidth, float pHeight); !!!
 
         void update();
         void draw();
@@ -38,6 +41,8 @@ class Rect : public DrawableEntity , QGLFunctions
         bool filledDraw;
         void initGeometry();
         QPoint p1, p2;
+
+        float width, height;
 };
 
 }
