@@ -52,3 +52,8 @@ void SceneObject::setVisible(bool arg)
 {
     visible = arg;
 }
+
+QVector3D SceneObject::getSize()
+{
+    return size;
+}

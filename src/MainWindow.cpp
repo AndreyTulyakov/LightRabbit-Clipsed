@@ -63,6 +63,7 @@ void MainWindow::startGLWidget(ClipInfo pInfo)
     {
         entitySetting = new EntitySettingWidget(this);
         ui->horizontalLayout->addWidget(entitySetting);
+        connect(glWidget, SIGNAL(onSelectedChanged()), entitySetting, SLOT(setEntitySetting()));
     }
 
     {
@@ -90,6 +91,13 @@ void MainWindow::killGLWidget()
         ui->gridLayout->removeWidget(entitySetting);
         delete entitySetting;
         entitySetting = nullptr;
+    }
+
+    if(entityManager != nullptr)
+    {
+        ui->horizontalLayout->removeWidget(entityManager);
+        delete entityManager;
+        entityManager = nullptr;
     }
 
     ui->actionBackgroundColor->setEnabled(false);
@@ -206,10 +214,11 @@ void MainWindow::entitySelected(ListWidgetEntity *item)
             break;
 
         case Text:
-
+            glWidget->selectText( (Entity::Text*)item->data);
             break;
 
         case Sound:
+            glWidget->unselectAll();
             break;
 
         default:

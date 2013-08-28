@@ -12,6 +12,8 @@ Sprite::Sprite()
     initializeGLFunctions();
 
     region = new TextureRegion(nullptr,0,0,128,128);
+    size = QVector3D(region->getRegion().width(), region->getRegion().height(),0);
+
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
     initGeometry();
@@ -22,6 +24,7 @@ Sprite::Sprite(TextureAtlas *pAtlas)
     initializeGLFunctions();
 
     region = new TextureRegion(pAtlas, 0, 0, pAtlas->width(), pAtlas->height());
+    size = QVector3D(pAtlas->width(), pAtlas->height(),0);
 
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
@@ -34,6 +37,7 @@ Sprite::Sprite(TextureRegion *pRegion)
 
     region = new TextureRegion(pRegion->getAtlas());
     region->setRegion(pRegion->getRegion());
+    size = QVector3D(region->getRegion().width(), region->getRegion().height(),0);
 
     shaderProgram = DefaultShaders::getInstance()->getShader("SimpleTextured");
 
@@ -53,6 +57,7 @@ void Sprite::setAtlas(TextureAtlas *pAtlas)
     {
         TextureRegion  reg(pAtlas, 0, 0, pAtlas->width(), pAtlas->height());
         setRegion(&reg);
+        size = QVector3D(region->getRegion().width(), region->getRegion().height(),0);
     }
 
 }
@@ -61,6 +66,7 @@ void Sprite::setRegion(TextureRegion *pRegion)
 {
     region->setTextureAtlas(pRegion->getAtlas());
     region->setRegion(pRegion->getRegion());
+    size = QVector3D(region->getRegion().width(), region->getRegion().height(),0);
 
     if (region->getAtlas() != 0 || region->getAtlas() != nullptr)
     {
@@ -69,8 +75,8 @@ void Sprite::setRegion(TextureRegion *pRegion)
         vertexBuffer->bind();
         Vertex2D *data = (Vertex2D *)vertexBuffer->map(QGLBuffer::ReadWrite);
 
-        float hw = region->getAtlas()->width() / 2;
-        float hh = region->getAtlas()->height() / 2;
+        float hw = size.x() / 2;
+        float hh = size.y() / 2;
 
         data[0].position =  QVector2D(-hw, -hh);
         data[1].position =  QVector2D(hw, -hh);

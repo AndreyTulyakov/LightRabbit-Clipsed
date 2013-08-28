@@ -21,6 +21,7 @@ class SceneObject : public EntityObject
     protected:
         QList<SceneObject *> childs;
         bool visible;
+        QVector3D size;
 
     public:
         SceneObject();
@@ -37,6 +38,8 @@ class SceneObject : public EntityObject
         int childCount();
         bool isVisible();
         void setVisible(bool arg);
+
+        QVector3D getSize();
 };
 
 #endif // SCENEOBJECT_H

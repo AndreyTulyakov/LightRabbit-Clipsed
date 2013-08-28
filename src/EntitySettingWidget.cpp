@@ -57,6 +57,14 @@ void EntitySettingWidget::setEntitySetting(ListWidgetEntity *item)
     }
 }
 
+void EntitySettingWidget::setEntitySetting()
+{
+    if(currentEntity == nullptr)
+        return;
+
+    setSpriteSetting(currentEntity);
+}
+
 void EntitySettingWidget::notSelectedEntity()
 {
     this->hide();

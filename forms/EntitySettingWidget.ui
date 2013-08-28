@@ -68,7 +68,14 @@
         <widget class="QLineEdit" name="spriteName"/>
        </item>
        <item row="6" column="1">
-        <widget class="QDoubleSpinBox" name="sRotation"/>
+        <widget class="QDoubleSpinBox" name="sRotation">
+         <property name="minimum">
+          <double>-10000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item row="7" column="0">
         <widget class="QLabel" name="label_6">
@@ -87,10 +94,24 @@
        <item row="4" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QDoubleSpinBox" name="sPositionX"/>
+          <widget class="QDoubleSpinBox" name="sPositionX">
+           <property name="minimum">
+            <double>-10000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>10000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="sPositionY"/>
+          <widget class="QDoubleSpinBox" name="sPositionY">
+           <property name="minimum">
+            <double>-10000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>10000.000000000000000</double>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -111,10 +132,24 @@
        <item row="7" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QDoubleSpinBox" name="sScaleX"/>
+          <widget class="QDoubleSpinBox" name="sScaleX">
+           <property name="minimum">
+            <double>-10000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>10000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="sScaleY"/>
+          <widget class="QDoubleSpinBox" name="sScaleY">
+           <property name="minimum">
+            <double>-10000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>10000.000000000000000</double>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

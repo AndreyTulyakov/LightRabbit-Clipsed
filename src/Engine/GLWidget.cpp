@@ -26,6 +26,7 @@ GLWidget::GLWidget(QWidget *parent, QString pInstanceName) :
     setMouseTracking(true);
     instances.insert(widgetName, this);
     mouseRight = false;
+    mouseLeft = false;
 
     unselectAll();
 }
@@ -121,6 +122,12 @@ void GLWidget::selectSprite(Entity::Sprite *sprite)
     entityIsSelected = EntityType::Sprite;
 }
 
+void GLWidget::selectText(Entity::Text *text)
+{
+    selectedEntity = text;
+    entityIsSelected = EntityType::Text;
+}
+
 void GLWidget::unselectAll()
 {
     selectedEntity = nullptr;
@@ -181,7 +188,7 @@ void GLWidget::initializeGL()
         rootScene.attachChild(eLine2);
         */
 
-        eRect = new Entity::Rect(-clipInfo.Width / 2, -clipInfo.Height / 2, clipInfo.Width, clipInfo.Height);
+        eRect = new Entity::Rect(0, 0, clipInfo.Width, clipInfo.Height);
         eRect->setColor(clipInfo.Color.x(), clipInfo.Color.y(), clipInfo.Color.z(), 1.0f);
         eRect->setFilledDraw(true);
         rootScene.attachChild(eRect);
@@ -245,7 +252,7 @@ void GLWidget::paintGL()
             break;
     }
 
-    if (entityIsSelected != EntityType::Undefined)
+    if (entityIsSelected == EntityType::Sprite)
     {
         updateSelected();
         rectSelection->setCamera(&camera);
@@ -257,14 +264,24 @@ void GLWidget::paintGL()
 
 void GLWidget::updateSelected()
 {
-    Entity::Sprite* sprite;
+    static float blink = 0;
+    blink+=0.1f;
+    if(blink> 3.14f)
+        blink = 0;
+
+    float blinkColor = sin(blink);
+
+    Entity::Sprite *sprite;
 
     switch (entityIsSelected)
     {
         case Sprite:
-        sprite = (Entity::Sprite*)selectedEntity;
-        rectSelection->setPosition(sprite->getPosition());
-
+            sprite = (Entity::Sprite *)selectedEntity;
+            rectSelection->setPosition(sprite->getPosition());
+            rectSelection->setSize(sprite->getSize());
+            rectSelection->setRotationZ(sprite->getRotationZ());
+            rectSelection->setColor(blinkColor, blinkColor, blinkColor, 1);
+            rectSelection->setScale(sprite->getScale());
             break;
 
         case Text:
@@ -282,7 +299,19 @@ void GLWidget::updateSelected()
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    // Move Camera
+    if(mouseLeft)
+    {
+        QPoint pos = event->pos() - oldMousePos;
+
+        if(entityIsSelected == EntityType::Sprite)
+        {
+            Entity::Sprite *sprite = (Entity::Sprite *)selectedEntity;
+            sprite->setPosition(sprite->getPosition().x() + pos.x(), sprite->getPosition().y() - pos.y(), 0);
+            emit onSelectedChanged();
+        }
+        oldMousePos = event->pos();
+    }
+
     if (mouseRight)
     {
         QPoint pos = event->pos() - oldMousePos;
@@ -302,11 +331,14 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
     switch (event->button())
     {
         case Qt::MouseButton::LeftButton:
-            qDebug() << "Left press";
+            mouseLeft = true;
+            mouseRight = false;
+            oldMousePos = event->pos();
             break;
 
         case Qt::MouseButton::RightButton:
             mouseRight = true;
+            mouseLeft = false;
             oldMousePos = event->pos();
             break;
 
@@ -320,8 +352,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
     switch (event->button())
     {
         case Qt::MouseButton::LeftButton:
-            qDebug() << "Left release";
-
+            mouseLeft = false;
             break;
 
         case Qt::MouseButton::RightButton:

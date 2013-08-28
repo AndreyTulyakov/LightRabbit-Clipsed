@@ -7,19 +7,30 @@ namespace Entity
 {
 
 
-Rect::Rect(float x1, float y1, float x2, float y2)
+Rect::Rect(float pX, float pY, float pWidth, float pHeight)
 {
     initializeGLFunctions();
 
     shaderProgram = DefaultShaders::getInstance()->getShader("PrimitiveColor");
 
-    p1 = QPoint(x1, y1);
-    p2 = QPoint(x2, y2);
+    setPosition(pX,pY,0);
+    size = QVector3D(pWidth, pHeight, 0);
 
     filledDraw = false;
 
-    width = 0;
-    height = 0;
+    initGeometry();
+}
+
+Rect::Rect(QVector3D pPosition, QVector3D pSize)
+{
+    initializeGLFunctions();
+
+    shaderProgram = DefaultShaders::getInstance()->getShader("PrimitiveColor");
+
+    setPosition(pPosition);
+    size = pSize;
+
+    filledDraw = false;
 
     initGeometry();
 }
@@ -41,11 +52,13 @@ bool Rect::isFilledDraw()
 
 void Rect::setSize(float pWidth, float pHeight)
 {
+    size = QVector3D(pWidth,pHeight,0);
+
     vertexBuffer->bind();
     Vertex2DSimple *data = (Vertex2DSimple *)vertexBuffer->map(QGLBuffer::ReadWrite);
 
-    float hw = pWidth / 2;
-    float hh = pWidth / 2;
+    float hw = size.x() / 2;
+    float hh = size.y() / 2;
 
     data[0].position =  QVector2D(-hw, -hh);
     data[1].position =  QVector2D( hw, -hh);
@@ -53,6 +66,11 @@ void Rect::setSize(float pWidth, float pHeight)
     data[3].position =  QVector2D(-hw,  hh);
 
     vertexBuffer->unmap();
+}
+
+void Rect::setSize(QVector3D pSize)
+{
+    setSize(pSize.x(),pSize.y());
 }
 
 void Rect::update()
@@ -71,8 +89,9 @@ void Rect::draw()
     transform.setToIdentity();
 
     transform.translate(position);
-    transform.scale(scale);
     transform.rotate(zRotation, 0, 0, 1);
+    transform.scale(scale);
+
 
     shaderProgram->setUniformValue("mvp_matrix", camera->getCameraMatrix() * transform);
     shaderProgram->setUniformValue("color", color);
@@ -97,13 +116,15 @@ void Rect::draw()
 
 void Rect::initGeometry()
 {
+    float hw = size.x() / 2;
+    float hh = size.y() / 2;
 
     Vertex2DSimple vertices[] =
     {
-        {QVector2D(p1.x(), p1.y())},
-        {QVector2D(p1.x() + p2.x(), p1.y())},
-        {QVector2D(p1.x() + p2.x(), p1.y() + p2.y())},
-        {QVector2D(p1.x(), p1.y() + p2.y())},
+        {QVector2D(-hw,-hh)},
+        {QVector2D( hw,-hh)},
+        {QVector2D( hw, hh)},
+        {QVector2D(-hw, hh)},
     };
 
     createVertexBuffer(vertices, 4 * sizeof(Vertex2DSimple));

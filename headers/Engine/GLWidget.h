@@ -34,6 +34,7 @@
 
 #include "FormNewClip.h"
 #include "Sprite.h"
+#include "Text.h"
 
 
 #include "ListWidgetItems.h"
@@ -73,6 +74,8 @@ class GLWidget : public QGLWidget, protected QGLFunctions
         QColor getBackgroundColor();
 
         void selectSprite(Entity::Sprite* sprite);
+        void selectText(Entity::Text* text);
+
         void unselectAll();
 
     protected:
@@ -86,13 +89,16 @@ class GLWidget : public QGLWidget, protected QGLFunctions
 
         void updateSelected();
 
+    signals:
+        void onSelectedChanged();
+
     private:
         QString widgetName;
 
         static QMap<QString, GLWidget*> instances;
 
         ClipInfo clipInfo;
-        bool mouseRight;
+        bool mouseRight, mouseLeft;
         QPoint oldMousePos;
 
         Entity::Rect *eRect;

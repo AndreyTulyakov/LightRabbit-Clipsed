@@ -16,9 +16,7 @@ class EntitySettingWidget : public QWidget
 public:
     explicit EntitySettingWidget(QWidget *parent = 0);
     ~EntitySettingWidget();
-
     void setEntitySetting(ListWidgetEntity* item);
-    void notSelectedEntity();
 
 signals:
     void onSettingUpdate(ListWidgetEntity* item);
@@ -26,7 +24,10 @@ signals:
 public slots:
 
     void spriteSettingEdited();
-    
+    void setEntitySetting();
+    void notSelectedEntity();
+
+
 private:
 
     void settingUpdated(ListWidgetEntity* item);

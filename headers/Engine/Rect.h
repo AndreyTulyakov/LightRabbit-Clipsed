@@ -15,6 +15,7 @@
 
 #include "DrawableEntity.h"
 #include <QGLFunctions>
+#include <QVector3D>
 
 namespace Entity
 {
@@ -23,7 +24,8 @@ class Rect : public DrawableEntity , QGLFunctions
 {
 
     public:
-        Rect(float pX, float pY, float pWidth, float pHeight); !!!
+        Rect(float pX, float pY, float pWidth, float pHeight);
+        Rect(QVector3D pPosition, QVector3D pSize);
         virtual ~Rect();
 
         void init();
@@ -32,7 +34,8 @@ class Rect : public DrawableEntity , QGLFunctions
         bool isFilledDraw();
 
         // НЕОБХОДИМО ПЕРЕПИСАТЬ КОНСТРУКТОР И КЛАСС НА ИСПОЛЬЗОВАНИЕ X,Y,W,H + ВЕКТОРНЫЕ ПЕРЕГРУЗКИ
-        void setSize(float pWidth, float pHeight); !!!
+        void setSize(float pWidth, float pHeight);
+        void setSize(QVector3D pSize);
 
         void update();
         void draw();
@@ -40,9 +43,6 @@ class Rect : public DrawableEntity , QGLFunctions
     private:
         bool filledDraw;
         void initGeometry();
-        QPoint p1, p2;
-
-        float width, height;
 };
 
 }
